@@ -1,171 +1,151 @@
 {
-  "version": 2,
-  "updated": "2026-08-24",
-  "placeholder": "Este plan se heredó tal cual del fork de HealthTracker como contenido de arranque para que la app no quede vacía. Está pensado para un perfil de powerlifting/fuerza general, NO para un boxeador — hay que rediseñarlo por completo después de la investigación de fuerza y acondicionamiento para boxeadores (frecuencia semanal real disponible para pesas, cómo evitar interferencia con el boxeo, énfasis en potencia/explosividad en vez de fuerza máxima pura, cuidado de manos/muñecas/hombros, etc.).",
-  "notes": "Split de 5 días, pesas + boxeo combinados en cada sesión de 2h. No se prescriben pesos fijos: el peso lo decide el usuario sesión a sesión guiado por el RPE objetivo. El dashboard sugiere carga para la próxima sesión según el RPE logueado la vez anterior. La rutina se repite igual cada semana dentro de un bloque — los ajustes de verdad pasan en cada fecha de chequeo, no semana a semana. Sentadilla, press de banca y peso muerto se entrenan 2x/semana cada uno: un día principal + un día de variante técnica (pausa, tempo, o RDL), en vez de solo 1x/semana. Cada ejercicio 'principal' se hace como 1 serie top al RPE objetivo + el resto de series backoff al mismo peso o bajando un poco si el RPE sube mucho.",
+  "version": 3,
+  "updated": "2026-08-25",
+  "notes": "Programa de fuerza y potencia complementario para un boxeador amateur competitivo de 16 años, 4 años de boxeo, sin experiencia previa de pesas (técnica ya buena por supervisión directa, pero sin historial de carga). Prioridad explícita del usuario: 1) potencia de golpe / explosividad, 2) durabilidad / prevención de lesiones, 3) capacidad de trabajo / acondicionamiento, 4) fuerza general — la fuerza es la base, no el objetivo final. Diseñado con investigación real (NSCA Position Stand on LTAD 2016; Dunn et al. sobre fuerza y fuerza de impacto de golpe; encuesta de prácticas reales de entrenadores de boxeo Beattie & Ruddock 2025 JSCR; estudio de complex training en boxeadores amateur élite, Frontiers 2024). Puntos clave que informan el diseño: (a) la fuerza máxima de tren inferior es el predictor individual más fuerte de fuerza de impacto de golpe (Dunn et al., r=0.68, ~46% de la varianza) — el énfasis va en piernas, no en banca; (b) la fuerza máxima de tren superior casi no correlaciona con potencia de golpe, pero la fuerza EXPLOSIVA de tren superior sí — por eso el press es rápido/explosivo, no pesado al fallo; (c) los ganchos dependen de fuerza rotacional de tronco más que los rectos — de ahí el énfasis en landmine y trabajo rotacional; (d) no hay evidencia real de que la fuerza máxima 'engorde' o haga más lento a un boxeador — ese miedo es común entre entrenadores pero no está sustentado, y como el usuario no está en categoría de peso ni campamento ahora mismo, es buen momento para construir una base real de fuerza; (e) la investigación en jóvenes (NSCA LTAD) confirma que el entrenamiento de fuerza bien supervisado es seguro para adolescentes, no retrasa el crecimiento ni la maduración, y mejora fuerza relativa y velocidad — pero recomienda evitar pruebas de 1RM, progresar la carga solo cuando la técnica es sólida, y priorizar la calidad de movimiento sobre la carga absoluta.",
+  "sequencingGuidance": "El usuario entrena pesas justo después de sus sesiones de boxeo la mayoría de los días, con foco extra los viernes. La evidencia sobre secuenciación en la misma sesión es clara: el trabajo explosivo/de potencia pierde calidad neuromuscular cuando se hace ya fatigado. Por eso el split separa dos tipos de día: (1) días 'de toque' pegados al boxeo — trabajo de menor demanda del sistema nervioso (core rotacional, tracción, acarreos, unilateral), que sí tolera bien hacerse después de boxear; (2) el viernes es el día fuerte de fuerza/potencia real (sentadilla, peso muerto, landmine rotacional, press explosivo) y debe hacerse ANTES de boxear ese día si hace las dos cosas, no después — es donde vive la ganancia real de potencia de golpe.",
+  "varietyGuidance": "El usuario se aburre fácil entrenando lo mismo. La solución no es cambiar el patrón de movimiento cada semana (eso rompe la progresión técnica), sino rotar el IMPLEMENTO dentro del mismo patrón: la sentadilla puede ser con barra una semana, sandbag goblet otra, o incorporar volteo de llanta como variante de potencia de tren inferior. Cada ejercicio con más de una opción de implemento lo indica en su nota — no hace falta usar todos los implementos cada sesión, solo variar semana a semana para mantenerlo interesante.",
   "progressiveOverload": {
-    "rule": "Comparado con el RPE logueado en el set superior (top set) de la sesión anterior para el mismo ejercicio",
-    "ifRpeBelow": 7,
-    "thenAction": "sube 2.5-5 kg (pesas grandes) o 1-2 kg (accesorios) la próxima vez",
-    "ifRpeBetween": [7, 8.5],
-    "thenActionMid": "sube el incremento mínimo directamente (2.5 kg principal / 1.25 kg accesorio) en vez de esperar a añadir una repetición extra primero",
-    "ifRpeAbove": 8.5,
-    "thenActionHigh": "mantén el peso o baja 2.5-5 kg la próxima sesión, prioriza técnica"
+    "rule": "Para un adolescente sin historial de carga: la técnica manda sobre el peso. No se recomienda ninguna prueba de 1RM — el peso sube solo cuando la técnica se ve sólida en las repeticiones (velocidad de barra consistente, sin compensaciones) a un esfuerzo cómodo.",
+    "ifRpeBelow": 6,
+    "thenAction": "si la técnica es sólida, sube 2.5 kg (ejercicios principales) o el incremento mínimo disponible (accesorios/sandbag/implemento)",
+    "ifRpeBetween": [6, 7],
+    "thenActionMid": "mantén el peso una sesión más para consolidar técnica antes de subir",
+    "ifRpeAbove": 7,
+    "thenActionHigh": "baja el peso o mantente en el mismo — a esta edad y sin historial, no hace falta ni conviene llegar a esfuerzos altos; prioriza siempre movimiento limpio y rápido sobre esfuerzo máximo",
+    "youthNote": "Techo de esfuerzo intencionalmente bajo (RPE ~6-7 máximo) comparado con un programa adulto — es una elección de diseño, no un error. La meta es calidad de movimiento y potencia, no cargas máximas."
   },
   "checkpoints": [
-    { "date": "2026-08-30", "label": "Chequeo 1 — fin de bloque 1" },
-    { "date": "2026-09-27", "label": "Chequeo 2 — fin de bloque 2" },
-    { "date": "2026-11-01", "label": "Chequeo 3 — fin de bloque 3" },
-    { "date": "2026-11-29", "label": "Chequeo 4 — fin de bloque 4" }
+    { "date": "2026-09-22", "label": "Chequeo 1 — revisión técnica y de carga, fin de bloque 1" }
   ],
   "blocks": [
     {
       "id": "bloque-1",
       "label": "Bloque 1",
-      "phase": "Acumulación / calibración",
-      "startDate": "2026-07-27",
-      "endDate": "2026-08-30",
-      "restDays": ["saturday", "sunday"],
-      "weeklyBoxingTally": {
-        "sombraConPeso": 3,
-        "sombraSinPeso": 1,
-        "costalPesado": 8,
-        "uppercut": 2,
-        "peraLoca": 2,
-        "peraFija": 2,
-        "totalRounds": 18,
-        "matchesCurrentVolume": "Mismo volumen semanal de boxeo que ya haces (18 rounds), solo repartido en bloques cortos por sesión en vez de todo junto, para dejar espacio a las pesas."
-      },
+      "phase": "Base de fuerza y potencia — introducción técnica",
+      "startDate": "2026-08-25",
+      "endDate": "2026-09-22",
+      "restDays": ["sunday"],
+      "note": "Primer bloque de 4 semanas. Objetivo: aprender y consolidar técnica en cada patrón (sentadilla, bisagra de cadera, press, tracción, rotación) con carga conservadora, y empezar a introducir el trabajo explosivo/rotacional específico al golpe. No se sube peso agresivamente este bloque — eso viene en bloque 2 una vez la técnica esté sólida.",
       "days": [
         {
           "id": "dia1",
           "order": 1,
           "label": "Día 1",
           "defaultWeekday": "monday",
-          "focus": "SQ principal + BP secundario",
-          "warmupMin": 15,
+          "focus": "Boxeo estándar + core rotacional / pierna unilateral (carga ligera)",
+          "warmupMin": 10,
           "lifting": [
-            { "exercise": "Sentadilla trasera (SQ)", "sets": 5, "targetReps": 5, "targetRpe": 7.5, "type": "principal", "note": "1 top set @RPE objetivo + 4 backoff mismo peso" },
-            { "exercise": "Press de banca (BP)", "sets": 4, "targetReps": 6, "targetRpe": 7, "type": "principal", "note": "volumen moderado, el día pesado de BP es miércoles" },
-            { "exercise": "Zancada búlgara con mancuerna", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "por pierna — prefiere ~10 kg por mano por estabilidad, con 15 kg se siente desbalanceado" },
-            { "exercise": "Elevaciones laterales", "sets": 3, "targetReps": 15, "targetRpe": 8, "type": "accesorio" }
+            { "exercise": "Zancada búlgara (sandbag al pecho o mancuerna)", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por pierna — alterna sandbag de 10kg / mancuerna según lo que esté disponible, técnica antes que peso" },
+            { "exercise": "Giro de tronco con banda elástica (tipo golpe)", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "por lado — simula el giro de cadera-tronco de un gancho, controlado, no explosivo todavía" },
+            { "exercise": "Plancha lateral", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 20-30s por lado" }
           ],
           "boxing": [
-            { "type": "Costal pesado", "rounds": 2 },
-            { "type": "Pera fija", "rounds": 1 }
+            { "type": "Sombra con peso", "rounds": 3 },
+            { "type": "Sombra sin peso", "rounds": 1 },
+            { "type": "Costal pesado", "rounds": 8 },
+            { "type": "Uppercut", "rounds": 2 },
+            { "type": "Pera loca", "rounds": 2 }
           ],
-          "boxingRounds": 3,
-          "boxingMinutes": 15
+          "boxingRounds": 16,
+          "boxingMinutes": 80
         },
         {
           "id": "dia2",
           "order": 2,
           "label": "Día 2",
           "defaultWeekday": "tuesday",
-          "focus": "DL principal + Tracción",
-          "warmupMin": 15,
+          "focus": "Boxeo estándar + tracción y acarreo",
+          "warmupMin": 10,
           "lifting": [
-            { "exercise": "Peso muerto convencional (DL)", "sets": 5, "targetReps": 5, "targetRpe": 7.5, "type": "principal", "note": "1 top set @RPE objetivo + 4 backoff mismo peso" },
-            { "exercise": "Remo con barra (Pendlay)", "sets": 4, "targetReps": 8, "targetRpe": 7.5, "type": "accesorio" },
-            { "exercise": "Dominadas (con banda de asistencia si hace falta)", "sets": 3, "targetReps": 9, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "progresa en reps, no en peso — desde el 11 de agosto de 2026 ya prueba sin banda de asistencia, reps parciales cuentan como progreso" },
-            { "exercise": "Curl de bíceps con barra", "sets": 3, "targetReps": 12, "targetRpe": 8, "type": "accesorio" }
+            { "exercise": "Dominadas (asistidas si hace falta)", "sets": 3, "targetReps": 5, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "prioriza técnica limpia y rango completo sobre cantidad de reps" },
+            { "exercise": "Carga cargada con sandbags (farmer carry)", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 series de ~20m, sandbags de 10-20kg — grip y core, sube distancia antes que peso" },
+            { "exercise": "Golpes con banda de resistencia (punch throws)", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "por lado — velocidad de salida del golpe contra resistencia ligera, no fuerza máxima" }
           ],
           "boxing": [
-            { "type": "Costal pesado", "rounds": 2 },
-            { "type": "Uppercut", "rounds": 1 }
+            { "type": "Sombra con peso", "rounds": 3 },
+            { "type": "Sombra sin peso", "rounds": 1 },
+            { "type": "Costal pesado", "rounds": 8 },
+            { "type": "Uppercut", "rounds": 2 },
+            { "type": "Pera loca", "rounds": 2 }
           ],
-          "boxingRounds": 3,
-          "boxingMinutes": 15
+          "boxingRounds": 16,
+          "boxingMinutes": 80
         },
         {
           "id": "dia3",
           "order": 3,
           "label": "Día 3",
           "defaultWeekday": "wednesday",
-          "focus": "BP principal (pesado) + SQ variante técnica",
-          "warmupMin": 15,
+          "focus": "Manoplas/gobernadora + core rotacional variado",
+          "warmupMin": 10,
           "lifting": [
-            { "exercise": "Press de banca (BP)", "sets": 5, "targetReps": 4, "targetRpe": 8, "type": "principal", "note": "día pesado — mismo ejercicio que el lunes, sube el peso para llegar a RPE 8 en menos reps. 1 top set @RPE objetivo + 4 backoff mismo peso" },
-            { "exercise": "Sentadilla trasera (SQ)", "sets": 4, "targetReps": 5, "targetRpe": 7, "type": "principal", "note": "2ª exposición semanal de SQ, con pausa 2s abajo — énfasis técnico, mismo ejercicio que el lunes" },
-            { "exercise": "Press militar (OHP)", "sets": 3, "targetReps": 8, "targetRpe": 7.5, "type": "accesorio" },
-            { "exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 7, "type": "accesorio" }
+            { "exercise": "Sandbag slam rotacional", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por lado — variante de giro con banda del lunes, mismo patrón distinto implemento" },
+            { "exercise": "Zancada caminando con sandbag", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "note": "por pierna" },
+            { "exercise": "Plancha frontal", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 20-30s" }
           ],
           "boxing": [
-            { "type": "Sombra con peso", "rounds": 1 },
-            { "type": "Costal pesado", "rounds": 1 },
-            { "type": "Pera fija", "rounds": 1 }
+            { "type": "Manoplas/gobernadora", "rounds": 6 }
           ],
-          "boxingRounds": 3,
-          "boxingMinutes": 15
+          "boxingRounds": 6,
+          "boxingMinutes": 30
         },
         {
           "id": "dia4",
           "order": 4,
           "label": "Día 4",
           "defaultWeekday": "thursday",
-          "focus": "Full body accesorio / recuperación activa",
-          "warmupMin": 15,
+          "focus": "Boxeo estándar + potencia con llanta",
+          "warmupMin": 10,
           "lifting": [
-            { "exercise": "Remo landmine a una mano", "sets": 3, "targetReps": 10, "targetRpe": 7.5, "type": "accesorio", "note": "reemplaza remo con mancuerna — mancuernas insuficientes" },
-            { "exercise": "Press francés (Skull Crushers) con barra", "sets": 3, "targetReps": 12, "targetRpe": 8, "type": "accesorio", "note": "reemplaza extensión en polea — sin cable" },
-            { "exercise": "Buenos días (Good Mornings) con barra", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "reemplaza curl femoral — sin máquina" },
-            { "exercise": "Puente de glúteo en piso con mancuerna", "sets": 3, "targetReps": 12, "targetRpe": 7, "type": "accesorio", "note": "reemplaza hip thrust — sin banco disponible" }
+            { "exercise": "Volteo de llanta (tire flip)", "sets": 4, "targetReps": 4, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "el peso lo da la llanta fija — progresa en repeticiones/rondas, no en peso. Explosivo, descanso completo entre series" },
+            { "exercise": "Golpes con martillo sobre llanta", "sets": 3, "targetReps": 15, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "golpes alternados — potencia rotacional y resistencia de agarre, bueno para variar y no aburrirse" },
+            { "exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "salud de hombro — parte de la prevención de lesiones, no del objetivo principal" }
           ],
           "boxing": [
-            { "type": "Sombra con peso", "rounds": 1 },
+            { "type": "Sombra con peso", "rounds": 3 },
             { "type": "Sombra sin peso", "rounds": 1 },
-            { "type": "Pera loca", "rounds": 1 }
+            { "type": "Costal pesado", "rounds": 8 },
+            { "type": "Uppercut", "rounds": 2 },
+            { "type": "Pera loca", "rounds": 2 }
           ],
-          "boxingRounds": 3,
-          "boxingMinutes": 15
+          "boxingRounds": 16,
+          "boxingMinutes": 80
         },
         {
           "id": "dia5",
           "order": 5,
-          "label": "Día 5",
+          "label": "Día 5 — día fuerte",
           "defaultWeekday": "friday",
-          "focus": "DL variante (RDL) + cierre de semana con más boxeo",
+          "focus": "Fuerza y potencia (día dedicado) — hacer ANTES del boxeo si aplica ese día",
           "warmupMin": 15,
           "lifting": [
-            { "exercise": "Peso muerto rumano (RDL)", "sets": 5, "targetReps": 8, "targetRpe": 7, "type": "principal", "note": "2ª exposición semanal de DL — 1 top set + 4 backoff" },
-            { "exercise": "Press cerrado o inclinado con mancuernas", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio" },
-            { "exercise": "Zancadas caminando", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "por pierna" },
-            { "exercise": "Plancha / core", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 40-60s" }
+            { "exercise": "Sentadilla trasera", "sets": 4, "targetReps": 5, "targetRpe": 6.5, "type": "principal", "note": "barra o sandbag goblet como variante — sin prueba de 1RM, sube peso solo cuando la técnica se vea sólida" },
+            { "exercise": "Peso muerto rumano (barra o sandbag a los hombros)", "sets": 3, "targetReps": 6, "targetRpe": 6.5, "type": "principal", "note": "bisagra de cadera — clave para la fuerza de tren inferior que más correlaciona con fuerza de impacto de golpe" },
+            { "exercise": "Press landmine rotacional a una mano", "sets": 3, "targetReps": 6, "targetRpe": 6.5, "type": "principal", "note": "por lado — el ejercicio más específico al golpe (cross/gancho), énfasis en potencia y velocidad, no en esfuerzo máximo" },
+            { "exercise": "Press de banca explosivo (velocidad de barra)", "sets": 3, "targetReps": 5, "targetRpe": 6, "type": "accesorio", "note": "peso moderado, barra rápida — la fuerza explosiva de tren superior sí correlaciona con potencia de golpe, la fuerza máxima casi no" },
+            { "exercise": "Rotación con landmine (twist)", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por lado — rotación de tronco cargada" }
           ],
           "boxing": [
-            { "type": "Sombra con peso", "rounds": 1 },
-            { "type": "Costal pesado", "rounds": 3 },
-            { "type": "Uppercut", "rounds": 1 },
-            { "type": "Pera loca", "rounds": 1 }
+            { "type": "Sombra sin peso (técnico, después de pesas)", "rounds": 2 }
           ],
-          "boxingRounds": 6,
-          "boxingMinutes": 30
+          "boxingRounds": 2,
+          "boxingMinutes": 10
+        },
+        {
+          "id": "dia6",
+          "order": 6,
+          "label": "Día 6",
+          "defaultWeekday": "saturday",
+          "focus": "Sparring — sin pesas, día de contacto, prioriza recuperación",
+          "warmupMin": 10,
+          "lifting": [],
+          "boxing": [
+            { "type": "Sparring", "rounds": 4 }
+          ],
+          "boxingRounds": 4,
+          "boxingMinutes": 20
         }
       ]
-    },
-    {
-      "id": "bloque-2",
-      "label": "Bloque 2",
-      "startDate": "2026-08-31",
-      "endDate": "2026-09-27",
-      "days": null,
-      "note": "Pendiente — se define en el chequeo del 30 de agosto de 2026, según cómo hayan subido las cargas y el RPE registrado en bloque 1. Aquí es donde entra revisar si toca meter una semana de descarga antes de subir intensidad, o ajustar el split si algo no progresó."
-    },
-    {
-      "id": "bloque-3",
-      "label": "Bloque 3",
-      "startDate": "2026-09-28",
-      "endDate": "2026-11-01",
-      "days": null,
-      "note": "Pendiente — se define en el chequeo del 27 de septiembre de 2026. Punto natural para considerar una semana de toma de marcas (test de RM o series pesadas en sentadilla/banca/peso muerto) si el progreso lo permite."
-    },
-    {
-      "id": "bloque-4",
-      "label": "Bloque 4",
-      "startDate": "2026-11-02",
-      "endDate": "2026-11-29",
-      "days": null,
-      "note": "Pendiente — se define en el chequeo del 1 de noviembre de 2026."
     }
   ]
 }
