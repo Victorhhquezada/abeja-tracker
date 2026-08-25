@@ -9,7 +9,7 @@ import BottomTabBar, { type Tab } from "./components/BottomTabBar";
 import { getToken, clearToken, fetchState } from "./api";
 import type { LogsState } from "./types";
 
-const EMPTY_LOGS: LogsState = { sessions: {}, weight: {} };
+const EMPTY_LOGS: LogsState = { sessions: {} };
 
 const TAB_TITLES: Record<Tab, string> = {
   hoy: "Hoy",

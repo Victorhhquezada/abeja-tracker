@@ -3,10 +3,9 @@ import { verifyToken } from "./_auth.mts";
 
 type LogsData = {
   sessions: Record<string, unknown>;
-  weight: Record<string, number>;
 };
 
-const EMPTY: LogsData = { sessions: {}, weight: {} };
+const EMPTY: LogsData = { sessions: {} };
 
 export default async (req: Request) => {
   if (!verifyToken(req)) return new Response("Unauthorized", { status: 401 });

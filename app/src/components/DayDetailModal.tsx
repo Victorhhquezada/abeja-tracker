@@ -27,7 +27,6 @@ export default function DayDetailModal({
   const trainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
 
   const session = logs.sessions[date] as SessionLog | undefined;
-  const weight = logs.weight[date];
 
   const humanDate = d.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
 
@@ -104,10 +103,6 @@ export default function DayDetailModal({
             ✕
           </button>
         </div>
-
-        {weight != null && (
-          <div className="modal-weight-badge">Peso registrado: {weight} kg</div>
-        )}
 
         {trainingDay ? (
           <section className="modal-section">

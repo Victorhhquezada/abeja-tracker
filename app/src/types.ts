@@ -64,5 +64,4 @@ export type SessionLog = {
 
 export type LogsState = {
   sessions: Record<string, SessionLog>;
-  weight: Record<string, number>;
 };

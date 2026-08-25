@@ -57,11 +57,3 @@ export async function saveSession(date: string, session: SessionLog) {
   return res.json();
 }
 
-export async function saveWeight(date: string, weightKg: number) {
-  const res = await authFetch("/api/save", {
-    method: "POST",
-    body: JSON.stringify({ kind: "weight", date, weightKg }),
-  });
-  if (!res.ok) throw new Error("Error guardando peso");
-  return res.json();
-}

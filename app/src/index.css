@@ -384,48 +384,10 @@ main {
   margin: var(--space-4) 0;
 }
 
-/* Metric card: icon + big number + unit label */
-.metric-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.metric-value {
-  font-weight: 800;
-  font-size: clamp(32px, 8vw, 44px);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: var(--text);
-}
-
-.metric-unit {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 .stat-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3);
-}
-
-.weight-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.weight-row input {
-  max-width: 100px;
-}
-
-.weight-row button {
-  flex-shrink: 0;
 }
 
 
@@ -878,17 +840,6 @@ main {
   justify-content: center;
 }
 
-.modal-weight-badge {
-  display: inline-block;
-  background: rgba(var(--accent-rgb), 0.15);
-  color: var(--accent);
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  font-size: 12.5px;
-  font-weight: 700;
-  margin-bottom: var(--space-3);
-}
-
 .modal-section {
   border-top: 1px solid var(--border);
   padding-top: var(--space-3);
@@ -1002,8 +953,7 @@ main {
 }
 
 .session-locked-row,
-.save-msg,
-.metric-card {
+.save-msg {
   animation: fadeInUp 220ms var(--ease-standard);
 }
 

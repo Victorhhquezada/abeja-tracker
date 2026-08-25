@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toISODate, weekdayKey, formatHuman, WEEKDAY_LABELS_ES } from "../dateUtils";
-import { saveSession, saveWeight } from "../api";
+import { saveSession } from "../api";
 import { suggestNextLoad } from "../overload";
 import { resolveTrainingForDate, nextTrainingCheckpoint } from "../trainingSchedule";
 import ExerciseCard from "../components/ExerciseCard";
@@ -32,7 +32,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
 
   const [exercises, setExercises] = useState<Record<string, { sets: SetLog[] }>>({});
   const [notes, setNotes] = useState("");
-  const [weightInput, setWeightInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
@@ -91,18 +90,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
     }
   }
 
-  async function handleSaveWeight() {
-    const val = Number(weightInput);
-    if (!val || val <= 0) return;
-    try {
-      await saveWeight(todayISO, val);
-      setWeightInput("");
-      onRefresh();
-    } catch {
-      setSaveMsg("No se pudo guardar el peso.");
-    }
-  }
-
   return (
     <div className="page">
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
@@ -114,26 +101,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
           {new Date(`${checkpoint.date}T00:00:00`).toLocaleDateString("es-MX", { day: "numeric", month: "long" })}
         </p>
       )}
-
-      <section className="card">
-        <h2>Peso de hoy</h2>
-        {logs.weight[todayISO] != null && (
-          <div className="metric-card">
-            <span className="metric-value">{logs.weight[todayISO]}</span>
-            <span className="metric-unit">kg hoy</span>
-          </div>
-        )}
-        <div className="weight-row">
-          <input
-            type="number"
-            inputMode="decimal"
-            placeholder="kg"
-            value={weightInput}
-            onChange={(e) => setWeightInput(e.target.value)}
-          />
-          <button onClick={handleSaveWeight}>Guardar peso</button>
-        </div>
-      </section>
 
       {resolvedTraining.kind === "day" && trainingDay && (
         <section className="card">

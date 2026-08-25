@@ -22,12 +22,6 @@ export default function Progress({ logs }: { logs: LogsState }) {
 
   const [selected, setSelected] = useState(exerciseNames[0] ?? "");
 
-  const weightPoints = useMemo(() => {
-    return Object.entries(logs.weight)
-      .sort(([a], [b]) => (a < b ? -1 : 1))
-      .map(([date, kg]) => ({ x: date.slice(5), y: kg }));
-  }, [logs.weight]);
-
   const rpePoints = useMemo(() => {
     if (!selected) return [];
     const points: { x: string; y: number }[] = [];
@@ -47,11 +41,6 @@ export default function Progress({ logs }: { logs: LogsState }) {
   return (
     <div className="page">
       <h1>Progreso</h1>
-
-      <section className="card">
-        <h2>Peso corporal</h2>
-        <LineChart points={weightPoints} color="#ff6b2b" unit=" kg" />
-      </section>
 
       <section className="card">
         <h2>Carga por ejercicio (para progresión)</h2>

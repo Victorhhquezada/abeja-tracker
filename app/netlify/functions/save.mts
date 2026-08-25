@@ -3,10 +3,9 @@ import { verifyToken } from "./_auth.mts";
 
 type LogsData = {
   sessions: Record<string, unknown>;
-  weight: Record<string, number>;
 };
 
-const EMPTY: LogsData = { sessions: {}, weight: {} };
+const EMPTY: LogsData = { sessions: {} };
 
 export default async (req: Request) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
@@ -25,14 +24,10 @@ export default async (req: Request) => {
   const store = getStore("boxer-tracker");
   const data = ((await store.get("logs", { type: "json" })) as LogsData | null) || {
     sessions: { ...EMPTY.sessions },
-    weight: { ...EMPTY.weight },
   };
 
   if (kind === "session") {
     data.sessions[date] = body.session;
-  } else if (kind === "weight") {
-    if (typeof body.weightKg !== "number") return new Response("weightKg inválido", { status: 400 });
-    data.weight[date] = body.weightKg;
   } else {
     return new Response("kind desconocido", { status: 400 });
   }
