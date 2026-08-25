@@ -1,8 +1,8 @@
 {
-  "version": 3,
+  "version": 4,
   "updated": "2026-08-25",
-  "notes": "Programa de fuerza y potencia complementario para un boxeador amateur competitivo de 16 años, 4 años de boxeo, sin experiencia previa de pesas (técnica ya buena por supervisión directa, pero sin historial de carga). Prioridad explícita del usuario: 1) potencia de golpe / explosividad, 2) durabilidad / prevención de lesiones, 3) capacidad de trabajo / acondicionamiento, 4) fuerza general — la fuerza es la base, no el objetivo final. Diseñado con investigación real (NSCA Position Stand on LTAD 2016; Dunn et al. sobre fuerza y fuerza de impacto de golpe; encuesta de prácticas reales de entrenadores de boxeo Beattie & Ruddock 2025 JSCR; estudio de complex training en boxeadores amateur élite, Frontiers 2024). Puntos clave que informan el diseño: (a) la fuerza máxima de tren inferior es el predictor individual más fuerte de fuerza de impacto de golpe (Dunn et al., r=0.68, ~46% de la varianza) — el énfasis va en piernas, no en banca; (b) la fuerza máxima de tren superior casi no correlaciona con potencia de golpe, pero la fuerza EXPLOSIVA de tren superior sí — por eso el press es rápido/explosivo, no pesado al fallo; (c) los ganchos dependen de fuerza rotacional de tronco más que los rectos — de ahí el énfasis en landmine y trabajo rotacional; (d) no hay evidencia real de que la fuerza máxima 'engorde' o haga más lento a un boxeador — ese miedo es común entre entrenadores pero no está sustentado, y como el usuario no está en categoría de peso ni campamento ahora mismo, es buen momento para construir una base real de fuerza; (e) la investigación en jóvenes (NSCA LTAD) confirma que el entrenamiento de fuerza bien supervisado es seguro para adolescentes, no retrasa el crecimiento ni la maduración, y mejora fuerza relativa y velocidad — pero recomienda evitar pruebas de 1RM, progresar la carga solo cuando la técnica es sólida, y priorizar la calidad de movimiento sobre la carga absoluta.",
-  "sequencingGuidance": "El usuario entrena pesas justo después de sus sesiones de boxeo la mayoría de los días, con foco extra los viernes. La evidencia sobre secuenciación en la misma sesión es clara: el trabajo explosivo/de potencia pierde calidad neuromuscular cuando se hace ya fatigado. Por eso el split separa dos tipos de día: (1) días 'de toque' pegados al boxeo — trabajo de menor demanda del sistema nervioso (core rotacional, tracción, acarreos, unilateral), que sí tolera bien hacerse después de boxear; (2) el viernes es el día fuerte de fuerza/potencia real (sentadilla, peso muerto, landmine rotacional, press explosivo) y debe hacerse ANTES de boxear ese día si hace las dos cosas, no después — es donde vive la ganancia real de potencia de golpe.",
+  "notes": "Programa de fuerza y potencia complementario para un boxeador amateur competitivo de 16 años, 4 años de boxeo, sin experiencia previa de pesas (técnica ya buena por supervisión directa, pero sin historial de carga). El boxeo en sí NO se prescribe aquí — se asume que ya se entrena por su cuenta de lunes a viernes (su entrenador/gimnasio lo maneja), y el fin de semana es descanso. Esta app es solo la capa de fuerza/potencia complementaria. Prioridad explícita del usuario: 1) potencia de golpe / explosividad, 2) durabilidad / prevención de lesiones, 3) capacidad de trabajo / acondicionamiento, 4) fuerza general — la fuerza es la base, no el objetivo final. Diseñado con investigación real (NSCA Position Stand on LTAD 2016; Dunn et al. sobre fuerza y fuerza de impacto de golpe; encuesta de prácticas reales de entrenadores de boxeo Beattie & Ruddock 2025 JSCR; estudio de complex training en boxeadores amateur élite, Frontiers 2024). Puntos clave que informan el diseño: (a) la fuerza máxima de tren inferior es el predictor individual más fuerte de fuerza de impacto de golpe (Dunn et al., r=0.68, ~46% de la varianza) — el énfasis va en piernas, no en banca; (b) la fuerza máxima de tren superior casi no correlaciona con potencia de golpe, pero la fuerza EXPLOSIVA de tren superior sí — por eso el press es rápido/explosivo, no pesado al fallo; (c) los ganchos dependen de fuerza rotacional de tronco más que los rectos — de ahí el énfasis en landmine y trabajo rotacional; (d) no hay evidencia real de que la fuerza máxima 'engorde' o haga más lento a un boxeador — ese miedo es común entre entrenadores pero no está sustentado, y como el usuario no está en categoría de peso ni campamento ahora mismo, es buen momento para construir una base real de fuerza; (e) la investigación en jóvenes (NSCA LTAD) confirma que el entrenamiento de fuerza bien supervisado es seguro para adolescentes, no retrasa el crecimiento ni la maduración, y mejora fuerza relativa y velocidad — pero recomienda evitar pruebas de 1RM, progresar la carga solo cuando la técnica es sólida, y priorizar la calidad de movimiento sobre la carga absoluta.",
+  "sequencingGuidance": "El boxeo se entrena todos los días de lunes a viernes por su cuenta, y las pesas de aquí se hacen justo después esos días, con el viernes como día de más foco. La evidencia sobre secuenciación en la misma sesión es clara: el trabajo explosivo/de potencia pierde calidad neuromuscular cuando se hace ya fatigado. Por eso el split separa dos tipos de día: (1) lunes a jueves — trabajo de menor demanda del sistema nervioso (core rotacional, tracción, acarreos, unilateral), que sí tolera bien hacerse después de boxear; (2) el viernes es el día fuerte de fuerza/potencia real (sentadilla, peso muerto, landmine rotacional, press explosivo) y conviene hacerlo ANTES del boxeo ese día si se puede — es donde vive la ganancia real de potencia de golpe.",
   "varietyGuidance": "El usuario se aburre fácil entrenando lo mismo. La solución no es cambiar el patrón de movimiento cada semana (eso rompe la progresión técnica), sino rotar el IMPLEMENTO dentro del mismo patrón: la sentadilla puede ser con barra una semana, sandbag goblet otra, o incorporar volteo de llanta como variante de potencia de tren inferior. Cada ejercicio con más de una opción de implemento lo indica en su nota — no hace falta usar todos los implementos cada sesión, solo variar semana a semana para mantenerlo interesante.",
   "progressiveOverload": {
     "rule": "Para un adolescente sin historial de carga: la técnica manda sobre el peso. No se recomienda ninguna prueba de 1RM — el peso sube solo cuando la técnica se ve sólida en las repeticiones (velocidad de barra consistente, sin compensaciones) a un esfuerzo cómodo.",
@@ -24,99 +24,67 @@
       "phase": "Base de fuerza y potencia — introducción técnica",
       "startDate": "2026-08-25",
       "endDate": "2026-09-22",
-      "restDays": ["sunday"],
-      "note": "Primer bloque de 4 semanas. Objetivo: aprender y consolidar técnica en cada patrón (sentadilla, bisagra de cadera, press, tracción, rotación) con carga conservadora, y empezar a introducir el trabajo explosivo/rotacional específico al golpe. No se sube peso agresivamente este bloque — eso viene en bloque 2 una vez la técnica esté sólida.",
+      "restDays": ["saturday", "sunday"],
+      "note": "Primer bloque de 4 semanas, lunes a viernes (fin de semana descanso). Objetivo: aprender y consolidar técnica en cada patrón (sentadilla, bisagra de cadera, press, tracción, rotación) con carga conservadora, y empezar a introducir el trabajo explosivo/rotacional específico al golpe. No se sube peso agresivamente este bloque — eso viene en bloque 2 una vez la técnica esté sólida.",
       "days": [
         {
           "id": "dia1",
           "order": 1,
           "label": "Día 1",
           "defaultWeekday": "monday",
-          "focus": "Boxeo estándar + core rotacional / pierna unilateral (carga ligera)",
+          "focus": "Core rotacional / pierna unilateral (carga ligera)",
           "warmupMin": 10,
           "lifting": [
             { "exercise": "Zancada búlgara (sandbag al pecho o mancuerna)", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por pierna — alterna sandbag de 10kg / mancuerna según lo que esté disponible, técnica antes que peso" },
             { "exercise": "Giro de tronco con banda elástica (tipo golpe)", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "por lado — simula el giro de cadera-tronco de un gancho, controlado, no explosivo todavía" },
             { "exercise": "Plancha lateral", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 20-30s por lado" }
-          ],
-          "boxing": [
-            { "type": "Sombra con peso", "rounds": 3 },
-            { "type": "Sombra sin peso", "rounds": 1 },
-            { "type": "Costal pesado", "rounds": 8 },
-            { "type": "Uppercut", "rounds": 2 },
-            { "type": "Pera loca", "rounds": 2 }
-          ],
-          "boxingRounds": 16,
-          "boxingMinutes": 80
+          ]
         },
         {
           "id": "dia2",
           "order": 2,
           "label": "Día 2",
           "defaultWeekday": "tuesday",
-          "focus": "Boxeo estándar + tracción y acarreo",
+          "focus": "Tracción y acarreo",
           "warmupMin": 10,
           "lifting": [
             { "exercise": "Dominadas (asistidas si hace falta)", "sets": 3, "targetReps": 5, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "prioriza técnica limpia y rango completo sobre cantidad de reps" },
             { "exercise": "Carga cargada con sandbags (farmer carry)", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 series de ~20m, sandbags de 10-20kg — grip y core, sube distancia antes que peso" },
             { "exercise": "Golpes con banda de resistencia (punch throws)", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "por lado — velocidad de salida del golpe contra resistencia ligera, no fuerza máxima" }
-          ],
-          "boxing": [
-            { "type": "Sombra con peso", "rounds": 3 },
-            { "type": "Sombra sin peso", "rounds": 1 },
-            { "type": "Costal pesado", "rounds": 8 },
-            { "type": "Uppercut", "rounds": 2 },
-            { "type": "Pera loca", "rounds": 2 }
-          ],
-          "boxingRounds": 16,
-          "boxingMinutes": 80
+          ]
         },
         {
           "id": "dia3",
           "order": 3,
           "label": "Día 3",
           "defaultWeekday": "wednesday",
-          "focus": "Manoplas/gobernadora + core rotacional variado",
+          "focus": "Core rotacional variado",
           "warmupMin": 10,
           "lifting": [
             { "exercise": "Sandbag slam rotacional", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por lado — variante de giro con banda del lunes, mismo patrón distinto implemento" },
             { "exercise": "Zancada caminando con sandbag", "sets": 3, "targetReps": 10, "targetRpe": 6, "type": "accesorio", "note": "por pierna" },
             { "exercise": "Plancha frontal", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 20-30s" }
-          ],
-          "boxing": [
-            { "type": "Manoplas/gobernadora", "rounds": 6 }
-          ],
-          "boxingRounds": 6,
-          "boxingMinutes": 30
+          ]
         },
         {
           "id": "dia4",
           "order": 4,
           "label": "Día 4",
           "defaultWeekday": "thursday",
-          "focus": "Boxeo estándar + potencia con llanta",
+          "focus": "Potencia con llanta",
           "warmupMin": 10,
           "lifting": [
             { "exercise": "Volteo de llanta (tire flip)", "sets": 4, "targetReps": 4, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "el peso lo da la llanta fija — progresa en repeticiones/rondas, no en peso. Explosivo, descanso completo entre series" },
             { "exercise": "Golpes con martillo sobre llanta", "sets": 3, "targetReps": 15, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "golpes alternados — potencia rotacional y resistencia de agarre, bueno para variar y no aburrirse" },
             { "exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 6, "type": "accesorio", "progressionMode": "reps", "note": "salud de hombro — parte de la prevención de lesiones, no del objetivo principal" }
-          ],
-          "boxing": [
-            { "type": "Sombra con peso", "rounds": 3 },
-            { "type": "Sombra sin peso", "rounds": 1 },
-            { "type": "Costal pesado", "rounds": 8 },
-            { "type": "Uppercut", "rounds": 2 },
-            { "type": "Pera loca", "rounds": 2 }
-          ],
-          "boxingRounds": 16,
-          "boxingMinutes": 80
+          ]
         },
         {
           "id": "dia5",
           "order": 5,
           "label": "Día 5 — día fuerte",
           "defaultWeekday": "friday",
-          "focus": "Fuerza y potencia (día dedicado) — hacer ANTES del boxeo si aplica ese día",
+          "focus": "Fuerza y potencia (día dedicado) — hacer antes del boxeo si se puede",
           "warmupMin": 15,
           "lifting": [
             { "exercise": "Sentadilla trasera", "sets": 4, "targetReps": 5, "targetRpe": 6.5, "type": "principal", "note": "barra o sandbag goblet como variante — sin prueba de 1RM, sube peso solo cuando la técnica se vea sólida" },
@@ -124,26 +92,7 @@
             { "exercise": "Press landmine rotacional a una mano", "sets": 3, "targetReps": 6, "targetRpe": 6.5, "type": "principal", "note": "por lado — el ejercicio más específico al golpe (cross/gancho), énfasis en potencia y velocidad, no en esfuerzo máximo" },
             { "exercise": "Press de banca explosivo (velocidad de barra)", "sets": 3, "targetReps": 5, "targetRpe": 6, "type": "accesorio", "note": "peso moderado, barra rápida — la fuerza explosiva de tren superior sí correlaciona con potencia de golpe, la fuerza máxima casi no" },
             { "exercise": "Rotación con landmine (twist)", "sets": 3, "targetReps": 8, "targetRpe": 6, "type": "accesorio", "note": "por lado — rotación de tronco cargada" }
-          ],
-          "boxing": [
-            { "type": "Sombra sin peso (técnico, después de pesas)", "rounds": 2 }
-          ],
-          "boxingRounds": 2,
-          "boxingMinutes": 10
-        },
-        {
-          "id": "dia6",
-          "order": 6,
-          "label": "Día 6",
-          "defaultWeekday": "saturday",
-          "focus": "Sparring — sin pesas, día de contacto, prioriza recuperación",
-          "warmupMin": 10,
-          "lifting": [],
-          "boxing": [
-            { "type": "Sparring", "rounds": 4 }
-          ],
-          "boxingRounds": 4,
-          "boxingMinutes": 20
+          ]
         }
       ]
     }

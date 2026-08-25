@@ -47,10 +47,6 @@ export default function Week({ logs }: { logs: LogsState }) {
                       </li>
                     ))}
                   </ul>
-                  <div className="muted small">
-                    Boxeo: {resolved.day.boxingRounds} rounds (
-                    {resolved.day.boxing.map((b) => `${b.rounds} ${b.type}`).join(", ")})
-                  </div>
                 </>
               )}
               {resolved.kind === "rest" && <div className="muted">Descanso</div>}

@@ -147,11 +147,6 @@ export default function DayDetailModal({
                 );
               })}
             </ul>
-            <div className="muted small">
-              Boxeo: {trainingDay.boxingRounds} rounds (
-              {trainingDay.boxing.map((b) => `${b.rounds} ${b.type}`).join(", ")}) —{" "}
-              {session?.boxingCompleted ? "✓ completado" : "sin marcar"}
-            </div>
             {session?.notes && (
               <div className="modal-notes">
                 <span className="muted small">Notas:</span> {session.notes}

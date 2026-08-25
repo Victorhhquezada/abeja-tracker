@@ -9,11 +9,6 @@ export type LiftingItem = {
   progressionMode?: "peso" | "reps";
 };
 
-export type BoxingItem = {
-  type: string;
-  rounds: number;
-};
-
 export type TrainingDay = {
   id: string;
   order: number;
@@ -22,9 +17,6 @@ export type TrainingDay = {
   focus: string;
   warmupMin: number;
   lifting: LiftingItem[];
-  boxing: BoxingItem[];
-  boxingRounds: number;
-  boxingMinutes: number;
 };
 
 export type TrainingCheckpoint = {
@@ -67,7 +59,6 @@ export type SessionLog = {
   dayId: string;
   completed: boolean;
   exercises: Record<string, ExerciseLog>;
-  boxingCompleted: boolean;
   notes?: string;
 };
 

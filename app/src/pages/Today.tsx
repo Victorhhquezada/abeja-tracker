@@ -31,7 +31,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const existingSession = logs.sessions[todayISO] as SessionLog | undefined;
 
   const [exercises, setExercises] = useState<Record<string, { sets: SetLog[] }>>({});
-  const [boxingCompleted, setBoxingCompleted] = useState(false);
   const [notes, setNotes] = useState("");
   const [weightInput, setWeightInput] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,7 +55,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         }
       }
       setExercises(init);
-      setBoxingCompleted(existingSession?.boxingCompleted ?? false);
       setNotes(existingSession?.notes ?? "");
     }
     setEditing(false);
@@ -80,7 +78,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         dayId: trainingDay.id,
         completed: true,
         exercises,
-        boxingCompleted,
         notes,
       };
       await saveSession(todayISO, session);
@@ -163,28 +160,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
               />
             );
           })}
-
-          <div className="boxing-block">
-            <h3>
-              Boxeo ({trainingDay.boxingRounds} rounds, ~{trainingDay.boxingMinutes} min)
-            </h3>
-            <ul>
-              {trainingDay.boxing.map((b, i) => (
-                <li key={i}>
-                  {b.rounds} round{b.rounds > 1 ? "s" : ""} — {b.type}
-                </li>
-              ))}
-            </ul>
-            <label className="boxing-check">
-              <input
-                type="checkbox"
-                checked={boxingCompleted}
-                disabled={isLocked}
-                onChange={(e) => setBoxingCompleted(e.target.checked)}
-              />
-              Boxeo completado
-            </label>
-          </div>
 
           <textarea
             className="notes"

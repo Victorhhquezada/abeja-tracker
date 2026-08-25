@@ -530,28 +530,6 @@ main {
   letter-spacing: 0.04em;
 }
 
-/* ===== Boxing block ===== */
-.boxing-block {
-  margin-top: var(--space-4);
-  border-top: 1px dashed var(--border);
-  padding-top: var(--space-3);
-}
-
-.boxing-block ul {
-  margin: var(--space-2) 0;
-  padding-left: 1.1rem;
-  font-size: 13.5px;
-  color: var(--muted);
-}
-
-.boxing-check {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
-  font-weight: 500;
-}
-
 .notes {
   width: 100%;
   margin-top: var(--space-4);
