@@ -1,0 +1,171 @@
+{
+  "version": 2,
+  "updated": "2026-08-24",
+  "placeholder": "Este plan se heredó tal cual del fork de HealthTracker como contenido de arranque para que la app no quede vacía. Está pensado para un perfil de powerlifting/fuerza general, NO para un boxeador — hay que rediseñarlo por completo después de la investigación de fuerza y acondicionamiento para boxeadores (frecuencia semanal real disponible para pesas, cómo evitar interferencia con el boxeo, énfasis en potencia/explosividad en vez de fuerza máxima pura, cuidado de manos/muñecas/hombros, etc.).",
+  "notes": "Split de 5 días, pesas + boxeo combinados en cada sesión de 2h. No se prescriben pesos fijos: el peso lo decide el usuario sesión a sesión guiado por el RPE objetivo. El dashboard sugiere carga para la próxima sesión según el RPE logueado la vez anterior. La rutina se repite igual cada semana dentro de un bloque — los ajustes de verdad pasan en cada fecha de chequeo, no semana a semana. Sentadilla, press de banca y peso muerto se entrenan 2x/semana cada uno: un día principal + un día de variante técnica (pausa, tempo, o RDL), en vez de solo 1x/semana. Cada ejercicio 'principal' se hace como 1 serie top al RPE objetivo + el resto de series backoff al mismo peso o bajando un poco si el RPE sube mucho.",
+  "progressiveOverload": {
+    "rule": "Comparado con el RPE logueado en el set superior (top set) de la sesión anterior para el mismo ejercicio",
+    "ifRpeBelow": 7,
+    "thenAction": "sube 2.5-5 kg (pesas grandes) o 1-2 kg (accesorios) la próxima vez",
+    "ifRpeBetween": [7, 8.5],
+    "thenActionMid": "sube el incremento mínimo directamente (2.5 kg principal / 1.25 kg accesorio) en vez de esperar a añadir una repetición extra primero",
+    "ifRpeAbove": 8.5,
+    "thenActionHigh": "mantén el peso o baja 2.5-5 kg la próxima sesión, prioriza técnica"
+  },
+  "checkpoints": [
+    { "date": "2026-08-30", "label": "Chequeo 1 — fin de bloque 1" },
+    { "date": "2026-09-27", "label": "Chequeo 2 — fin de bloque 2" },
+    { "date": "2026-11-01", "label": "Chequeo 3 — fin de bloque 3" },
+    { "date": "2026-11-29", "label": "Chequeo 4 — fin de bloque 4" }
+  ],
+  "blocks": [
+    {
+      "id": "bloque-1",
+      "label": "Bloque 1",
+      "phase": "Acumulación / calibración",
+      "startDate": "2026-07-27",
+      "endDate": "2026-08-30",
+      "restDays": ["saturday", "sunday"],
+      "weeklyBoxingTally": {
+        "sombraConPeso": 3,
+        "sombraSinPeso": 1,
+        "costalPesado": 8,
+        "uppercut": 2,
+        "peraLoca": 2,
+        "peraFija": 2,
+        "totalRounds": 18,
+        "matchesCurrentVolume": "Mismo volumen semanal de boxeo que ya haces (18 rounds), solo repartido en bloques cortos por sesión en vez de todo junto, para dejar espacio a las pesas."
+      },
+      "days": [
+        {
+          "id": "dia1",
+          "order": 1,
+          "label": "Día 1",
+          "defaultWeekday": "monday",
+          "focus": "SQ principal + BP secundario",
+          "warmupMin": 15,
+          "lifting": [
+            { "exercise": "Sentadilla trasera (SQ)", "sets": 5, "targetReps": 5, "targetRpe": 7.5, "type": "principal", "note": "1 top set @RPE objetivo + 4 backoff mismo peso" },
+            { "exercise": "Press de banca (BP)", "sets": 4, "targetReps": 6, "targetRpe": 7, "type": "principal", "note": "volumen moderado, el día pesado de BP es miércoles" },
+            { "exercise": "Zancada búlgara con mancuerna", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "por pierna — prefiere ~10 kg por mano por estabilidad, con 15 kg se siente desbalanceado" },
+            { "exercise": "Elevaciones laterales", "sets": 3, "targetReps": 15, "targetRpe": 8, "type": "accesorio" }
+          ],
+          "boxing": [
+            { "type": "Costal pesado", "rounds": 2 },
+            { "type": "Pera fija", "rounds": 1 }
+          ],
+          "boxingRounds": 3,
+          "boxingMinutes": 15
+        },
+        {
+          "id": "dia2",
+          "order": 2,
+          "label": "Día 2",
+          "defaultWeekday": "tuesday",
+          "focus": "DL principal + Tracción",
+          "warmupMin": 15,
+          "lifting": [
+            { "exercise": "Peso muerto convencional (DL)", "sets": 5, "targetReps": 5, "targetRpe": 7.5, "type": "principal", "note": "1 top set @RPE objetivo + 4 backoff mismo peso" },
+            { "exercise": "Remo con barra (Pendlay)", "sets": 4, "targetReps": 8, "targetRpe": 7.5, "type": "accesorio" },
+            { "exercise": "Dominadas (con banda de asistencia si hace falta)", "sets": 3, "targetReps": 9, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "progresa en reps, no en peso — desde el 11 de agosto de 2026 ya prueba sin banda de asistencia, reps parciales cuentan como progreso" },
+            { "exercise": "Curl de bíceps con barra", "sets": 3, "targetReps": 12, "targetRpe": 8, "type": "accesorio" }
+          ],
+          "boxing": [
+            { "type": "Costal pesado", "rounds": 2 },
+            { "type": "Uppercut", "rounds": 1 }
+          ],
+          "boxingRounds": 3,
+          "boxingMinutes": 15
+        },
+        {
+          "id": "dia3",
+          "order": 3,
+          "label": "Día 3",
+          "defaultWeekday": "wednesday",
+          "focus": "BP principal (pesado) + SQ variante técnica",
+          "warmupMin": 15,
+          "lifting": [
+            { "exercise": "Press de banca (BP)", "sets": 5, "targetReps": 4, "targetRpe": 8, "type": "principal", "note": "día pesado — mismo ejercicio que el lunes, sube el peso para llegar a RPE 8 en menos reps. 1 top set @RPE objetivo + 4 backoff mismo peso" },
+            { "exercise": "Sentadilla trasera (SQ)", "sets": 4, "targetReps": 5, "targetRpe": 7, "type": "principal", "note": "2ª exposición semanal de SQ, con pausa 2s abajo — énfasis técnico, mismo ejercicio que el lunes" },
+            { "exercise": "Press militar (OHP)", "sets": 3, "targetReps": 8, "targetRpe": 7.5, "type": "accesorio" },
+            { "exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 7, "type": "accesorio" }
+          ],
+          "boxing": [
+            { "type": "Sombra con peso", "rounds": 1 },
+            { "type": "Costal pesado", "rounds": 1 },
+            { "type": "Pera fija", "rounds": 1 }
+          ],
+          "boxingRounds": 3,
+          "boxingMinutes": 15
+        },
+        {
+          "id": "dia4",
+          "order": 4,
+          "label": "Día 4",
+          "defaultWeekday": "thursday",
+          "focus": "Full body accesorio / recuperación activa",
+          "warmupMin": 15,
+          "lifting": [
+            { "exercise": "Remo landmine a una mano", "sets": 3, "targetReps": 10, "targetRpe": 7.5, "type": "accesorio", "note": "reemplaza remo con mancuerna — mancuernas insuficientes" },
+            { "exercise": "Press francés (Skull Crushers) con barra", "sets": 3, "targetReps": 12, "targetRpe": 8, "type": "accesorio", "note": "reemplaza extensión en polea — sin cable" },
+            { "exercise": "Buenos días (Good Mornings) con barra", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "reemplaza curl femoral — sin máquina" },
+            { "exercise": "Puente de glúteo en piso con mancuerna", "sets": 3, "targetReps": 12, "targetRpe": 7, "type": "accesorio", "note": "reemplaza hip thrust — sin banco disponible" }
+          ],
+          "boxing": [
+            { "type": "Sombra con peso", "rounds": 1 },
+            { "type": "Sombra sin peso", "rounds": 1 },
+            { "type": "Pera loca", "rounds": 1 }
+          ],
+          "boxingRounds": 3,
+          "boxingMinutes": 15
+        },
+        {
+          "id": "dia5",
+          "order": 5,
+          "label": "Día 5",
+          "defaultWeekday": "friday",
+          "focus": "DL variante (RDL) + cierre de semana con más boxeo",
+          "warmupMin": 15,
+          "lifting": [
+            { "exercise": "Peso muerto rumano (RDL)", "sets": 5, "targetReps": 8, "targetRpe": 7, "type": "principal", "note": "2ª exposición semanal de DL — 1 top set + 4 backoff" },
+            { "exercise": "Press cerrado o inclinado con mancuernas", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio" },
+            { "exercise": "Zancadas caminando", "sets": 3, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "note": "por pierna" },
+            { "exercise": "Plancha / core", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "note": "3 rondas de 40-60s" }
+          ],
+          "boxing": [
+            { "type": "Sombra con peso", "rounds": 1 },
+            { "type": "Costal pesado", "rounds": 3 },
+            { "type": "Uppercut", "rounds": 1 },
+            { "type": "Pera loca", "rounds": 1 }
+          ],
+          "boxingRounds": 6,
+          "boxingMinutes": 30
+        }
+      ]
+    },
+    {
+      "id": "bloque-2",
+      "label": "Bloque 2",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-27",
+      "days": null,
+      "note": "Pendiente — se define en el chequeo del 30 de agosto de 2026, según cómo hayan subido las cargas y el RPE registrado en bloque 1. Aquí es donde entra revisar si toca meter una semana de descarga antes de subir intensidad, o ajustar el split si algo no progresó."
+    },
+    {
+      "id": "bloque-3",
+      "label": "Bloque 3",
+      "startDate": "2026-09-28",
+      "endDate": "2026-11-01",
+      "days": null,
+      "note": "Pendiente — se define en el chequeo del 27 de septiembre de 2026. Punto natural para considerar una semana de toma de marcas (test de RM o series pesadas en sentadilla/banca/peso muerto) si el progreso lo permite."
+    },
+    {
+      "id": "bloque-4",
+      "label": "Bloque 4",
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-29",
+      "days": null,
+      "note": "Pendiente — se define en el chequeo del 1 de noviembre de 2026."
+    }
+  ]
+}
