@@ -1,20 +1,38 @@
-/* ===== Design tokens ===== */
+/* ===== Design tokens =====
+   Brand palette from the ABEJA graphic assets: #ffeb13 yellow, #000f08 near-black,
+   #9cafb7 blue-grey, #893168 plum, #a1683a ochre. Contrast-checked against WCAG AA:
+   yellow/blue-grey on near-black both clear 4.5:1 easily and are used as text; plum and
+   ochre read weak as small text on dark (2.5:1 / 4.25:1) so they're reserved for solid
+   badge fills with --on-accent-2/--on-accent-3 text on top, never as text color directly
+   on --bg. --on-accent is near-black because yellow is too bright for white text on it. */
 :root {
-  --accent: #ff6b2b;
-  --accent-rgb: 255, 107, 43;
-  --accent-2: #4a90d9;
-  --accent-2-rgb: 74, 144, 217;
+  --accent: #ffeb13;
+  --accent-rgb: 255, 235, 19;
+  --on-accent: #000f08;
+  /* Bright #ffeb13 only ever appears as a solid fill (buttons, badges) with --on-accent
+     text on top — as bare TEXT/border/outline against --bg it fails contrast on light
+     backgrounds (1.22:1). --accent-text is the mode-aware variant for that: same bright
+     yellow on dark, a deepened gold (4.98:1 on the light bg) on light. */
+  --accent-text: #ffeb13;
 
-  --bg: #1c1c2e;
-  --card: #252538;
-  --card-rgb: 37, 37, 56;
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #ffffff;
-  --text-rgb: 255, 255, 255;
-  --muted: #9999aa;
+  --accent-2: #893168;
+  --accent-2-rgb: 137, 49, 104;
+  --on-accent-2: #ffffff;
+
+  --accent-3: #a1683a;
+  --accent-3-rgb: 161, 104, 58;
+  --on-accent-3: #ffffff;
+
+  --bg: #000f08;
+  --card: #0e1f16;
+  --card-rgb: 14, 31, 22;
+  --border: rgba(156, 175, 183, 0.18);
+  --text: #f6f5ef;
+  --text-rgb: 246, 245, 239;
+  --muted: #9cafb7;
   --danger: #ff5470;
-  --icon-btn-bg: #2a2a3a;
-  --track: #33334a;
+  --icon-btn-bg: #16281d;
+  --track: #1b3325;
 
   --radius-card: 16px;
   --radius-pill: 50px;
@@ -31,7 +49,8 @@
   --space-6: 24px;
   --space-8: 32px;
 
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-sans: "Barlow", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-display: "Barlow Condensed", var(--font-sans);
 
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -40,17 +59,18 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #f5f5f5;
+    --bg: #f7f5ee;
     --card: #ffffff;
     --card-rgb: 255, 255, 255;
-    --border: rgba(0, 0, 0, 0.08);
-    --text: #1a1a2e;
-    --text-rgb: 26, 26, 46;
-    --muted: #5f5f75;
-    --icon-btn-bg: #ececf2;
-    --track: #e4e4ec;
-    --shadow-card: 0 4px 20px rgba(20, 20, 40, 0.08);
-    --shadow-lg: 0 8px 32px rgba(20, 20, 40, 0.12);
+    --border: rgba(0, 15, 8, 0.1);
+    --text: #000f08;
+    --text-rgb: 0, 15, 8;
+    --muted: #3d5560;
+    --accent-text: #786a06;
+    --icon-btn-bg: #ece9dd;
+    --track: #e6e2d3;
+    --shadow-card: 0 4px 20px rgba(20, 20, 10, 0.08);
+    --shadow-lg: 0 8px 32px rgba(20, 20, 10, 0.12);
     color-scheme: light;
   }
 }
@@ -79,24 +99,26 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   margin: 0;
-  letter-spacing: -0.01em;
 }
 
 h1 {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.05;
 }
 
 h2 {
-  font-size: 19px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
 }
 
@@ -124,9 +146,11 @@ button {
   border-radius: var(--radius-pill);
   padding: 0.7rem 1.3rem;
   background: var(--accent);
-  color: #ffffff;
+  color: var(--on-accent);
   font-weight: 700;
   font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   transition: transform 120ms var(--ease-standard), opacity 120ms var(--ease-standard), background 120ms var(--ease-standard);
 }
 
@@ -171,7 +195,7 @@ button.btn-icon {
   button.btn-icon:not(:disabled):hover {
     filter: none;
     background: rgba(var(--accent-rgb), 0.15);
-    color: var(--accent);
+    color: var(--accent-text);
   }
 }
 
@@ -181,7 +205,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 
@@ -208,7 +232,7 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--accent-text);
 }
 
 input:disabled,
@@ -226,6 +250,7 @@ input::placeholder {
 
 /* ===== Login ===== */
 .login-screen {
+  position: relative;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -234,10 +259,33 @@ input::placeholder {
   padding-top: calc(var(--space-4) + env(safe-area-inset-top));
   padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
   background: var(--bg);
+  overflow: hidden;
+}
+
+.login-bee-mark {
+  position: absolute;
+  inset: 0;
+  background-image: url("/bee-mark.png");
+  background-repeat: no-repeat;
+  background-position: center 8%;
+  background-size: min(140vw, 900px);
+  opacity: 0.4;
+  filter: brightness(2.4) contrast(1.35) saturate(0);
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .login-bee-mark {
+    opacity: 0.1;
+    filter: brightness(0.3) contrast(1.35) saturate(0);
+  }
 }
 
 .login-card {
-  background: var(--card);
+  position: relative;
+  background: rgba(var(--card-rgb), 0.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-lg);
@@ -252,6 +300,9 @@ input::placeholder {
 
 .login-card h1 {
   margin: 0;
+  font-size: 44px;
+  color: var(--accent-text);
+  letter-spacing: 0.04em;
 }
 
 .login-card button {
@@ -286,9 +337,11 @@ input::placeholder {
 
 .topbar-title {
   text-align: center;
-  font-weight: 600;
-  font-size: 17px;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -311,18 +364,18 @@ input::placeholder {
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4) calc(var(--space-2) + env(safe-area-inset-bottom));
-  background: rgba(28, 28, 46, 0.85);
+  background: rgba(0, 15, 8, 0.85);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(156, 175, 183, 0.18);
   max-width: 640px;
   margin: 0 auto;
 }
 
 @media (prefers-color-scheme: light) {
   .tabbar {
-    background: rgba(255, 255, 255, 0.85);
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(247, 245, 238, 0.85);
+    border-top: 1px solid rgba(0, 15, 8, 0.1);
   }
 }
 
@@ -349,7 +402,7 @@ input::placeholder {
 }
 
 .tabbar-item.active {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 @media (hover: hover) {
@@ -436,9 +489,15 @@ main {
 }
 
 .tag.principal {
-  color: var(--accent-2);
+  color: var(--on-accent-2);
   border-color: var(--accent-2);
-  background: rgba(var(--accent-2-rgb), 0.12);
+  background: var(--accent-2);
+}
+
+.tag.accesorio {
+  color: var(--on-accent-3);
+  border-color: var(--accent-3);
+  background: var(--accent-3);
 }
 
 .exercise-target {
@@ -450,7 +509,7 @@ main {
 .exercise-suggestion {
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-text);
   margin: var(--space-2) 0;
 }
 
@@ -520,7 +579,7 @@ main {
   align-items: center;
   gap: 4px;
   background: rgba(var(--accent-rgb), 0.15);
-  color: var(--accent);
+  color: var(--accent-text);
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   font-size: 13px;
@@ -565,8 +624,8 @@ main {
 }
 
 .week-day-card.done {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), var(--shadow-card);
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 1px var(--accent-text), var(--shadow-card);
 }
 
 .week-day-header {
@@ -581,7 +640,7 @@ main {
 }
 
 .check {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 700;
 }
 
@@ -665,7 +724,7 @@ main {
 
 .calendar-cell.today {
   background: rgba(var(--accent-rgb), 0.12);
-  box-shadow: inset 0 0 0 1.5px var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text);
 }
 
 .calendar-cell.pending {
@@ -682,14 +741,14 @@ main {
 }
 
 .calendar-template {
-  color: var(--accent-2);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 10.5px;
   text-transform: uppercase;
 }
 
 .calendar-progress {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -744,7 +803,7 @@ main {
   bottom: 0;
   left: -30%;
   width: 30%;
-  background: var(--accent);
+  background: var(--accent-text);
   border-radius: 2px;
   animation: loadingSweep 1.1s ease-in-out infinite;
 }
@@ -867,8 +926,8 @@ main {
 }
 
 .set-chip {
-  background: rgba(var(--accent-2-rgb), 0.15);
-  color: var(--accent-2);
+  background: var(--accent-2);
+  color: var(--on-accent-2);
   border-radius: var(--radius-pill);
   padding: 3px 10px;
   font-size: 12px;

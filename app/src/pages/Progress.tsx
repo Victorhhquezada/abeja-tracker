@@ -3,17 +3,15 @@ import { trainingPlan } from "../data/plans";
 import LineChart from "../components/LineChart";
 import type { LogsState } from "../types";
 
-// Solo interesa trackear progreso en los básicos: sentadilla, press de banca, peso muerto y press militar
-// (y sus variantes técnicas, ej. "Paused SQ" o "RDL") — todo lo demás es accesorio y no se muestra aquí.
-const MAIN_LIFT_PATTERN = /\b(SQ|BP|DL|RDL|OHP)\b/;
-
+// Solo interesa trackear progreso en los ejercicios "principal" del plan (los de más peso
+// específico para potencia de golpe) — los accesorios no se muestran aquí.
 export default function Progress({ logs }: { logs: LogsState }) {
   const exerciseNames = useMemo(() => {
     const names = new Set<string>();
     trainingPlan.blocks.forEach((b) =>
       b.days?.forEach((d) =>
         d.lifting.forEach((l) => {
-          if (MAIN_LIFT_PATTERN.test(l.exercise)) names.add(l.exercise);
+          if (l.type === "principal") names.add(l.exercise);
         })
       )
     );
@@ -51,7 +49,7 @@ export default function Progress({ logs }: { logs: LogsState }) {
             </option>
           ))}
         </select>
-        <LineChart points={rpePoints} color="#4a90d9" unit=" kg" />
+        <LineChart points={rpePoints} color="var(--accent-3)" unit=" kg" />
       </section>
     </div>
   );

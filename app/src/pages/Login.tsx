@@ -22,9 +22,10 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <div className="login-screen">
+      <div className="login-bee-mark" aria-hidden="true" />
       <form className="login-card" onSubmit={handleSubmit}>
-        <h1>Box Trainer</h1>
-        <p className="muted">Acceso privado.</p>
+        <h1>ABEJA</h1>
+        <p className="muted">Fuerza y potencia · acceso privado</p>
         <input
           type="password"
           placeholder="Contraseña"

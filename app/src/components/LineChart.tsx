@@ -4,7 +4,7 @@ export default function LineChart({
   points,
   width = 600,
   height = 220,
-  color = "#ff6b2b",
+  color = "var(--accent)",
   unit = "",
 }: {
   points: { x: string; y: number }[];
