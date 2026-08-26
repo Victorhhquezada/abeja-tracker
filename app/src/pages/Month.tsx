@@ -5,6 +5,19 @@ import { resolveTrainingForDate, currentBlock } from "../trainingSchedule";
 import DayDetailModal from "../components/DayDetailModal";
 import type { LogsState, SessionLog } from "../types";
 
+// Un emoji por día en vez de repetir el texto completo del focus — la celda del
+// calendario es muy chica para texto y se veía apretado/desbordado. Mapeado por id de
+// día (no por texto) para que no se rompa si el focus se reescribe más adelante.
+const DAY_EMOJI: Record<string, string> = {
+  dia1: "🔄", // core rotacional / pierna unilateral
+  dia2: "💪", // tracción y acarreo
+  dia3: "🌀", // core rotacional variado
+  dia4: "🛞", // potencia con llanta
+  dia5: "🏋️", // día fuerte
+};
+const REST_EMOJI = "😴";
+const PENDING_EMOJI = "⏳";
+
 export default function Month({ logs }: { logs: LogsState }) {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -66,18 +79,22 @@ export default function Month({ logs }: { logs: LogsState }) {
               const session = logs.sessions[iso] as SessionLog | undefined;
               const isToday = iso === todayISO;
 
-              let dayLabel = "";
+              let dayEmoji = "";
               let cellExtraClass = "";
+              let ariaLabel = "";
               if (resolved.kind === "day") {
-                dayLabel = resolved.day.focus;
+                dayEmoji = DAY_EMOJI[resolved.day.id] ?? "🏋️";
+                ariaLabel = resolved.day.focus;
               } else if (resolved.kind === "rest") {
-                dayLabel = "Descanso";
+                dayEmoji = REST_EMOJI;
+                ariaLabel = "Descanso";
               } else if (resolved.kind === "pending") {
-                dayLabel = "Pendiente";
+                dayEmoji = PENDING_EMOJI;
                 cellExtraClass = "pending";
+                ariaLabel = "Pendiente";
               } else {
-                dayLabel = "—";
                 cellExtraClass = "empty-plan";
+                ariaLabel = "Sin bloque activo";
               }
 
               return (
@@ -85,9 +102,14 @@ export default function Month({ logs }: { logs: LogsState }) {
                   className={`calendar-cell ${isToday ? "today" : ""} ${cellExtraClass}`.trim()}
                   key={di}
                   onClick={() => setSelected(iso)}
+                  aria-label={`${date.getDate()} — ${ariaLabel}`}
                 >
                   <div className="calendar-date">{date.getDate()}</div>
-                  <div className="calendar-template">{dayLabel}</div>
+                  {dayEmoji && (
+                    <div className="calendar-emoji" aria-hidden="true">
+                      {dayEmoji}
+                    </div>
+                  )}
                   {session?.completed && <div className="calendar-progress">✓</div>}
                 </button>
               );
