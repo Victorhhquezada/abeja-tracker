@@ -24,7 +24,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
     <div className="login-screen">
       <div className="login-bee-mark" aria-hidden="true" />
       <form className="login-card" onSubmit={handleSubmit}>
-        <h1>ABEJA</h1>
+        <h1 className="wordmark">ABEJA</h1>
         <p className="muted">Fuerza y potencia · acceso privado</p>
         <input
           type="password"

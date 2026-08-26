@@ -1,3 +1,13 @@
+/* The hand-drawn dripping-marker font used for the "ABEJA" wordmark itself — apply via
+   .wordmark wherever the literal word ABEJA appears as a brand mark, not as body copy. */
+@font-face {
+  font-family: "Dripping Marker";
+  src: url("/fonts/dripping-marker.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===== Design tokens =====
    Brand palette from the ABEJA graphic assets: #ffeb13 yellow, #000f08 near-black,
    #9cafb7 blue-grey, #893168 plum, #a1683a ochre. Contrast-checked against WCAG AA:
@@ -298,11 +308,26 @@ input::placeholder {
   text-align: center;
 }
 
+/* Brand wordmark — the literal word "ABEJA" rendered in the hand-drawn dripping-marker
+   font. Always pure #ffeb13 (not --accent-text) in both themes: this is a logotype, not
+   body text, so WCAG's text-contrast minimums don't apply to it the way they do to UI
+   copy — and a diluted "readable" gold would just look wrong on a drippy graffiti mark.
+   The dark outline is what keeps it legible against a light background instead. */
+.wordmark {
+  font-family: "Dripping Marker", var(--font-display);
+  font-weight: normal;
+  text-transform: none;
+  color: #ffeb13;
+  -webkit-text-stroke: 1.5px #000f08;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
 .login-card h1 {
   margin: 0;
-  font-size: 44px;
-  color: var(--accent-text);
-  letter-spacing: 0.04em;
+  font-size: 56px;
+  letter-spacing: 0.03em;
+  line-height: 1;
 }
 
 .login-card button {
