@@ -1,0 +1,11 @@
+name = "abeja-tracker"
+compatibility_date = "2026-08-25"
+pages_build_output_dir = "dist"
+
+# Create the namespace once (`wrangler kv namespace create LOGS`) or via the Cloudflare
+# dashboard (Workers & Pages -> KV), then replace the id below with the real one. Same
+# binding name ("LOGS") is what functions/api/state.ts and functions/api/save.ts expect
+# in env.LOGS.
+[[kv_namespaces]]
+binding = "LOGS"
+id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
