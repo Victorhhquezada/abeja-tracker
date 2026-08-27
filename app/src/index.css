@@ -378,6 +378,24 @@ input::placeholder {
   height: 44px;
 }
 
+.streak-badge {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-text);
+}
+
+.streak-badge span {
+  font-size: 16px;
+  line-height: 1;
+}
+
 /* Bottom tab bar */
 .tabbar {
   position: fixed;

@@ -7,6 +7,7 @@ import Progress from "./pages/Progress";
 import TopBar from "./components/TopBar";
 import BottomTabBar, { type Tab } from "./components/BottomTabBar";
 import { getToken, clearToken, fetchState } from "./api";
+import { computeStreak } from "./trainingSchedule";
 import type { LogsState } from "./types";
 
 const EMPTY_LOGS: LogsState = { sessions: {} };
@@ -73,7 +74,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <TopBar title={TAB_TITLES[tab]} onLogout={handleLogout} />
+      <TopBar title={TAB_TITLES[tab]} streak={computeStreak(logs)} onLogout={handleLogout} />
       {loading && (
         <div className="loading-bar" role="status">
           <span className="sr-only">Cargando...</span>
