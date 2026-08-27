@@ -113,15 +113,20 @@ const EARLIEST_BLOCK_DATE = trainingPlan.blocks.reduce(
   trainingPlan.blocks[0]?.startDate ?? "9999-12-31"
 );
 
+const STREAK_FREEZES_PER_MONTH = 1;
+
 /**
- * Racha de sesiones consecutivas completadas, contando solo días con rutina
- * programada (kind === "day") — fines de semana y descanso no la rompen ni la
- * alargan. Si hoy toca entrenar pero todavía no se marca completa, no cuenta
- * (ni rompe) la racha: el día no ha terminado.
+ * Camina hacia atrás desde `today` sobre los días con rutina programada,
+ * contando la racha y aplicando la protección de racha: cada mes calendario
+ * perdona hasta STREAK_FREEZES_PER_MONTH días sin completar — ese día no
+ * suma a la racha, pero tampoco la corta. Se gasta empezando por el día
+ * perdido más reciente; agotada la protección del mes, el siguiente día
+ * perdido sí corta la racha.
  */
-export function computeStreak(logs: LogsState, today: Date = new Date()): number {
+function walkStreak(logs: LogsState, today: Date): { streak: number; freezesUsedByMonth: Record<string, number> } {
   let streak = 0;
   let cursor = new Date(today);
+  const freezesUsedByMonth: Record<string, number> = {};
 
   const todayResolved = resolveTrainingForDate(cursor);
   if (todayResolved.kind === "day" && !logs.sessions[toISODate(cursor)]?.completed) {
@@ -134,13 +139,49 @@ export function computeStreak(logs: LogsState, today: Date = new Date()): number
       cursor = addDays(cursor, -1);
       continue;
     }
-    if (logs.sessions[toISODate(cursor)]?.completed) {
+
+    const iso = toISODate(cursor);
+    if (logs.sessions[iso]?.completed) {
       streak += 1;
       cursor = addDays(cursor, -1);
-    } else {
-      break;
+      continue;
     }
+
+    const monthKey = iso.slice(0, 7);
+    const used = freezesUsedByMonth[monthKey] ?? 0;
+    if (used < STREAK_FREEZES_PER_MONTH) {
+      freezesUsedByMonth[monthKey] = used + 1;
+      cursor = addDays(cursor, -1);
+      continue;
+    }
+
+    break;
   }
 
-  return streak;
+  return { streak, freezesUsedByMonth };
+}
+
+/**
+ * Racha de sesiones consecutivas completadas, contando solo días con rutina
+ * programada (kind === "day") — fines de semana y descanso no la rompen ni la
+ * alargan. Si hoy toca entrenar pero todavía no se marca completa, no cuenta
+ * (ni rompe) la racha: el día no ha terminado. Incluye la protección de
+ * racha (ver walkStreak).
+ */
+export function computeStreak(logs: LogsState, today: Date = new Date()): number {
+  return walkStreak(logs, today).streak;
+}
+
+export type StreakFreezeStatus = { used: number; total: number; remaining: number };
+
+/**
+ * Cuántas protecciones de racha ya se gastaron y quedan en el mes de `today`.
+ * Corre la misma caminata que computeStreak para que el conteo coincida
+ * exactamente con lo que la racha mostrada ya aplicó.
+ */
+export function getStreakFreezeStatus(logs: LogsState, today: Date = new Date()): StreakFreezeStatus {
+  const { freezesUsedByMonth } = walkStreak(logs, today);
+  const monthKey = toISODate(today).slice(0, 7);
+  const used = freezesUsedByMonth[monthKey] ?? 0;
+  return { used, total: STREAK_FREEZES_PER_MONTH, remaining: Math.max(0, STREAK_FREEZES_PER_MONTH - used) };
 }

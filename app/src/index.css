@@ -528,6 +528,10 @@ main {
   margin-top: var(--space-1);
 }
 
+.streak-freeze-status {
+  margin-top: 2px;
+}
+
 .week-dots {
   display: flex;
   justify-content: center;

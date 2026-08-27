@@ -1,4 +1,4 @@
-import { computeStreak, getCurrentWeekTraining } from "../trainingSchedule";
+import { computeStreak, getCurrentWeekTraining, getStreakFreezeStatus } from "../trainingSchedule";
 import type { LogsState } from "../types";
 
 const RING_SIZE = 132;
@@ -9,6 +9,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 export default function StreakCard({ logs }: { logs: LogsState }) {
   const today = new Date();
   const streak = computeStreak(logs, today);
+  const freeze = getStreakFreezeStatus(logs, today);
   const weekDays = getCurrentWeekTraining(logs, today);
   const completed = weekDays.filter((d) => d.status === "done").length;
   const total = weekDays.length;
@@ -42,6 +43,11 @@ export default function StreakCard({ logs }: { logs: LogsState }) {
       </div>
       <p className="muted small streak-caption">
         {streak === 1 ? "1 día seguido" : `${streak} días seguidos`}
+      </p>
+      <p className="muted small streak-freeze-status">
+        {freeze.remaining > 0
+          ? "🧊 1 protección de racha disponible este mes"
+          : "🧊 protección de racha usada este mes"}
       </p>
 
       <div className="week-dots" role="list" aria-label="Rutina de esta semana">
