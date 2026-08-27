@@ -5,8 +5,9 @@ export type LiftingItem = {
   targetRpe: number | null;
   type: "principal" | "accesorio";
   note?: string;
-  /** "reps" = progresa en repeticiones (ej. dominadas); por defecto progresa en peso (kg) */
-  progressionMode?: "peso" | "reps";
+  /** "reps" = progresa en repeticiones (ej. dominadas o implementos de peso fijo como sandbag);
+   *  "check" = sin peso ni reps, solo marca si se hizo (ej. planchas); por defecto progresa en peso (kg) */
+  progressionMode?: "peso" | "reps" | "check";
 };
 
 export type TrainingDay = {
@@ -49,6 +50,8 @@ export type SetLog = {
   weightKg: number | null;
   reps: number | null;
   rpe: number | null;
+  /** solo para progressionMode "check" — hecho / no hecho, sin peso ni reps */
+  done?: boolean | null;
 };
 
 export type ExerciseLog = {

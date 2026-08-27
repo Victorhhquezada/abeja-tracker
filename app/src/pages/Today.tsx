@@ -12,10 +12,13 @@ function emptySets(
   count: number,
   targetReps: number | null,
   targetRpe: number | null = null,
-  repsMode: boolean = false,
+  mode: "peso" | "reps" | "check" = "peso",
   suggestedValue: number | null = null
 ): SetLog[] {
-  if (repsMode) {
+  if (mode === "check") {
+    return Array.from({ length: count }, () => ({ weightKg: null, reps: null, rpe: null, done: false }));
+  }
+  if (mode === "reps") {
     return Array.from({ length: count }, () => ({ weightKg: null, reps: suggestedValue, rpe: targetRpe }));
   }
   return Array.from({ length: count }, () => ({ weightKg: suggestedValue, reps: targetReps, rpe: targetRpe }));
@@ -45,13 +48,15 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       const init: Record<string, { sets: SetLog[] }> = {};
       for (const item of trainingDay.lifting) {
         const existing = existingSession?.exercises?.[item.exercise];
-        const repsMode = item.progressionMode === "reps";
+        const mode = item.progressionMode ?? "peso";
         if (existing?.sets?.length) {
           init[item.exercise] = { sets: existing.sets };
+        } else if (mode === "check") {
+          init[item.exercise] = { sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode) };
         } else {
-          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, repsMode ? "reps" : "peso");
+          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode);
           init[item.exercise] = {
-            sets: emptySets(item.sets, item.targetReps, item.targetRpe, repsMode, suggestion.suggestedValue),
+            sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode, suggestion.suggestedValue),
           };
         }
       }
@@ -62,7 +67,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todayISO]);
 
-  function updateSet(exerciseName: string, setIndex: number, field: keyof SetLog, value: number | null) {
+  function updateSet(exerciseName: string, setIndex: number, field: keyof SetLog, value: number | boolean | null) {
     setExercises((prev) => {
       const current = prev[exerciseName]?.sets ?? [];
       const nextSets = current.map((s, i) => (i === setIndex ? { ...s, [field]: value } : s));
@@ -114,17 +119,14 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
           <p className="muted">Calentamiento: {trainingDay.warmupMin} min</p>
 
           {trainingDay.lifting.map((item) => {
-            const repsMode = item.progressionMode === "reps";
+            const mode = item.progressionMode ?? "peso";
             return (
               <ExerciseCard
                 key={item.exercise}
                 item={item}
-                sets={
-                  exercises[item.exercise]?.sets ??
-                  emptySets(item.sets, item.targetReps, item.targetRpe, repsMode)
-                }
+                sets={exercises[item.exercise]?.sets ?? emptySets(item.sets, item.targetReps, item.targetRpe, mode)}
                 suggestion={
-                  suggestNextLoad(logs, item.exercise, todayISO, item.type, repsMode ? "reps" : "peso").message
+                  mode === "check" ? "" : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode).message
                 }
                 onChange={(i, field, value) => updateSet(item.exercise, i, field, value)}
                 locked={isLocked}

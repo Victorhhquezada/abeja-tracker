@@ -112,28 +112,40 @@ export default function DayDetailModal({
             </h3>
             <ul className="modal-exercise-list">
               {trainingDay.lifting.map((item) => {
-                const repsMode = item.progressionMode === "reps";
+                const mode = item.progressionMode ?? "peso";
+                const checkMode = mode === "check";
+                const repsMode = mode === "reps";
                 const loggedSets = session?.exercises?.[item.exercise]?.sets;
-                const hasLog = loggedSets?.some((s) => (repsMode ? s.reps != null : s.weightKg != null));
+                const hasLog = checkMode
+                  ? loggedSets?.some((s) => s.done)
+                  : loggedSets?.some((s) => (repsMode ? s.reps != null : s.weightKg != null));
                 return (
                   <li key={item.exercise}>
                     <div>
                       <strong>{item.exercise}</strong>{" "}
                       <span className="muted small">
-                        objetivo {item.sets}×{item.targetReps ?? "-"}
-                        {item.targetRpe ? ` @RPE ${item.targetRpe}` : ""}
+                        {checkMode ? `objetivo ${item.sets} rondas` : `objetivo ${item.sets}×${item.targetReps ?? "-"}`}
+                        {!checkMode && item.targetRpe ? ` @RPE ${item.targetRpe}` : ""}
                       </span>
                     </div>
                     {hasLog ? (
                       <div className="modal-set-log">
-                        {loggedSets
-                          ?.filter((s) => (repsMode ? s.reps != null : s.weightKg != null))
-                          .map((s, i) => (
-                            <span key={i} className="set-chip">
-                              {repsMode ? `${s.reps} reps` : `${s.weightKg}kg×${s.reps ?? "-"}`}
-                              {s.rpe ? ` @${s.rpe}` : ""}
-                            </span>
-                          ))}
+                        {checkMode
+                          ? loggedSets
+                              ?.filter((s) => s.done)
+                              .map((_, i) => (
+                                <span key={i} className="set-chip">
+                                  ✓ hecho
+                                </span>
+                              ))
+                          : loggedSets
+                              ?.filter((s) => (repsMode ? s.reps != null : s.weightKg != null))
+                              .map((s, i) => (
+                                <span key={i} className="set-chip">
+                                  {repsMode ? `${s.reps} reps` : `${s.weightKg}kg×${s.reps ?? "-"}`}
+                                  {s.rpe ? ` @${s.rpe}` : ""}
+                                </span>
+                              ))}
                       </div>
                     ) : (
                       <div className="muted small">Sin registro</div>

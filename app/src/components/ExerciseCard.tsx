@@ -10,10 +10,12 @@ export default function ExerciseCard({
   item: LiftingItem;
   sets: SetLog[];
   suggestion: string;
-  onChange: (setIndex: number, field: keyof SetLog, value: number | null) => void;
+  onChange: (setIndex: number, field: keyof SetLog, value: number | boolean | null) => void;
   locked?: boolean;
 }) {
-  const repsMode = item.progressionMode === "reps";
+  const mode = item.progressionMode ?? "peso";
+  const repsMode = mode === "reps";
+  const checkMode = mode === "check";
 
   return (
     <div className="exercise-card">
@@ -22,16 +24,16 @@ export default function ExerciseCard({
         <span className={`tag ${item.type}`}>{item.type}</span>
       </div>
       <div className="exercise-target">
-        Objetivo: {item.sets} × {item.targetReps ?? "-"} reps
-        {item.targetRpe ? ` @ RPE ${item.targetRpe}` : ""}
+        {checkMode ? `Objetivo: ${item.sets} rondas` : `Objetivo: ${item.sets} × ${item.targetReps ?? "-"} reps`}
+        {!checkMode && item.targetRpe ? ` @ RPE ${item.targetRpe}` : ""}
         {item.note ? ` · ${item.note}` : ""}
       </div>
-      {!locked && <div className="exercise-suggestion">{suggestion}</div>}
-      <div className="sets-grid">
+      {!locked && !checkMode && <div className="exercise-suggestion">{suggestion}</div>}
+      <div className={`sets-grid ${checkMode ? "check-mode" : ""}`.trim()}>
         <div className="sets-grid-header">
           <span>Set</span>
-          <span>{repsMode ? "reps" : "kg"}</span>
-          <span>RPE</span>
+          <span>{checkMode ? "Hecho" : repsMode ? "reps" : "kg"}</span>
+          {!checkMode && <span>RPE</span>}
         </div>
         {sets.map((s, i) => (
           <div className="sets-grid-row" key={i}>
@@ -42,10 +44,18 @@ export default function ExerciseCard({
             ) : (
               <span className="set-num">
                 <span>{i + 1}</span>
-                <span className="muted">{item.targetReps ?? "-"} reps</span>
+                {!checkMode && <span className="muted">{item.targetReps ?? "-"} reps</span>}
               </span>
             )}
-            {repsMode ? (
+            {checkMode ? (
+              <input
+                type="checkbox"
+                className="set-check"
+                checked={!!s.done}
+                disabled={locked}
+                onChange={(e) => onChange(i, "done", e.target.checked)}
+              />
+            ) : repsMode ? (
               <input
                 type="number"
                 inputMode="numeric"
@@ -62,16 +72,18 @@ export default function ExerciseCard({
                 onChange={(e) => onChange(i, "weightKg", e.target.value === "" ? null : Number(e.target.value))}
               />
             )}
-            <input
-              type="number"
-              inputMode="decimal"
-              min={1}
-              max={10}
-              step={0.5}
-              value={s.rpe ?? ""}
-              disabled={locked}
-              onChange={(e) => onChange(i, "rpe", e.target.value === "" ? null : Number(e.target.value))}
-            />
+            {!checkMode && (
+              <input
+                type="number"
+                inputMode="decimal"
+                min={1}
+                max={10}
+                step={0.5}
+                value={s.rpe ?? ""}
+                disabled={locked}
+                onChange={(e) => onChange(i, "rpe", e.target.value === "" ? null : Number(e.target.value))}
+              />
+            )}
           </div>
         ))}
       </div>

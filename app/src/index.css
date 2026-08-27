@@ -717,6 +717,17 @@ main {
   align-items: center;
 }
 
+.sets-grid.check-mode .sets-grid-header,
+.sets-grid.check-mode .sets-grid-row {
+  grid-template-columns: minmax(0, 2.6rem) minmax(0, 1fr);
+}
+
+.set-check {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+
 .sets-grid-row > * {
   min-width: 0;
 }
