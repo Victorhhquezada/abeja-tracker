@@ -41,6 +41,8 @@
   --text-rgb: 246, 245, 239;
   --muted: #9cafb7;
   --danger: #ff5470;
+  --success: #3ecf7a;
+  --rest: #4a90d9;
   --icon-btn-bg: #16281d;
   --track: #1b3325;
 
@@ -484,6 +486,166 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3);
+}
+
+/* ===== Streak card ===== */
+.streak-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.streak-ring-wrap {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+
+.streak-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.streak-ring-center span[aria-hidden] {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.streak-ring-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--text);
+}
+
+.streak-caption {
+  margin-top: var(--space-1);
+}
+
+.week-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.week-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+}
+
+.week-dot-done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.week-dot-missed {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.week-dot-pending {
+  border-style: dashed;
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+.week-dot-future {
+  opacity: 0.5;
+}
+
+/* ===== Year activity graph ===== */
+.year-graph-card h2 {
+  text-align: center;
+}
+
+.year-graph-card > .muted {
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.year-graph {
+  display: grid;
+  grid-template-columns: 16px repeat(12, 1fr);
+  gap: 3px;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.year-graph-corner {
+  width: 16px;
+  height: 16px;
+}
+
+.year-graph-month-label,
+.year-graph-day-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.year-dot {
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 14px;
+  margin: 0 auto;
+  border-radius: 3px;
+  background: var(--track);
+}
+
+.year-dot-done {
+  background: var(--success);
+}
+
+.year-dot-missed {
+  background: var(--danger);
+}
+
+.year-dot-rest {
+  background: var(--rest);
+}
+
+.year-dot-empty {
+  background: transparent;
+}
+
+.year-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  font-size: 12px;
+}
+
+.year-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.year-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
 }
 
 

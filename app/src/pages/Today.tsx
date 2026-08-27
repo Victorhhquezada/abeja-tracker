@@ -4,6 +4,8 @@ import { saveSession } from "../api";
 import { suggestNextLoad } from "../overload";
 import { resolveTrainingForDate, nextTrainingCheckpoint } from "../trainingSchedule";
 import ExerciseCard from "../components/ExerciseCard";
+import StreakCard from "../components/StreakCard";
+import YearActivityGraph from "../components/YearActivityGraph";
 import type { LogsState, SessionLog, SetLog } from "../types";
 
 function emptySets(
@@ -95,6 +97,8 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
       <p className="muted">{formatHuman(today)}</p>
 
+      <StreakCard logs={logs} />
+
       {checkpoint && (
         <p className="muted small checkpoint-banner">
           Próxima fecha de chequeo/recálculo: {checkpoint.label} —{" "}
@@ -178,6 +182,8 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
           <p className="muted">Todavía no hay un bloque de entrenamiento activo para esta fecha.</p>
         </section>
       )}
+
+      <YearActivityGraph logs={logs} />
     </div>
   );
 }
