@@ -76,39 +76,36 @@ export function getCurrentWeekTraining(logs: LogsState, today: Date = new Date()
 export type YearDot = { iso: string; status: "neutral" | "done" | "missed" | "rest" };
 
 /**
- * Grilla año completo: 12 columnas (meses) x hasta 31 filas (día del mes), null
- * para fechas que no existen (ej. 30 de febrero). gris/neutral cubre tanto el
- * futuro como fechas sin bloque de entrenamiento asignado (antes de que
- * existiera el plan, o huecos entre bloques) — no hay suficiente info para
- * juzgarlas. Hoy se trata como neutral si aún no se completa (el día no ha
- * terminado), igual que en computeStreak.
+ * Un punto por día del año (1 de enero a 31 de diciembre), en orden
+ * cronológico plano. gris/neutral cubre tanto el futuro como fechas sin
+ * bloque de entrenamiento asignado (antes de que existiera el plan, o huecos
+ * entre bloques) — no hay suficiente info para juzgarlas. Hoy se trata como
+ * neutral si aún no se completa (el día no ha terminado), igual que en
+ * computeStreak.
  */
-export function getYearGrid(logs: LogsState, year: number, today: Date = new Date()): (YearDot | null)[][] {
+export function getYearDays(logs: LogsState, year: number, today: Date = new Date()): YearDot[] {
   const todayISO = toISODate(today);
+  const end = new Date(year, 11, 31);
+  const days: YearDot[] = [];
 
-  return Array.from({ length: 12 }, (_, month) => {
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    return Array.from({ length: 31 }, (_, i) => {
-      const dayOfMonth = i + 1;
-      if (dayOfMonth > daysInMonth) return null;
+  for (let cursor = new Date(year, 0, 1); cursor <= end; cursor = addDays(cursor, 1)) {
+    const iso = toISODate(cursor);
+    let status: YearDot["status"] = "neutral";
 
-      const date = new Date(year, month, dayOfMonth);
-      const iso = toISODate(date);
-      let status: YearDot["status"] = "neutral";
-
-      if (iso <= todayISO) {
-        const resolved = resolveTrainingForDate(date);
-        if (resolved.kind === "day") {
-          const completed = !!logs.sessions[iso]?.completed;
-          status = completed ? "done" : iso === todayISO ? "neutral" : "missed";
-        } else if (resolved.kind === "rest") {
-          status = "rest";
-        }
+    if (iso <= todayISO) {
+      const resolved = resolveTrainingForDate(cursor);
+      if (resolved.kind === "day") {
+        const completed = !!logs.sessions[iso]?.completed;
+        status = completed ? "done" : iso === todayISO ? "neutral" : "missed";
+      } else if (resolved.kind === "rest") {
+        status = "rest";
       }
+    }
 
-      return { iso, status };
-    });
-  });
+    days.push({ iso, status });
+  }
+
+  return days;
 }
 
 const EARLIEST_BLOCK_DATE = trainingPlan.blocks.reduce(
