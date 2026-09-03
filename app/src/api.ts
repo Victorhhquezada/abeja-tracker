@@ -20,7 +20,10 @@ async function authFetch(path: string, options: RequestInit = {}): Promise<Respo
   if (token) headers["Authorization"] = `Bearer ${token}`;
   if (options.body) headers["Content-Type"] = "application/json";
 
-  const res = await fetch(path, { ...options, headers });
+  // keepalive lets the request finish even if the tab is backgrounded or the phone
+  // locks right after tapping "Marcar sesión completa" — a save otherwise gets
+  // silently killed mid-flight on iOS Safari with no error shown to the user.
+  const res = await fetch(path, { ...options, headers, keepalive: true });
   if (res.status === 401) {
     clearToken();
     throw new Error("unauthorized");
@@ -33,6 +36,7 @@ export async function login(password: string): Promise<void> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),
+    keepalive: true,
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
