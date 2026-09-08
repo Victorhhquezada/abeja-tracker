@@ -67,4 +67,6 @@ export type SessionLog = {
 
 export type LogsState = {
   sessions: Record<string, SessionLog>;
+  /** fechas ISO de días de entrenamiento perdidos que se cubrieron con una protección de racha */
+  streakProtections?: string[];
 };

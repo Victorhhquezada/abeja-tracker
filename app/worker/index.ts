@@ -14,6 +14,7 @@ interface Env {
 
 type LogsData = {
   sessions: Record<string, unknown>;
+  streakProtections?: string[];
 };
 
 const EMPTY: LogsData = { sessions: {} };
@@ -71,6 +72,10 @@ async function handleSave(request: Request, env: Env): Promise<Response> {
 
   if (kind === "session") {
     data.sessions[date] = body.session;
+  } else if (kind === "protection") {
+    const set = new Set(data.streakProtections ?? []);
+    set.add(date);
+    data.streakProtections = [...set].sort();
   } else {
     return new Response("kind desconocido", { status: 400 });
   }

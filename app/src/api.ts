@@ -61,3 +61,12 @@ export async function saveSession(date: string, session: SessionLog) {
   return res.json();
 }
 
+export async function activateStreakProtection(date: string) {
+  const res = await authFetch("/api/save", {
+    method: "POST",
+    body: JSON.stringify({ kind: "protection", date }),
+  });
+  if (!res.ok) throw new Error("Error activando la protección");
+  return res.json();
+}
+

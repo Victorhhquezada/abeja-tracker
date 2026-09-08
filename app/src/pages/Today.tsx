@@ -102,7 +102,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
       <p className="muted">{formatHuman(today)}</p>
 
-      <StreakCard logs={logs} />
+      <StreakCard logs={logs} onRefresh={onRefresh} />
 
       {checkpoint && (
         <p className="muted small checkpoint-banner">

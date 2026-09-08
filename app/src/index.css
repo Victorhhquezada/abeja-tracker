@@ -532,6 +532,19 @@ main {
   margin-top: 2px;
 }
 
+.streak-activate-row {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.streak-activate-btn {
+  padding: 0.5rem 1rem;
+  font-size: 12.5px;
+}
+
 .week-dots {
   display: flex;
   justify-content: center;

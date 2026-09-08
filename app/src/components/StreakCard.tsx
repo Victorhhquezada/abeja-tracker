@@ -1,4 +1,6 @@
-import { computeStreak, getCurrentWeekTraining, getStreakFreezeStatus } from "../trainingSchedule";
+import { useState } from "react";
+import { computeStreak, computeProtectionStatus, getActivatableMiss, getCurrentWeekTraining } from "../trainingSchedule";
+import { activateStreakProtection } from "../api";
 import type { LogsState } from "../types";
 
 const RING_SIZE = 132;
@@ -6,15 +8,33 @@ const STROKE = 10;
 const RADIUS = (RING_SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export default function StreakCard({ logs }: { logs: LogsState }) {
+export default function StreakCard({ logs, onRefresh }: { logs: LogsState; onRefresh: () => void }) {
   const today = new Date();
   const streak = computeStreak(logs, today);
-  const freeze = getStreakFreezeStatus(logs, today);
+  const protection = computeProtectionStatus(logs, today);
+  const activatable = getActivatableMiss(logs, today);
   const weekDays = getCurrentWeekTraining(logs, today);
   const completed = weekDays.filter((d) => d.status === "done").length;
   const total = weekDays.length;
   const pct = total > 0 ? completed / total : 0;
   const offset = CIRCUMFERENCE * (1 - pct);
+
+  const [activating, setActivating] = useState(false);
+  const [activateMsg, setActivateMsg] = useState<string | null>(null);
+
+  async function handleActivate() {
+    if (!activatable) return;
+    setActivating(true);
+    setActivateMsg(null);
+    try {
+      await activateStreakProtection(activatable.iso);
+      onRefresh();
+    } catch {
+      setActivateMsg("Error activando la protección.");
+    } finally {
+      setActivating(false);
+    }
+  }
 
   return (
     <section className="card streak-card">
@@ -45,10 +65,25 @@ export default function StreakCard({ logs }: { logs: LogsState }) {
         {streak === 1 ? "1 día seguido" : `${streak} días seguidos`}
       </p>
       <p className="muted small streak-freeze-status">
-        {freeze.remaining > 0
-          ? "🧊 1 protección de racha disponible este mes"
-          : "🧊 protección de racha usada este mes"}
+        {protection.available > 0
+          ? `🧊 ${protection.available} protección${protection.available === 1 ? "" : "es"} de racha disponible${protection.available === 1 ? "" : "s"}`
+          : `🧊 sin protecciones — ${protection.cleanStreak}/15 días limpios para ganar una`}
       </p>
+
+      {activatable && (
+        <div className="streak-activate-row">
+          {protection.available > 0 ? (
+            <button className="btn-outline streak-activate-btn" onClick={handleActivate} disabled={activating}>
+              {activating ? "Activando..." : `Activar protección para el ${activatable.label}`}
+            </button>
+          ) : (
+            <p className="muted small">
+              Te faltó entrenar el {activatable.label} y no tienes protecciones disponibles.
+            </p>
+          )}
+          {activateMsg && <p className="muted small">{activateMsg}</p>}
+        </div>
+      )}
 
       <div className="week-dots" role="list" aria-label="Rutina de esta semana">
         {weekDays.map((d) => (

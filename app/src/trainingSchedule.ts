@@ -113,20 +113,23 @@ const EARLIEST_BLOCK_DATE = trainingPlan.blocks.reduce(
   trainingPlan.blocks[0]?.startDate ?? "9999-12-31"
 );
 
-const STREAK_FREEZES_PER_MONTH = 1;
+const PROTECTION_EARN_THRESHOLD = 15; // 15 días de entrenamiento seguidos (lun-vie) = 3 semanas limpias
+
+function isProtected(logs: LogsState, iso: string): boolean {
+  return !!logs.streakProtections?.includes(iso);
+}
 
 /**
- * Camina hacia atrás desde `today` sobre los días con rutina programada,
- * contando la racha y aplicando la protección de racha: cada mes calendario
- * perdona hasta STREAK_FREEZES_PER_MONTH días sin completar — ese día no
- * suma a la racha, pero tampoco la corta. Se gasta empezando por el día
- * perdido más reciente; agotada la protección del mes, el siguiente día
- * perdido sí corta la racha.
+ * Racha de sesiones consecutivas completadas, contando solo días con rutina
+ * programada (kind === "day") — fines de semana y descanso no la rompen ni la
+ * alargan. Si hoy toca entrenar pero todavía no se marca completa, no cuenta
+ * (ni rompe) la racha: el día no ha terminado. Un día protegido (ver
+ * activateStreakProtection) tampoco la rompe, pero tampoco suma al número —
+ * la protección "salta" el hueco, no lo convierte en un día entrenado.
  */
-function walkStreak(logs: LogsState, today: Date): { streak: number; freezesUsedByMonth: Record<string, number> } {
+export function computeStreak(logs: LogsState, today: Date = new Date()): number {
   let streak = 0;
   let cursor = new Date(today);
-  const freezesUsedByMonth: Record<string, number> = {};
 
   const todayResolved = resolveTrainingForDate(cursor);
   if (todayResolved.kind === "day" && !logs.sessions[toISODate(cursor)]?.completed) {
@@ -147,10 +150,7 @@ function walkStreak(logs: LogsState, today: Date): { streak: number; freezesUsed
       continue;
     }
 
-    const monthKey = iso.slice(0, 7);
-    const used = freezesUsedByMonth[monthKey] ?? 0;
-    if (used < STREAK_FREEZES_PER_MONTH) {
-      freezesUsedByMonth[monthKey] = used + 1;
+    if (isProtected(logs, iso)) {
       cursor = addDays(cursor, -1);
       continue;
     }
@@ -158,30 +158,63 @@ function walkStreak(logs: LogsState, today: Date): { streak: number; freezesUsed
     break;
   }
 
-  return { streak, freezesUsedByMonth };
+  return streak;
+}
+
+export type ProtectionStatus = { earned: number; used: number; available: number; cleanStreak: number };
+
+/**
+ * Simulación cronológica (hacia adelante, desde el inicio del bloque) de las
+ * protecciones de racha ganadas y gastadas. Se gana 1 protección cada
+ * PROTECTION_EARN_THRESHOLD días de entrenamiento consecutivos y "limpios"
+ * (sin usar ninguna protección en el camino) — un día protegido cuenta como
+ * corte de esa racha limpia, igual que un día realmente perdido, aunque el
+ * número de racha mostrado (computeStreak) sí lo salte. Hoy no se evalúa
+ * todavía (el día no ha terminado).
+ */
+export function computeProtectionStatus(logs: LogsState, today: Date = new Date()): ProtectionStatus {
+  const todayISO = toISODate(today);
+  let clean = 0;
+  let earned = 0;
+  let used = 0;
+
+  for (let cursor = new Date(`${EARLIEST_BLOCK_DATE}T00:00:00`); toISODate(cursor) < todayISO; cursor = addDays(cursor, 1)) {
+    const resolved = resolveTrainingForDate(cursor);
+    if (resolved.kind !== "day") continue;
+
+    const iso = toISODate(cursor);
+    if (logs.sessions[iso]?.completed) {
+      clean += 1;
+      if (clean % PROTECTION_EARN_THRESHOLD === 0) earned += 1;
+    } else if (isProtected(logs, iso)) {
+      used += 1;
+      clean = 0;
+    } else {
+      clean = 0;
+    }
+  }
+
+  return { earned, used, available: Math.max(0, earned - used), cleanStreak: clean };
 }
 
 /**
- * Racha de sesiones consecutivas completadas, contando solo días con rutina
- * programada (kind === "day") — fines de semana y descanso no la rompen ni la
- * alargan. Si hoy toca entrenar pero todavía no se marca completa, no cuenta
- * (ni rompe) la racha: el día no ha terminado. Incluye la protección de
- * racha (ver walkStreak).
+ * El día de entrenamiento perdido más reciente (antes de hoy) que todavía no
+ * se protege — el candidato a activar una protección, disponible a partir
+ * del día siguiente al que se perdió. Si el día de entrenamiento más
+ * reciente ya está completado o protegido, no hay nada que activar.
  */
-export function computeStreak(logs: LogsState, today: Date = new Date()): number {
-  return walkStreak(logs, today).streak;
-}
+export function getActivatableMiss(logs: LogsState, today: Date = new Date()): { iso: string; label: string } | null {
+  let cursor = addDays(today, -1);
 
-export type StreakFreezeStatus = { used: number; total: number; remaining: number };
+  while (toISODate(cursor) >= EARLIEST_BLOCK_DATE) {
+    const resolved = resolveTrainingForDate(cursor);
+    if (resolved.kind === "day") {
+      const iso = toISODate(cursor);
+      if (logs.sessions[iso]?.completed || isProtected(logs, iso)) return null;
+      return { iso, label: WEEKDAY_LABELS_ES[weekdayKey(cursor)] };
+    }
+    cursor = addDays(cursor, -1);
+  }
 
-/**
- * Cuántas protecciones de racha ya se gastaron y quedan en el mes de `today`.
- * Corre la misma caminata que computeStreak para que el conteo coincida
- * exactamente con lo que la racha mostrada ya aplicó.
- */
-export function getStreakFreezeStatus(logs: LogsState, today: Date = new Date()): StreakFreezeStatus {
-  const { freezesUsedByMonth } = walkStreak(logs, today);
-  const monthKey = toISODate(today).slice(0, 7);
-  const used = freezesUsedByMonth[monthKey] ?? 0;
-  return { used, total: STREAK_FREEZES_PER_MONTH, remaining: Math.max(0, STREAK_FREEZES_PER_MONTH - used) };
+  return null;
 }
