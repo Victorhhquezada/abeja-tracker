@@ -6,7 +6,14 @@ import { resolveTrainingForDate, nextTrainingCheckpoint } from "../trainingSched
 import ExerciseCard from "../components/ExerciseCard";
 import StreakCard from "../components/StreakCard";
 import YearActivityGraph from "../components/YearActivityGraph";
+import MemeModal from "../components/MemeModal";
+import { MEMES } from "../data/memes";
 import type { LogsState, SessionLog, SetLog } from "../types";
+
+function randomMeme(): string | null {
+  if (MEMES.length === 0) return null;
+  return MEMES[Math.floor(Math.random() * MEMES.length)];
+}
 
 function emptySets(
   count: number,
@@ -40,6 +47,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
+  const [memeToShow, setMemeToShow] = useState<string | null>(null);
 
   const isLocked = !!existingSession?.completed && !editing;
 
@@ -89,6 +97,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       await saveSession(todayISO, session);
       setSaveMsg("Sesión guardada ✓");
       setEditing(false);
+      setMemeToShow(randomMeme());
       onRefresh();
     } catch {
       setSaveMsg("Error guardando la sesión.");
@@ -186,6 +195,8 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       )}
 
       <YearActivityGraph logs={logs} />
+
+      {memeToShow && <MemeModal src={memeToShow} onClose={() => setMemeToShow(null)} />}
     </div>
   );
 }
