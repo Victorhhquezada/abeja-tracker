@@ -59,4 +59,4 @@ npm run build
 npx wrangler deploy
 ```
 
-This repo is private — the training data belongs to a minor.
+No personal or physical data about the athlete is tracked in this repo — the training plan (`data/training-plan.json`) describes the program design, not the person.

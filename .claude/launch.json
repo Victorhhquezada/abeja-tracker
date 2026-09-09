@@ -4,7 +4,7 @@
     {
       "name": "boxertracker",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "cd /Users/victorhernandez/Documents/Claude/Projects/BoxerTracker/app && netlify dev --port 8889"],
+      "runtimeArgs": ["-c", "cd /Users/victorhernandez/Documents/Claude/Projects/BoxerTracker/app && npx wrangler dev --port 8889"],
       "port": 8889
     }
   ]

@@ -5,3 +5,7 @@ node_modules/
 dist/
 .netlify/
 .wrangler/
+
+# Real physical/personal data about the athlete — planning reference only,
+# never tracked. The repo is public; this stays local-only.
+data/perfil.md
