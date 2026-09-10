@@ -19,7 +19,7 @@ function emptySets(
   count: number,
   targetReps: number | null,
   targetRpe: number | null = null,
-  mode: "peso" | "reps" | "check" = "peso",
+  mode: "peso" | "reps" | "check" | "choice" = "peso",
   suggestedValue: number | null = null
 ): SetLog[] {
   if (mode === "check") {
@@ -62,7 +62,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         } else if (mode === "check") {
           init[item.exercise] = { sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode) };
         } else {
-          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode);
+          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions);
           init[item.exercise] = {
             sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode, suggestion.suggestedValue),
           };
@@ -135,7 +135,9 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
                 item={item}
                 sets={exercises[item.exercise]?.sets ?? emptySets(item.sets, item.targetReps, item.targetRpe, mode)}
                 suggestion={
-                  mode === "check" ? "" : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode).message
+                  mode === "check"
+                    ? ""
+                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions).message
                 }
                 onChange={(i, field, value) => updateSet(item.exercise, i, field, value)}
                 locked={isLocked}

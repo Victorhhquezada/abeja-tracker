@@ -10,14 +10,16 @@ export type Suggestion = {
 
 /**
  * Busca el registro más reciente de un ejercicio (por fecha) y sugiere el siguiente valor
- * (peso en kg, o reps si el ejercicio progresa por repeticiones) según el RPE logueado.
+ * (peso en kg, reps si el ejercicio progresa por repeticiones, o el siguiente disco disponible
+ * si progresa por "choice") según el RPE logueado.
  */
 export function suggestNextLoad(
   logs: LogsState,
   exerciseName: string,
   todayISO: string,
   exerciseType: "principal" | "accesorio" = "accesorio",
-  mode: "peso" | "reps" = "peso"
+  mode: "peso" | "reps" | "choice" = "peso",
+  weightOptions?: number[]
 ): Suggestion {
   const dates = Object.keys(logs.sessions)
     .filter((d) => d < todayISO)
@@ -53,6 +55,27 @@ export function suggestNextLoad(
         suggestedValue = Math.max(0, value - 1);
         message = `Última vez ${value} reps @ RPE ${rpe} — estuvo al límite, se sugiere bajar a ${suggestedValue} reps.`;
       }
+    } else if (mode === "choice" && weightOptions && weightOptions.length > 0) {
+      const sorted = [...weightOptions].sort((a, b) => a - b);
+      const idx = sorted.indexOf(value);
+      if (rpe < 7) {
+        const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : value;
+        suggestedValue = next;
+        message =
+          next === value
+            ? `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, pero ya es el disco más pesado que tienes.`
+            : `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, se sugiere subir al disco de ${next}kg.`;
+      } else if (rpe <= 8.5) {
+        suggestedValue = value;
+        message = `Última vez ${value}kg @ RPE ${rpe} — buen nivel, mantén el disco de ${value}kg hoy.`;
+      } else {
+        const prev = idx > 0 ? sorted[idx - 1] : value;
+        suggestedValue = prev;
+        message =
+          prev === value
+            ? `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, ya es el disco más ligero.`
+            : `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar al disco de ${prev}kg.`;
+      }
     } else {
       if (rpe < 7) {
         suggestedValue = value + step;
@@ -76,7 +99,9 @@ export function suggestNextLoad(
     message:
       mode === "reps"
         ? "Sin historial todavía — haz las repeticiones que puedas hoy y ajusta con el RPE."
-        : "Sin historial todavía — usa un peso conservador y ajusta con el RPE.",
+        : mode === "choice"
+          ? "Sin historial todavía — elige un disco conservador y ajusta con el RPE."
+          : "Sin historial todavía — usa un peso conservador y ajusta con el RPE.",
     suggestedValue: null,
   };
 }

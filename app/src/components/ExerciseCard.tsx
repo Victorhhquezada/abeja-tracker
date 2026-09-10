@@ -16,6 +16,7 @@ export default function ExerciseCard({
   const mode = item.progressionMode ?? "peso";
   const repsMode = mode === "reps";
   const checkMode = mode === "check";
+  const choiceMode = mode === "choice";
 
   return (
     <div className="exercise-card">
@@ -63,6 +64,20 @@ export default function ExerciseCard({
                 disabled={locked}
                 onChange={(e) => onChange(i, "reps", e.target.value === "" ? null : Number(e.target.value))}
               />
+            ) : choiceMode ? (
+              <div className="weight-choice-group" role="group" aria-label="Peso del disco">
+                {(item.weightOptions ?? []).map((w) => (
+                  <button
+                    key={w}
+                    type="button"
+                    className={`weight-choice-btn ${s.weightKg === w ? "selected" : ""}`.trim()}
+                    disabled={locked}
+                    onClick={() => onChange(i, "weightKg", w)}
+                  >
+                    {w}
+                  </button>
+                ))}
+              </div>
             ) : (
               <input
                 type="number"

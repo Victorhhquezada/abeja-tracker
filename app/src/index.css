@@ -741,6 +741,28 @@ main {
   accent-color: var(--accent);
 }
 
+.weight-choice-group {
+  display: flex;
+  gap: 6px;
+}
+
+.weight-choice-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 0.45rem 0;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+
+.weight-choice-btn.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
 .sets-grid-row > * {
   min-width: 0;
 }

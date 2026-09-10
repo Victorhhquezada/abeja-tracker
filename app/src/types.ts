@@ -6,8 +6,12 @@ export type LiftingItem = {
   type: "principal" | "accesorio";
   note?: string;
   /** "reps" = progresa en repeticiones (ej. dominadas o implementos de peso fijo como sandbag);
-   *  "check" = sin peso ni reps, solo marca si se hizo (ej. planchas); por defecto progresa en peso (kg) */
-  progressionMode?: "peso" | "reps" | "check";
+   *  "check" = sin peso ni reps, solo marca si se hizo (ej. planchas);
+   *  "choice" = elige entre un set fijo de pesos (ej. discos de 10/15/20kg) en vez de teclear un número — ver weightOptions;
+   *  por defecto progresa en peso (kg) libre */
+  progressionMode?: "peso" | "reps" | "check" | "choice";
+  /** solo para progressionMode "choice" — los pesos exactos disponibles, en kg */
+  weightOptions?: number[];
 };
 
 export type TrainingDay = {
