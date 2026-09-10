@@ -51,16 +51,37 @@ export default function App() {
   // iOS Safari doesn't resize the layout viewport when the keyboard opens, so a
   // focused input near the bottom of the screen can end up hidden behind it.
   // Nudge the focused field into view once the keyboard has finished animating in.
+  // Uses an instant jump, not smooth scrolling: animating the scroll while the
+  // keyboard is also animating in/out is what triggers a known WebKit bug where
+  // position:fixed elements (the bottom tab bar) visually detach and freeze at
+  // a stale offset until something forces a reflow.
   useEffect(() => {
     function handleFocusIn(e: FocusEvent) {
       const target = e.target as HTMLElement;
       if (!target.matches?.("input, textarea, select")) return;
       window.setTimeout(() => {
-        target.scrollIntoView({ block: "center", behavior: "smooth" });
+        target.scrollIntoView({ block: "center", behavior: "auto" });
       }, 300);
     }
     document.addEventListener("focusin", handleFocusIn);
     return () => document.removeEventListener("focusin", handleFocusIn);
+  }, []);
+
+  // Belt-and-suspenders for the same bug: once a field loses focus (keyboard
+  // starts dismissing), re-set the scroll position to itself shortly after.
+  // This is a no-op visually but forces Safari to recompute fixed-position
+  // layout, so the tab bar can't stay stuck floating mid-page if the bug did
+  // trigger.
+  useEffect(() => {
+    function handleFocusOut(e: FocusEvent) {
+      const target = e.target as HTMLElement;
+      if (!target.matches?.("input, textarea, select")) return;
+      window.setTimeout(() => {
+        window.scrollTo(window.scrollX, window.scrollY);
+      }, 350);
+    }
+    document.addEventListener("focusout", handleFocusOut);
+    return () => document.removeEventListener("focusout", handleFocusOut);
   }, []);
 
   function handleLogout() {
