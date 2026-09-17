@@ -18,6 +18,7 @@ export function resolveTrainingForDate(date: Date): ResolvedTraining {
   const block = getBlockForDate(iso);
 
   if (!block) return { kind: "none" };
+  if (block.holidays?.includes(iso)) return { kind: "rest", block };
   if (!block.days) return { kind: "pending", block };
 
   const day = block.days.find((d) => d.defaultWeekday === wKey);

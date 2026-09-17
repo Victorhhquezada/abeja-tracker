@@ -37,6 +37,9 @@ export type TrainingBlock = {
   endDate: string;
   days: TrainingDay[] | null;
   restDays?: string[];
+  /** fechas ISO (días entre semana normalmente de entrenamiento) que se tratan como
+   *  descanso — festivos, viajes, etc. No cuentan como perdidos ni rompen la racha. */
+  holidays?: string[];
   weeklyBoxingTally?: Record<string, unknown>;
   note?: string;
 };
