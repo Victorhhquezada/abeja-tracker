@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { toISODate, weekdayKey, formatHuman, WEEKDAY_LABELS_ES } from "../dateUtils";
 import { saveSession } from "../api";
 import { suggestNextLoad } from "../overload";
-import { resolveTrainingForDate, nextTrainingCheckpoint } from "../trainingSchedule";
+import { resolveTrainingForDate, nextTrainingCheckpoint, getPendingCycleSurvey } from "../trainingSchedule";
 import ExerciseCard from "../components/ExerciseCard";
 import StreakCard from "../components/StreakCard";
 import YearActivityGraph from "../components/YearActivityGraph";
 import MemeModal from "../components/MemeModal";
+import SurveyPendingBanner from "../components/SurveyPendingBanner";
+import CycleSurveyModal from "../components/CycleSurveyModal";
 import { MEMES } from "../data/memes";
 import type { LogsState, SessionLog, SetLog } from "../types";
 
@@ -39,6 +41,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const resolvedTraining = resolveTrainingForDate(today);
   const trainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
   const checkpoint = nextTrainingCheckpoint(todayISO);
+  const pendingSurveyBlock = getPendingCycleSurvey(logs, today);
 
   const existingSession = logs.sessions[todayISO] as SessionLog | undefined;
 
@@ -48,6 +51,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [memeToShow, setMemeToShow] = useState<string | null>(null);
+  const [surveyOpen, setSurveyOpen] = useState(false);
 
   const isLocked = !!existingSession?.completed && !editing;
 
@@ -108,6 +112,10 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
 
   return (
     <div className="page">
+      {pendingSurveyBlock && (
+        <SurveyPendingBanner block={pendingSurveyBlock} onOpen={() => setSurveyOpen(true)} />
+      )}
+
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
       <p className="muted">{formatHuman(today)}</p>
 
@@ -199,6 +207,17 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       <YearActivityGraph logs={logs} />
 
       {memeToShow && <MemeModal src={memeToShow} onClose={() => setMemeToShow(null)} />}
+
+      {surveyOpen && pendingSurveyBlock && (
+        <CycleSurveyModal
+          block={pendingSurveyBlock}
+          onClose={() => setSurveyOpen(false)}
+          onSubmitted={() => {
+            setSurveyOpen(false);
+            onRefresh();
+          }}
+        />
+      )}
     </div>
   );
 }

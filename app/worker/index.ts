@@ -15,6 +15,7 @@ interface Env {
 type LogsData = {
   sessions: Record<string, unknown>;
   streakProtections?: string[];
+  cycleSurveys?: Record<string, unknown>;
 };
 
 const EMPTY: LogsData = { sessions: {} };
@@ -66,16 +67,23 @@ async function handleSave(request: Request, env: Env): Promise<Response> {
   }
 
   const { kind, date } = body;
-  if (!kind || !date) return new Response("Falta kind o date", { status: 400 });
+  if (!kind) return new Response("Falta kind", { status: 400 });
 
   const data = (await env.LOGS.get<LogsData>("logs", "json")) || { sessions: { ...EMPTY.sessions } };
 
   if (kind === "session") {
+    if (!date) return new Response("Falta date", { status: 400 });
     data.sessions[date] = body.session;
   } else if (kind === "protection") {
+    if (!date) return new Response("Falta date", { status: 400 });
     const set = new Set(data.streakProtections ?? []);
     set.add(date);
     data.streakProtections = [...set].sort();
+  } else if (kind === "survey") {
+    const { blockId, response } = body;
+    if (!blockId || !response) return new Response("Falta blockId o response", { status: 400 });
+    data.cycleSurveys = data.cycleSurveys ?? {};
+    data.cycleSurveys[blockId] = response;
   } else {
     return new Response("kind desconocido", { status: 400 });
   }

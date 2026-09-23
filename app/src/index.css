@@ -1024,6 +1024,168 @@ main {
   margin: var(--space-1) 0 var(--space-3);
 }
 
+/* ===== Survey pending banner ===== */
+.survey-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius-card);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  text-align: left;
+  text-transform: none;
+}
+
+.survey-banner-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.survey-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.survey-banner-text strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.survey-banner-text .muted.small {
+  color: var(--on-accent);
+  opacity: 0.75;
+}
+
+.survey-banner-arrow {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ===== Cycle survey (full screen) ===== */
+.survey-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.survey-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.survey-header h1 {
+  font-size: 19px;
+}
+
+.survey-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+}
+
+.survey-section {
+  margin-bottom: var(--space-6);
+}
+
+.survey-section h2 {
+  margin-bottom: var(--space-1);
+}
+
+.survey-day-group {
+  margin-top: var(--space-4);
+}
+
+.survey-day-group h3 {
+  color: var(--accent-text);
+  margin-bottom: var(--space-1);
+}
+
+.survey-rating-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.survey-exercise-name {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.survey-feeling-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.survey-feeling-group .weight-choice-btn {
+  flex: 1 1 30%;
+  min-width: 68px;
+  font-size: 11.5px;
+  padding: 0.4rem 0.3rem;
+}
+
+.survey-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--space-2);
+}
+
+.survey-chip {
+  font-size: 12.5px;
+  padding: 0.45rem 0.8rem;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.survey-chip.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.survey-chip:disabled {
+  opacity: 0.35;
+}
+
+.survey-submit-btn {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
+.survey-submit-hint {
+  margin-top: var(--space-2);
+  text-align: center;
+}
+
 /* ===== Charts ===== */
 .line-chart {
   margin-top: var(--space-2);

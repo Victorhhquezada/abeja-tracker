@@ -1,4 +1,4 @@
-import type { LogsState, SessionLog } from "./types";
+import type { LogsState, SessionLog, CycleSurveyResponse } from "./types";
 
 const TOKEN_KEY = "ht_token";
 
@@ -67,6 +67,15 @@ export async function activateStreakProtection(date: string) {
     body: JSON.stringify({ kind: "protection", date }),
   });
   if (!res.ok) throw new Error("Error activando la protección");
+  return res.json();
+}
+
+export async function submitCycleSurvey(blockId: string, response: CycleSurveyResponse) {
+  const res = await authFetch("/api/save", {
+    method: "POST",
+    body: JSON.stringify({ kind: "survey", blockId, response }),
+  });
+  if (!res.ok) throw new Error("Error guardando la encuesta");
   return res.json();
 }
 

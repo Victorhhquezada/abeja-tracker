@@ -2,6 +2,34 @@ import { trainingPlan } from "./data/plans";
 import { toISODate, weekdayKey, addDays, startOfWeekSunday, WEEKDAY_LABELS_ES } from "./dateUtils";
 import type { TrainingBlock, TrainingDay, LogsState } from "./types";
 
+export type SurveyExercise = { dayLabel: string; exercise: string };
+
+/** Todos los ejercicios del bloque, agrupados por día en orden — para la encuesta de fin de ciclo. */
+export function getAllExercisesForBlock(block: TrainingBlock): SurveyExercise[] {
+  if (!block.days) return [];
+  return block.days.flatMap((day) =>
+    day.lifting.map((item) => ({
+      dayLabel: `${day.label} — ${WEEKDAY_LABELS_ES[day.defaultWeekday]} (${day.focus})`,
+      exercise: item.exercise,
+    }))
+  );
+}
+
+/**
+ * El bloque más reciente cuyo fin ya llegó y que todavía no tiene encuesta de fin de
+ * ciclo respondida — null si no hay ninguno pendiente. Se busca por endDate <= hoy en
+ * vez de depender de getBlockForDate, porque una vez que el bloque termina de verdad
+ * (y todavía no existe el siguiente) ya no "cubre" la fecha de hoy.
+ */
+export function getPendingCycleSurvey(logs: LogsState, today: Date = new Date()): TrainingBlock | null {
+  const todayISO = toISODate(today);
+  const endedBlocks = trainingPlan.blocks.filter((b) => b.endDate <= todayISO);
+  if (endedBlocks.length === 0) return null;
+  const mostRecent = endedBlocks.reduce((a, b) => (b.endDate > a.endDate ? b : a));
+  if (logs.cycleSurveys?.[mostRecent.id]) return null;
+  return mostRecent;
+}
+
 export type ResolvedTraining =
   | { kind: "day"; block: TrainingBlock; day: TrainingDay }
   | { kind: "rest"; block: TrainingBlock }

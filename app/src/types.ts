@@ -72,8 +72,22 @@ export type SessionLog = {
   notes?: string;
 };
 
+export type SurveyFeeling = "much_more" | "a_bit_more" | "same" | "a_bit_less" | "less";
+
+export type CycleSurveyResponse = {
+  blockId: string;
+  submittedAt: string;
+  exerciseRatings: Record<string, number>;
+  favorites: string[];
+  leastFavorites: string[];
+  feelings: Record<string, SurveyFeeling>;
+  comments?: string;
+};
+
 export type LogsState = {
   sessions: Record<string, SessionLog>;
   /** fechas ISO de días de entrenamiento perdidos que se cubrieron con una protección de racha */
   streakProtections?: string[];
+  /** encuestas de fin de ciclo ya respondidas, por id de bloque */
+  cycleSurveys?: Record<string, CycleSurveyResponse>;
 };
