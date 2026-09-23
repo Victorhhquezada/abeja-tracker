@@ -57,24 +57,33 @@ export function suggestNextLoad(
       }
     } else if (mode === "choice" && weightOptions && weightOptions.length > 0) {
       const sorted = [...weightOptions].sort((a, b) => a - b);
-      const idx = sorted.indexOf(value);
+      // Si el último peso registrado no coincide con ninguna opción actual (ej. cambió el
+      // equipo/implemento desde entonces), usa la opción más cercana como punto de partida
+      // en vez de romperse — el mensaje sigue mostrando el peso real que se registró.
+      let baseIdx = sorted.indexOf(value);
+      if (baseIdx === -1) {
+        baseIdx = sorted.reduce(
+          (closest, opt, i) => (Math.abs(opt - value) < Math.abs(sorted[closest] - value) ? i : closest),
+          0
+        );
+      }
+      const base = sorted[baseIdx];
+
       if (rpe < 7) {
-        const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : value;
-        suggestedValue = next;
-        message =
-          next === value
-            ? `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, pero ya es el disco más pesado que tienes.`
-            : `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, se sugiere subir al disco de ${next}kg.`;
+        const atMax = baseIdx >= sorted.length - 1;
+        suggestedValue = atMax ? base : sorted[baseIdx + 1];
+        message = atMax
+          ? `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, pero ya es el disco más pesado que tienes.`
+          : `Última vez ${value}kg @ RPE ${rpe} — se sintió fácil, se sugiere subir al disco de ${suggestedValue}kg.`;
       } else if (rpe <= 8.5) {
-        suggestedValue = value;
-        message = `Última vez ${value}kg @ RPE ${rpe} — buen nivel, mantén el disco de ${value}kg hoy.`;
+        suggestedValue = base;
+        message = `Última vez ${value}kg @ RPE ${rpe} — buen nivel, mantén el disco de ${base}kg hoy.`;
       } else {
-        const prev = idx > 0 ? sorted[idx - 1] : value;
-        suggestedValue = prev;
-        message =
-          prev === value
-            ? `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, ya es el disco más ligero.`
-            : `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar al disco de ${prev}kg.`;
+        const atMin = baseIdx <= 0;
+        suggestedValue = atMin ? base : sorted[baseIdx - 1];
+        message = atMin
+          ? `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, ya es el disco más ligero.`
+          : `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar al disco de ${suggestedValue}kg.`;
       }
     } else {
       if (rpe < 7) {
