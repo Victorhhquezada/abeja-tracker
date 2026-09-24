@@ -113,7 +113,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   return (
     <div className="page">
       {pendingSurveyBlock && (
-        <SurveyPendingBanner block={pendingSurveyBlock} onOpen={() => setSurveyOpen(true)} />
+        <SurveyPendingBanner block={pendingSurveyBlock} today={today} onOpen={() => setSurveyOpen(true)} />
       )}
 
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
