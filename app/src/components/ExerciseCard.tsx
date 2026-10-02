@@ -25,10 +25,17 @@ export default function ExerciseCard({
         <span className={`tag ${item.type}`}>{item.type}</span>
       </div>
       <div className="exercise-target">
-        {checkMode ? `Objetivo: ${item.sets} rondas` : `Objetivo: ${item.sets} × ${item.targetReps ?? "-"} reps`}
+        {checkMode
+          ? `Objetivo: ${item.sets} ronda${item.sets === 1 ? "" : "s"}`
+          : `Objetivo: ${item.sets} × ${item.targetReps ?? "-"} reps`}
         {!checkMode && item.targetRpe ? ` @ RPE ${item.targetRpe}` : ""}
         {item.note ? ` · ${item.note}` : ""}
       </div>
+      {item.videoUrl && (
+        <a className="exercise-video-link" href={item.videoUrl} target="_blank" rel="noopener noreferrer">
+          ▶ Ver video de referencia
+        </a>
+      )}
       {!locked && !checkMode && <div className="exercise-suggestion">{suggestion}</div>}
       <div className={`sets-grid ${checkMode ? "check-mode" : ""}`.trim()}>
         <div className="sets-grid-header">
