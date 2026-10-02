@@ -12,8 +12,8 @@ export type LiftingItem = {
   progressionMode?: "peso" | "reps" | "check" | "choice";
   /** solo para progressionMode "choice" — los pesos exactos disponibles, en kg */
   weightOptions?: number[];
-  /** link a un video de referencia (técnica) — se muestra como un CTA discreto en la tarjeta */
-  videoUrl?: string;
+  /** links a videos de referencia (técnica) — se muestran como CTAs discretos en la tarjeta */
+  videos?: { label: string; url: string }[];
 };
 
 export type TrainingDay = {

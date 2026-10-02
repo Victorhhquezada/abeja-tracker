@@ -31,10 +31,14 @@ export default function ExerciseCard({
         {!checkMode && item.targetRpe ? ` @ RPE ${item.targetRpe}` : ""}
         {item.note ? ` · ${item.note}` : ""}
       </div>
-      {item.videoUrl && (
-        <a className="exercise-video-link" href={item.videoUrl} target="_blank" rel="noopener noreferrer">
-          ▶ Ver video de referencia
-        </a>
+      {item.videos && item.videos.length > 0 && (
+        <div className="exercise-video-links">
+          {item.videos.map((v) => (
+            <a key={v.url} className="exercise-video-link" href={v.url} target="_blank" rel="noopener noreferrer">
+              ▶ {v.label}
+            </a>
+          ))}
+        </div>
       )}
       {!locked && !checkMode && <div className="exercise-suggestion">{suggestion}</div>}
       <div className={`sets-grid ${checkMode ? "check-mode" : ""}`.trim()}>

@@ -706,6 +706,7 @@ main {
   color: var(--muted);
   font-size: 13px;
   margin-top: var(--space-1);
+  white-space: pre-line;
 }
 
 .exercise-suggestion {
@@ -715,12 +716,17 @@ main {
   margin: var(--space-2) 0;
 }
 
+.exercise-video-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 4px;
+}
+
 .exercise-video-link {
-  display: inline-block;
   font-size: 12px;
   color: var(--muted);
   text-decoration: underline;
-  margin-top: 4px;
 }
 
 .sets-grid {
