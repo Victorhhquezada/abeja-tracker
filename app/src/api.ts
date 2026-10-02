@@ -23,7 +23,20 @@ async function authFetch(path: string, options: RequestInit = {}): Promise<Respo
   // keepalive lets the request finish even if the tab is backgrounded or the phone
   // locks right after tapping "Marcar sesión completa" — a save otherwise gets
   // silently killed mid-flight on iOS Safari with no error shown to the user.
-  const res = await fetch(path, { ...options, headers, keepalive: true });
+  const attempt = () => fetch(path, { ...options, headers, keepalive: true });
+
+  let res: Response;
+  try {
+    res = await attempt();
+  } catch {
+    // The request itself got dropped (not a server error response, but a network/connection
+    // failure — e.g. the phone lost signal or suspended the tab mid-request). One short, silent
+    // retry turns many of these transient drops into a success instead of forcing the user to
+    // notice the failure and tap the button again themselves.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    res = await attempt();
+  }
+
   if (res.status === 401) {
     clearToken();
     throw new Error("unauthorized");
