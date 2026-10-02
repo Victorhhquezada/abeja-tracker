@@ -1,5 +1,13 @@
 import type { LogsState } from "./types";
 
+const BAR_KG = 20;
+const BAR_STEP = 2.5;
+
+/** Redondea al peso de barra real más cercano: 20 (barra sola) + múltiplos de 2.5 (par de discos). */
+function snapToBar(kg: number): number {
+  return Math.max(BAR_KG, BAR_KG + Math.round((kg - BAR_KG) / BAR_STEP) * BAR_STEP);
+}
+
 export type Suggestion = {
   lastValue: number | null;
   lastRpe: number | null;
@@ -19,7 +27,8 @@ export function suggestNextLoad(
   todayISO: string,
   exerciseType: "principal" | "accesorio" = "accesorio",
   mode: "peso" | "reps" | "choice" = "peso",
-  weightOptions?: number[]
+  weightOptions?: number[],
+  barbell?: boolean
 ): Suggestion {
   const dates = Object.keys(logs.sessions)
     .filter((d) => d < todayISO)
@@ -85,6 +94,23 @@ export function suggestNextLoad(
           ? `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, ya es el disco más ligero.`
           : `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar al disco de ${suggestedValue}kg.`;
       }
+    } else if (barbell) {
+      if (value < BAR_KG) {
+        suggestedValue = BAR_KG;
+        message = `Última vez ${value} kg @ RPE ${rpe} — la barra sola pesa ${BAR_KG} kg, ese es el mínimo: empieza con la barra vacía (${BAR_KG} kg).`;
+      } else {
+        const base = snapToBar(value);
+        if (rpe <= 8.5) {
+          suggestedValue = base + BAR_STEP;
+          message = `Última vez ${value} kg @ RPE ${rpe} — ${rpe < 7 ? "se sintió fácil" : "buen nivel"}, se sugiere subir a ${suggestedValue} kg (+${BAR_STEP} kg: un disco de 1.25 por lado).`;
+        } else if (base <= BAR_KG) {
+          suggestedValue = BAR_KG;
+          message = `Última vez ${value} kg @ RPE ${rpe} — estuvo al límite, ya es la barra sola (${BAR_KG} kg): mantén ese peso.`;
+        } else {
+          suggestedValue = base - BAR_STEP;
+          message = `Última vez ${value} kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar a ${suggestedValue} kg.`;
+        }
+      }
     } else {
       if (rpe < 7) {
         suggestedValue = value + step;
@@ -110,7 +136,9 @@ export function suggestNextLoad(
         ? "Sin historial todavía — haz las repeticiones que puedas hoy y ajusta con el RPE."
         : mode === "choice"
           ? "Sin historial todavía — elige un disco conservador y ajusta con el RPE."
-          : "Sin historial todavía — usa un peso conservador y ajusta con el RPE.",
+          : barbell
+            ? `Sin historial todavía — empieza con la barra vacía (${BAR_KG} kg) y sube de 2.5 en 2.5 kg según el RPE.`
+            : "Sin historial todavía — usa un peso conservador y ajusta con el RPE.",
     suggestedValue: null,
   };
 }

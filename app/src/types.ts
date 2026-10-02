@@ -12,6 +12,9 @@ export type LiftingItem = {
   progressionMode?: "peso" | "reps" | "check" | "choice";
   /** solo para progressionMode "choice" — los pesos exactos disponibles, en kg */
   weightOptions?: number[];
+  /** movimiento con barra olímpica: la carga es 20 kg (barra sola) + discos en pares, así que los
+   *  pesos reales son 20, 22.5, 25, 27.5, 30... (saltos de 2.5 kg) y nunca menos de 20 */
+  barbell?: boolean;
   /** links a videos de referencia (técnica) — se muestran como CTAs discretos en la tarjeta */
   videos?: { label: string; url: string }[];
 };

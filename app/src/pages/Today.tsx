@@ -66,7 +66,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         } else if (mode === "check") {
           init[item.exercise] = { sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode) };
         } else {
-          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions);
+          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.barbell);
           init[item.exercise] = {
             sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode, suggestion.suggestedValue),
           };
@@ -145,7 +145,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
                 suggestion={
                   mode === "check"
                     ? ""
-                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions).message
+                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.barbell).message
                 }
                 onChange={(i, field, value) => updateSet(item.exercise, i, field, value)}
                 locked={isLocked}
