@@ -2,10 +2,17 @@ import type { LogsState } from "./types";
 
 const BAR_KG = 20;
 const BAR_STEP = 2.5;
+const LANDMINE_STEP = 1.25;
+// 2 discos de 1.25 + 2 de 2.5 + 2 de 5 en un solo extremo
+const LANDMINE_MAX = 17.5;
 
 /** Redondea al peso de barra real más cercano: 20 (barra sola) + múltiplos de 2.5 (par de discos). */
 function snapToBar(kg: number): number {
   return Math.max(BAR_KG, BAR_KG + Math.round((kg - BAR_KG) / BAR_STEP) * BAR_STEP);
+}
+
+function snapToLandmine(kg: number): number {
+  return Math.min(LANDMINE_MAX, Math.max(0, Math.round(kg / LANDMINE_STEP) * LANDMINE_STEP));
 }
 
 export type Suggestion = {
@@ -28,7 +35,7 @@ export function suggestNextLoad(
   exerciseType: "principal" | "accesorio" = "accesorio",
   mode: "peso" | "reps" | "choice" = "peso",
   weightOptions?: number[],
-  barbell?: boolean
+  loadModel?: "barbell" | "landmine"
 ): Suggestion {
   const dates = Object.keys(logs.sessions)
     .filter((d) => d < todayISO)
@@ -94,7 +101,22 @@ export function suggestNextLoad(
           ? `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, ya es el disco más ligero.`
           : `Última vez ${value}kg @ RPE ${rpe} — estuvo al límite, se sugiere bajar al disco de ${suggestedValue}kg.`;
       }
-    } else if (barbell) {
+    } else if (loadModel === "landmine") {
+      const base = snapToLandmine(value);
+      if (rpe <= 8.5) {
+        suggestedValue = Math.min(LANDMINE_MAX, base + LANDMINE_STEP);
+        message =
+          suggestedValue === base
+            ? `Última vez ${value} kg de discos @ RPE ${rpe} — ya es el máximo de discos que tienes en la landmine (${LANDMINE_MAX} kg), mantén ese peso.`
+            : `Última vez ${value} kg de discos @ RPE ${rpe} — ${rpe < 7 ? "se sintió fácil" : "buen nivel"}, se sugiere subir a ${suggestedValue} kg de discos (+${LANDMINE_STEP} kg).`;
+      } else {
+        suggestedValue = Math.max(0, base - LANDMINE_STEP);
+        message =
+          suggestedValue === base
+            ? `Última vez ${value} kg de discos @ RPE ${rpe} — estuvo al límite, ya es la barra sola: mantén ese peso.`
+            : `Última vez ${value} kg de discos @ RPE ${rpe} — estuvo al límite, se sugiere bajar a ${suggestedValue} kg de discos.`;
+      }
+    } else if (loadModel === "barbell") {
       if (value < BAR_KG) {
         suggestedValue = BAR_KG;
         message = `Última vez ${value} kg @ RPE ${rpe} — la barra sola pesa ${BAR_KG} kg, ese es el mínimo: empieza con la barra vacía (${BAR_KG} kg).`;
@@ -136,7 +158,9 @@ export function suggestNextLoad(
         ? "Sin historial todavía — haz las repeticiones que puedas hoy y ajusta con el RPE."
         : mode === "choice"
           ? "Sin historial todavía — elige un disco conservador y ajusta con el RPE."
-          : barbell
+          : loadModel === "landmine"
+            ? "Sin historial todavía — empieza con la barra sola o un disco de 1.25 en la punta (el peso es solo el de los discos) y sube de 1.25 en 1.25 kg según el RPE."
+            : loadModel === "barbell"
             ? `Sin historial todavía — empieza con la barra vacía (${BAR_KG} kg) y sube de 2.5 en 2.5 kg según el RPE.`
             : "Sin historial todavía — usa un peso conservador y ajusta con el RPE.",
     suggestedValue: null,

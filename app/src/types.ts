@@ -12,9 +12,11 @@ export type LiftingItem = {
   progressionMode?: "peso" | "reps" | "check" | "choice";
   /** solo para progressionMode "choice" — los pesos exactos disponibles, en kg */
   weightOptions?: number[];
-  /** movimiento con barra olímpica: la carga es 20 kg (barra sola) + discos en pares, así que los
-   *  pesos reales son 20, 22.5, 25, 27.5, 30... (saltos de 2.5 kg) y nunca menos de 20 */
-  barbell?: boolean;
+  /** cómo se carga el peso real, para que las sugerencias solo propongan cargas posibles:
+   *  "barbell" = barra olímpica: 20 kg la barra sola + discos en pares → 20, 22.5, 25, 27.5, 30... (saltos de 2.5, mínimo 20);
+   *  "landmine" = barra en landmine con discos en un solo extremo (máx. 2 de 1.25, 2 de 2.5 y 2 de 5) → el peso registrado
+   *  es solo el de los discos: 0, 1.25, 2.5, 3.75... hasta 17.5 (saltos de 1.25) */
+  loadModel?: "barbell" | "landmine";
   /** links a videos de referencia (técnica) — se muestran como CTAs discretos en la tarjeta */
   videos?: { label: string; url: string }[];
 };
