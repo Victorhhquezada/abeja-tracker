@@ -36,6 +36,22 @@ export type TrainingCheckpoint = {
   label: string;
 };
 
+/** Rutinas distintas para un rango de fechas dentro de un bloque (ej. semanas de afinación antes
+ *  de una pelea). Los días que no aparecen en `days` se tratan como descanso. Los ejercicios
+ *  conservan el mismo nombre que en el bloque para que el historial y las sugerencias sigan
+ *  funcionando. */
+export type TrainingOverride = {
+  id: string;
+  label: string;
+  startDate: string;
+  endDate: string;
+  /** "conservative" = solo sube de peso si se sintió fácil (RPE < 7);
+   *  "deload" = sugiere ~loadPct del último peso (default 60%) */
+  progression: "conservative" | "deload";
+  loadPct?: number;
+  days: TrainingDay[];
+};
+
 export type TrainingBlock = {
   id: string;
   label: string;
@@ -47,6 +63,7 @@ export type TrainingBlock = {
   /** fechas ISO (días entre semana normalmente de entrenamiento) que se tratan como
    *  descanso — festivos, viajes, etc. No cuentan como perdidos ni rompen la racha. */
   holidays?: string[];
+  overrides?: TrainingOverride[];
   weeklyBoxingTally?: Record<string, unknown>;
   note?: string;
 };

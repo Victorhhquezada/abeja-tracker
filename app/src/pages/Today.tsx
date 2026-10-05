@@ -40,6 +40,8 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
 
   const resolvedTraining = resolveTrainingForDate(today);
   const trainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
+  const trainingOverride = resolvedTraining.kind === "day" ? resolvedTraining.override : undefined;
+  const taper = trainingOverride ? { progression: trainingOverride.progression, loadPct: trainingOverride.loadPct } : undefined;
   const checkpoint = nextTrainingCheckpoint(todayISO);
   const pendingSurveyBlock = getPendingCycleSurvey(logs, today);
 
@@ -66,7 +68,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         } else if (mode === "check") {
           init[item.exercise] = { sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode) };
         } else {
-          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel);
+          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper);
           init[item.exercise] = {
             sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode, suggestion.suggestedValue),
           };
@@ -145,7 +147,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
                 suggestion={
                   mode === "check"
                     ? ""
-                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel).message
+                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper).message
                 }
                 onChange={(i, field, value) => updateSet(item.exercise, i, field, value)}
                 locked={isLocked}

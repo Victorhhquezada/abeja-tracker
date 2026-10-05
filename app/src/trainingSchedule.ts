@@ -1,6 +1,6 @@
 import { trainingPlan } from "./data/plans";
 import { toISODate, weekdayKey, addDays, startOfWeekSunday, WEEKDAY_LABELS_ES } from "./dateUtils";
-import type { TrainingBlock, TrainingDay, LogsState } from "./types";
+import type { TrainingBlock, TrainingDay, TrainingOverride, LogsState } from "./types";
 
 export type SurveyExercise = { dayLabel: string; exercise: string };
 
@@ -40,7 +40,7 @@ export function getPendingCycleSurvey(logs: LogsState, today: Date = new Date())
 }
 
 export type ResolvedTraining =
-  | { kind: "day"; block: TrainingBlock; day: TrainingDay }
+  | { kind: "day"; block: TrainingBlock; day: TrainingDay; override?: TrainingOverride }
   | { kind: "rest"; block: TrainingBlock }
   | { kind: "pending"; block: TrainingBlock }
   | { kind: "none" };
@@ -58,10 +58,11 @@ export function resolveTrainingForDate(date: Date): ResolvedTraining {
   if (block.holidays?.includes(iso)) return { kind: "rest", block };
   if (!block.days) return { kind: "pending", block };
 
-  const day = block.days.find((d) => d.defaultWeekday === wKey);
+  const override = block.overrides?.find((o) => iso >= o.startDate && iso <= o.endDate);
+  const day = (override?.days ?? block.days).find((d) => d.defaultWeekday === wKey);
   if (!day) return { kind: "rest", block };
 
-  return { kind: "day", block, day };
+  return { kind: "day", block, day, override };
 }
 
 export function nextTrainingCheckpoint(fromISO: string): { date: string; label: string } | null {
