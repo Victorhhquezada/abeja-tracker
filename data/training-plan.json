@@ -1,5 +1,5 @@
 {
-  "version": 19,
+  "version": 20,
   "updated": "2026-10-05",
   "notes": "Programa de fuerza y potencia complementario para un boxeador amateur competitivo de 16 años, 4 años de boxeo, sin experiencia previa de pesas (técnica ya buena por supervisión directa, pero sin historial de carga). El boxeo en sí NO se prescribe aquí — se asume que ya se entrena por su cuenta de lunes a viernes (su entrenador/gimnasio lo maneja), y el fin de semana es descanso. Esta app es solo la capa de fuerza/potencia complementaria. Prioridad explícita del usuario: 1) potencia de golpe / explosividad, 2) durabilidad / prevención de lesiones, 3) capacidad de trabajo / acondicionamiento, 4) fuerza general — la fuerza es la base, no el objetivo final. Diseñado con investigación real (NSCA Position Stand on LTAD 2016; Dunn et al. sobre fuerza y fuerza de impacto de golpe; encuesta de prácticas reales de entrenadores de boxeo Beattie & Ruddock 2025 JSCR; estudio de complex training en boxeadores amateur élite, Frontiers 2024). Puntos clave que informan el diseño: (a) la fuerza máxima de tren inferior es el predictor individual más fuerte de fuerza de impacto de golpe (Dunn et al., r=0.68, ~46% de la varianza) — el énfasis va en piernas, no en banca; (b) la fuerza máxima de tren superior casi no correlaciona con potencia de golpe, pero la fuerza EXPLOSIVA de tren superior sí — por eso el press es rápido/explosivo, no pesado al fallo; (c) los ganchos dependen de fuerza rotacional de tronco más que los rectos — de ahí el énfasis en landmine y trabajo rotacional; (d) no hay evidencia real de que la fuerza máxima 'engorde' o haga más lento a un boxeador — ese miedo es común entre entrenadores pero no está sustentado, y como el usuario no está en categoría de peso ni campamento ahora mismo, es buen momento para construir una base real de fuerza; (e) la investigación en jóvenes (NSCA LTAD) confirma que el entrenamiento de fuerza bien supervisado es seguro para adolescentes, no retrasa el crecimiento ni la maduración, y mejora fuerza relativa y velocidad — pero recomienda evitar pruebas de 1RM, progresar la carga solo cuando la técnica es sólida, y priorizar la calidad de movimiento sobre la carga absoluta. (f) se agregó entrenamiento de cuello 3x/semana (lunes/miércoles/viernes, no consecutivos) por evidencia directa de reducción de riesgo de conmoción: un estudio en 6,662 atletas de secundaria encontró que cada libra adicional de fuerza de cuello se asoció con ~5% menos probabilidad de sufrir una conmoción (Collins et al. 2014) — relevante en boxeo porque la fuerza de cuello limita el latigazo (whiplash) que produce los knockouts, y la posición de mentón pegado en guardia depende de los flexores profundos del cuello. Progresión deliberada de menos a más carga a lo largo de la semana: isométrico (lunes, más seguro, cubre las 6 direcciones incluida rotación — la dirección más débil y más descuidada según la literatura), banda elástica (miércoles, dinámico pero de resistencia suave), arnés con peso (viernes, día fuerte, única herramienta que permite subir peso en pasos finos). (g) Bloque 2 sube el techo de esfuerzo (RPE ~7-8 en vez de ~6-7) porque Bloque 1 confirmó técnica sólida: 17 de 20 sesiones completadas, encuesta de fin de ciclo con 'mucho más fuerte' en casi todas las capacidades preguntadas, y 5 notas distintas del propio atleta a lo largo del ciclo diciendo que podía haber hecho más reps de las prescritas (dominadas x2, giro de tronco, press landmine). Cambios de ejercicio por feedback directo — encuesta (favoritos confirmados sin cambio: giro de tronco con banda, golpe explosivo con landmine, press de banca explosivo/push press; menos favoritos reemplazados: plancha lateral, volteo de llanta, peso muerto rumano) y conversación con el coach: plancha lateral → Pallof press (anti-rotación de pie en vez de estático), farmer carry → suitcase carry (fuerza unilateral/anti-flexión lateral en vez de bilateral), peso muerto rumano → peso muerto explosivo/clean alternado (ya con técnica de bisagra validada, toca la versión con más potencia), volteo de llanta descartado por completo, y el día de llanta se convierte en día dedicado de agilidad y footwork. Los slams de sandbag se reintroducen (se habían descartado en Bloque 1 por el impacto) ahora sobre colchoneta específicamente para proteger el sandbag. El día de footwork se diseñó con investigación específica de boxeo: drills de escalera con nombres reales (in-out, Icky Shuffle, carioca) y un drill de conos en triángulo para practicar pivote y creación de ángulo — no solo velocidad de pies genérica. Los box jumps se descartaron a favor de lateral bounds/skater jumps: la evidencia es clara en que el boxeo se mueve lateral, no verticalmente, así que el trabajo pliométrico debe ir en esa dirección.",
   "sequencingGuidance": "El boxeo se entrena todos los días de lunes a viernes por su cuenta, y las pesas de aquí se hacen justo después esos días, con el viernes como día de más foco. La evidencia sobre secuenciación en la misma sesión es clara: el trabajo explosivo/de potencia pierde calidad neuromuscular cuando se hace ya fatigado. Por eso el split separa dos tipos de día: (1) lunes a jueves — trabajo de menor demanda del sistema nervioso (core rotacional, tracción, acarreos, unilateral), que sí tolera bien hacerse después de boxear; (2) el viernes es el día fuerte de fuerza/potencia real (sentadilla, peso muerto, landmine rotacional, press explosivo) y conviene hacerlo ANTES del boxeo ese día si se puede — es donde vive la ganancia real de potencia de golpe.",
@@ -122,7 +122,7 @@
               "order": 1,
               "label": "Día 1",
               "defaultWeekday": "monday",
-              "focus": "Afinación pre-pelea, ~20% menos volumen; si hay sparring hoy, haz solo la mitad de las series — Core rotacional / pierna unilateral",
+              "focus": "Afinación pre-pelea, ~20% menos volumen — Core rotacional / pierna unilateral",
               "warmupMin": 10,
               "lifting": [
                 {"exercise": "Zancada búlgara (sandbag al pecho o mancuerna)", "sets": 2, "targetReps": 10, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "por pierna — alterna sandbag de 10kg / mancuerna según lo que esté disponible. El sandbag solo viene en 10 o 20kg — progresa en reps o series, no en kg"},
@@ -136,7 +136,7 @@
               "order": 2,
               "label": "Día 2",
               "defaultWeekday": "tuesday",
-              "focus": "Afinación pre-pelea, ~20% menos volumen; si hay sparring hoy, haz solo la mitad de las series — Tracción y acarreo",
+              "focus": "Afinación pre-pelea, ~20% menos volumen — Tracción y acarreo",
               "warmupMin": 10,
               "lifting": [
                 {"exercise": "Dominadas (asistidas si hace falta)", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "Afinación: tu máximo de la semana 1 fue 12-8-8. Esta semana 3 series de 8 limpias, SIN llegar al fallo — técnica completa y rápido, quedarte con 2-3 reps en el tanque"},
@@ -150,7 +150,7 @@
               "order": 3,
               "label": "Día 3",
               "defaultWeekday": "wednesday",
-              "focus": "Afinación pre-pelea, ~20% menos volumen; si hay sparring hoy, haz solo la mitad de las series — Core rotacional variado",
+              "focus": "Afinación pre-pelea, ~20% menos volumen — Core rotacional variado",
               "warmupMin": 10,
               "lifting": [
                 {"exercise": "Twist rotacional con disco", "sets": 2, "targetReps": 9, "targetRpe": 7, "type": "accesorio", "progressionMode": "choice", "weightOptions": [10, 15, 20], "note": "por lado — sostén el disco con ambas manos frente al pecho y gíralo de cadera a cadera sin soltarlo. Elige entre los discos de 10, 15 o 20kg"},
@@ -165,7 +165,7 @@
               "order": 4,
               "label": "Día 4",
               "defaultWeekday": "thursday",
-              "focus": "Afinación pre-pelea, ~20% menos volumen; si hay sparring hoy, haz solo la mitad de las series — Agilidad y footwork",
+              "focus": "Afinación pre-pelea, ~20% menos volumen — Agilidad y footwork",
               "warmupMin": 10,
               "lifting": [
                 {"exercise": "Escalera (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Ver video de referencia", "url": "https://vt.tiktok.com/ZSbfAcweq/"}], "note": "marca al terminar los 7:\n1. Paso lateral con jab — 5 vueltas (número asumido, confirmar)\n2. Shuffle lateral — 5 vueltas\n3. Un solo pie — 4 vueltas por pie\n4. Pivots — 5 vueltas\n5. Shift con upper — 5 vueltas\n6. Jumping jacks — 4 vueltas\n7. Jumping jacks con cruce — 4 vueltas"},
@@ -177,7 +177,7 @@
               "order": 5,
               "label": "Día 5 — día fuerte",
               "defaultWeekday": "friday",
-              "focus": "Afinación pre-pelea, ~20% menos volumen; si hay sparring hoy, haz solo la mitad de las series — Fuerza y potencia (día dedicado) — hacer antes del boxeo si se puede",
+              "focus": "Afinación pre-pelea, ~20% menos volumen — Fuerza y potencia (día dedicado) — hacer antes del boxeo si se puede",
               "warmupMin": 15,
               "lifting": [
                 {"exercise": "Sentadilla trasera", "sets": 4, "targetReps": 5, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra o sandbag goblet como variante. 5 series (antes 4) — el predictor individual más fuerte de fuerza de impacto de golpe, prioridad de volumen"},

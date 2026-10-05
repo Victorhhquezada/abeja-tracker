@@ -94,6 +94,8 @@ export type SessionLog = {
   completed: boolean;
   exercises: Record<string, ExerciseLog>;
   notes?: string;
+  /** si ese día hubo sparring — la rutina se aligera (mitad de series, sin subir peso) */
+  sparred?: boolean;
 };
 
 export type SurveyFeeling = "much_more" | "a_bit_more" | "same" | "a_bit_less" | "less";
@@ -114,4 +116,6 @@ export type LogsState = {
   streakProtections?: string[];
   /** encuestas de fin de ciclo ya respondidas, por id de bloque */
   cycleSurveys?: Record<string, CycleSurveyResponse>;
+  /** respuesta diaria a "¿hiciste sparring hoy?", por fecha ISO */
+  sparring?: Record<string, boolean>;
 };

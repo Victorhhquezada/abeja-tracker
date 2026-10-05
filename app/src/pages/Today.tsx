@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { toISODate, weekdayKey, formatHuman, WEEKDAY_LABELS_ES } from "../dateUtils";
-import { saveSession } from "../api";
+import { saveSession, saveSparring } from "../api";
 import { suggestNextLoad } from "../overload";
-import { resolveTrainingForDate, nextTrainingCheckpoint, getPendingCycleSurvey } from "../trainingSchedule";
+import { resolveTrainingForDate, nextTrainingCheckpoint, getPendingCycleSurvey, lightenForSparring } from "../trainingSchedule";
 import ExerciseCard from "../components/ExerciseCard";
 import StreakCard from "../components/StreakCard";
 import YearActivityGraph from "../components/YearActivityGraph";
 import MemeModal from "../components/MemeModal";
 import SurveyPendingBanner from "../components/SurveyPendingBanner";
 import CycleSurveyModal from "../components/CycleSurveyModal";
+import SparringPrompt from "../components/SparringPrompt";
 import { MEMES } from "../data/memes";
 import type { LogsState, SessionLog, SetLog } from "../types";
 
@@ -39,13 +40,25 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const wKey = weekdayKey(today);
 
   const resolvedTraining = resolveTrainingForDate(today);
-  const trainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
+  const baseTrainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
   const trainingOverride = resolvedTraining.kind === "day" ? resolvedTraining.override : undefined;
-  const taper = trainingOverride ? { progression: trainingOverride.progression, loadPct: trainingOverride.loadPct } : undefined;
-  const checkpoint = nextTrainingCheckpoint(todayISO);
-  const pendingSurveyBlock = getPendingCycleSurvey(logs, today);
 
   const existingSession = logs.sessions[todayISO] as SessionLog | undefined;
+  const [localSparred, setLocalSparred] = useState<boolean | undefined>(undefined);
+  const [sparringSaving, setSparringSaving] = useState(false);
+  const sparred: boolean | undefined = localSparred ?? logs.sparring?.[todayISO] ?? existingSession?.sparred;
+
+  // Con sparring: rutina aligera y sin subir peso, salvo en semanas de pelea donde ya hay un taper propio
+  const taper = trainingOverride
+    ? { progression: trainingOverride.progression, loadPct: trainingOverride.loadPct }
+    : sparred
+      ? ({ progression: "hold" } as const)
+      : undefined;
+  const trainingDay = baseTrainingDay && sparred ? lightenForSparring(baseTrainingDay) : baseTrainingDay;
+  // El día ya completado se muestra tal como se guardó, sin volver a preguntar
+  const needsSparringAnswer = sparred === undefined && !existingSession?.completed;
+  const checkpoint = nextTrainingCheckpoint(todayISO);
+  const pendingSurveyBlock = getPendingCycleSurvey(logs, today);
 
   const [exercises, setExercises] = useState<Record<string, { sets: SetLog[] }>>({});
   const [notes, setNotes] = useState("");
@@ -79,7 +92,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
     }
     setEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todayISO]);
+  }, [todayISO, sparred]);
 
   function updateSet(exerciseName: string, setIndex: number, field: keyof SetLog, value: number | boolean | null) {
     setExercises((prev) => {
@@ -87,6 +100,19 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       const nextSets = current.map((s, i) => (i === setIndex ? { ...s, [field]: value } : s));
       return { ...prev, [exerciseName]: { sets: nextSets } };
     });
+  }
+
+  async function answerSparring(answer: boolean) {
+    setLocalSparred(answer);
+    setSparringSaving(true);
+    try {
+      await saveSparring(todayISO, answer);
+      onRefresh();
+    } catch {
+      setSaveMsg("No se pudo guardar la respuesta de sparring, se volverá a preguntar.");
+    } finally {
+      setSparringSaving(false);
+    }
   }
 
   async function handleCompleteSession() {
@@ -99,6 +125,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         completed: true,
         exercises,
         notes,
+        sparred: sparred === true ? true : undefined,
       };
       await saveSession(todayISO, session);
       setSaveMsg("Sesión guardada ✓");
@@ -130,8 +157,22 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         </p>
       )}
 
-      {resolvedTraining.kind === "day" && trainingDay && (
+      {resolvedTraining.kind === "day" && trainingDay && needsSparringAnswer && (
+        <SparringPrompt saving={sparringSaving} onAnswer={answerSparring} />
+      )}
+
+      {resolvedTraining.kind === "day" && trainingDay && !needsSparringAnswer && (
         <section className="card">
+          {sparred !== undefined && (
+            <div className="sparring-badge-row">
+              <span className="muted small">{sparred ? "🥊 Con sparring hoy · versión ligera" : "Sin sparring · rutina completa"}</span>
+              {!isLocked && (
+                <button type="button" className="sparring-link" disabled={sparringSaving} onClick={() => answerSparring(!sparred)}>
+                  Cambiar
+                </button>
+              )}
+            </div>
+          )}
           <h2>
             Rutina de hoy — {trainingDay.label}: {trainingDay.focus}
           </h2>
@@ -191,6 +232,13 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
           <p className="muted">No hay rutina programada hoy. Movilidad ligera o caminata si tienes ganas.</p>
         </section>
       )}
+
+      {resolvedTraining.kind === "rest" &&
+        (sparred === undefined ? (
+          <SparringPrompt compact saving={sparringSaving} onAnswer={answerSparring} />
+        ) : (
+          <p className="muted small">{sparred ? "🥊 Sparring registrado hoy" : "Sin sparring hoy"}</p>
+        ))}
 
       {resolvedTraining.kind === "pending" && (
         <section className="card">

@@ -16,6 +16,7 @@ type LogsData = {
   sessions: Record<string, unknown>;
   streakProtections?: string[];
   cycleSurveys?: Record<string, unknown>;
+  sparring?: Record<string, boolean>;
 };
 
 const EMPTY: LogsData = { sessions: {} };
@@ -84,6 +85,9 @@ async function handleSave(request: Request, env: Env): Promise<Response> {
     if (!blockId || !response) return new Response("Falta blockId o response", { status: 400 });
     data.cycleSurveys = data.cycleSurveys ?? {};
     data.cycleSurveys[blockId] = response;
+  } else if (kind === "sparring") {
+    if (!date || typeof body.sparred !== "boolean") return new Response("Falta date o sparred", { status: 400 });
+    data.sparring = { ...(data.sparring ?? {}), [date]: body.sparred };
   } else {
     return new Response("kind desconocido", { status: 400 });
   }

@@ -92,3 +92,12 @@ export async function submitCycleSurvey(blockId: string, response: CycleSurveyRe
   return res.json();
 }
 
+
+export async function saveSparring(date: string, sparred: boolean) {
+  const res = await authFetch("/api/save", {
+    method: "POST",
+    body: JSON.stringify({ kind: "sparring", date, sparred }),
+  });
+  if (!res.ok) throw new Error("Error guardando la respuesta de sparring");
+  return res.json();
+}

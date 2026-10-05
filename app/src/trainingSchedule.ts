@@ -257,3 +257,20 @@ export function getActivatableMiss(logs: LogsState, today: Date = new Date()): {
 
   return null;
 }
+
+/**
+ * Versión de la rutina para un día con sparring: la mitad de las series (mínimo 2, o 1 si ya era 1), esfuerzo
+ * objetivo máximo RPE 6 y, en Today, sin subir peso. Los ejercicios se mantienen con el mismo
+ * nombre para que el historial y las sugerencias sigan funcionando.
+ */
+export function lightenForSparring(day: TrainingDay): TrainingDay {
+  return {
+    ...day,
+    focus: `Con sparring hoy — versión ligera (menos series, sin subir peso). ${day.focus}`,
+    lifting: day.lifting.map((item) => ({
+      ...item,
+      sets: item.sets <= 1 ? item.sets : Math.max(2, Math.ceil(item.sets / 2)),
+      targetRpe: item.targetRpe != null ? Math.min(item.targetRpe, 6) : item.targetRpe,
+    })),
+  };
+}

@@ -1525,3 +1525,47 @@ main {
     animation-duration: 0.01ms !important;
   }
 }
+
+.sparring-choice-row {
+  display: flex;
+  gap: 10px;
+  margin-top: var(--space-2);
+}
+
+.sparring-btn {
+  flex: 1;
+  padding: 0.9rem 0.5rem;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+
+.sparring-btn:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.sparring-btn:disabled {
+  opacity: 0.6;
+}
+
+.sparring-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: var(--space-2);
+}
+
+.sparring-link {
+  background: none;
+  border: none;
+  color: var(--accent-text);
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 0;
+}
