@@ -49,6 +49,14 @@ export function getBlockForDate(iso: string): TrainingBlock | null {
   return trainingPlan.blocks.find((b) => iso >= b.startDate && iso <= b.endDate) ?? null;
 }
 
+/** Fecha dentro de un tramo de descarga: esas sesiones se hacen a propósito con poco peso, así que
+ *  no deben servir de punto de partida para las sugerencias de carga. */
+export function isDeloadDate(iso: string): boolean {
+  return trainingPlan.blocks.some((b) =>
+    b.overrides?.some((o) => o.progression === "deload" && iso >= o.startDate && iso <= o.endDate)
+  );
+}
+
 export function resolveTrainingForDate(date: Date): ResolvedTraining {
   const iso = toISODate(date);
   const wKey = weekdayKey(date);
@@ -256,21 +264,4 @@ export function getActivatableMiss(logs: LogsState, today: Date = new Date()): {
   }
 
   return null;
-}
-
-/**
- * Versión de la rutina para un día con sparring: la mitad de las series (mínimo 2, o 1 si ya era 1), esfuerzo
- * objetivo máximo RPE 6 y, en Today, sin subir peso. Los ejercicios se mantienen con el mismo
- * nombre para que el historial y las sugerencias sigan funcionando.
- */
-export function lightenForSparring(day: TrainingDay): TrainingDay {
-  return {
-    ...day,
-    focus: `Con sparring hoy — versión ligera (menos series, sin subir peso). ${day.focus}`,
-    lifting: day.lifting.map((item) => ({
-      ...item,
-      sets: item.sets <= 1 ? item.sets : Math.max(2, Math.ceil(item.sets / 2)),
-      targetRpe: item.targetRpe != null ? Math.min(item.targetRpe, 6) : item.targetRpe,
-    })),
-  };
 }

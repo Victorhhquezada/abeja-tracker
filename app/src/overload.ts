@@ -1,4 +1,5 @@
 import type { LogsState } from "./types";
+import { isDeloadDate } from "./trainingSchedule";
 
 const BAR_KG = 20;
 const BAR_STEP = 2.5;
@@ -16,8 +17,7 @@ function snapToLandmine(kg: number): number {
 }
 
 /** Semanas de afinación previas a una pelea (ver TrainingOverride en types.ts). */
-/** "hold" = día con sparring: nunca sube de peso. */
-export type TaperSettings = { progression: "conservative" | "deload" | "hold"; loadPct?: number };
+export type TaperSettings = { progression: "conservative" | "deload"; loadPct?: number };
 
 function deloadValue(
   value: number,
@@ -61,7 +61,7 @@ export function suggestNextLoad(
   taper?: TaperSettings
 ): Suggestion {
   const dates = Object.keys(logs.sessions)
-    .filter((d) => d < todayISO)
+    .filter((d) => d < todayISO && !isDeloadDate(d))
     .sort()
     .reverse();
 
@@ -83,16 +83,14 @@ export function suggestNextLoad(
     let message: string;
     let suggestedValue: number;
     // Esfuerzo moderado antes de pelea: solo se sube si se sintió realmente fácil (RPE < 7)
-    const canRaise =
-      rpe <= 8.5 && taper?.progression !== "hold" && !(taper?.progression === "conservative" && rpe >= 7);
-    const holdReason = taper?.progression === "hold" ? "hiciste sparring hoy" : "afinación para la pelea";
+    const canRaise = rpe <= 8.5 && !(taper?.progression === "conservative" && rpe >= 7);
 
     if (taper?.progression === "deload" && mode !== "reps") {
       const pct = taper.loadPct ?? 0.6;
       suggestedValue = deloadValue(value, pct, mode, weightOptions, loadModel);
       message = `Última vez ${value} kg @ RPE ${rpe} — semana de afinación: baja a ~${Math.round(pct * 100)}% (${suggestedValue} kg), rápido y sin llegar al límite.`;
     } else if (mode === "reps") {
-      if (rpe < 7 && taper?.progression !== "hold") {
+      if (rpe < 7) {
         suggestedValue = value + 1;
         message = `Última vez ${value} reps @ RPE ${rpe} — se sintió fácil, se sugiere subir a ${suggestedValue} reps.`;
       } else if (rpe <= 8.5) {
@@ -116,7 +114,7 @@ export function suggestNextLoad(
       }
       const base = sorted[baseIdx];
 
-      if (rpe < 7 && taper?.progression !== "hold") {
+      if (rpe < 7) {
         const atMax = baseIdx >= sorted.length - 1;
         suggestedValue = atMax ? base : sorted[baseIdx + 1];
         message = atMax
@@ -136,7 +134,7 @@ export function suggestNextLoad(
       const base = snapToLandmine(value);
       if (rpe <= 8.5 && !canRaise) {
         suggestedValue = base;
-        message = `Última vez ${value} kg de discos @ RPE ${rpe} — ${holdReason}: mantén ${base} kg hoy, sin subir.`;
+        message = `Última vez ${value} kg de discos @ RPE ${rpe} — afinación para la pelea: mantén ${base} kg hoy, sin subir.`;
       } else if (canRaise) {
         suggestedValue = Math.min(LANDMINE_MAX, base + LANDMINE_STEP);
         message =
@@ -158,7 +156,7 @@ export function suggestNextLoad(
         const base = snapToBar(value);
         if (rpe <= 8.5 && !canRaise) {
           suggestedValue = base;
-          message = `Última vez ${value} kg @ RPE ${rpe} — ${holdReason}: mantén ${base} kg hoy, sin subir.`;
+          message = `Última vez ${value} kg @ RPE ${rpe} — afinación para la pelea: mantén ${base} kg hoy, sin subir.`;
         } else if (canRaise) {
           suggestedValue = base + BAR_STEP;
           message = `Última vez ${value} kg @ RPE ${rpe} — ${rpe < 7 ? "se sintió fácil" : "buen nivel"}, se sugiere subir a ${suggestedValue} kg (+${BAR_STEP} kg: un disco de 1.25 por lado).`;
@@ -171,12 +169,12 @@ export function suggestNextLoad(
         }
       }
     } else {
-      if (rpe < 7 && canRaise) {
+      if (rpe < 7) {
         suggestedValue = value + step;
         message = `Última vez ${value} kg @ RPE ${rpe} — se sintió fácil, se sugiere subir a ${suggestedValue} kg.`;
       } else if (rpe <= 8.5 && !canRaise) {
         suggestedValue = value;
-        message = `Última vez ${value} kg @ RPE ${rpe} — ${holdReason}: mantén ${value} kg hoy, sin subir.`;
+        message = `Última vez ${value} kg @ RPE ${rpe} — afinación para la pelea: mantén ${value} kg hoy, sin subir.`;
       } else if (rpe <= 8.5) {
         suggestedValue = value + step;
         message = `Última vez ${value} kg @ RPE ${rpe} — buen nivel, se sugiere subir a ${suggestedValue} kg.`;
