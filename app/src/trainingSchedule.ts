@@ -1,4 +1,4 @@
-import { trainingPlan } from "./data/plans";
+import { getTrainingPlan } from "./athletes";
 import { toISODate, weekdayKey, addDays, startOfWeekSunday, WEEKDAY_LABELS_ES } from "./dateUtils";
 import type { TrainingBlock, TrainingDay, TrainingOverride, LogsState } from "./types";
 
@@ -29,7 +29,7 @@ const SURVEY_LEAD_DAYS = 1;
  */
 export function getPendingCycleSurvey(logs: LogsState, today: Date = new Date()): TrainingBlock | null {
   const todayISO = toISODate(today);
-  const closingBlocks = trainingPlan.blocks.filter((b) => {
+  const closingBlocks = getTrainingPlan().blocks.filter((b) => {
     const thresholdISO = toISODate(addDays(new Date(`${b.endDate}T00:00:00`), -SURVEY_LEAD_DAYS));
     return thresholdISO <= todayISO;
   });
@@ -46,13 +46,13 @@ export type ResolvedTraining =
   | { kind: "none" };
 
 export function getBlockForDate(iso: string): TrainingBlock | null {
-  return trainingPlan.blocks.find((b) => iso >= b.startDate && iso <= b.endDate) ?? null;
+  return getTrainingPlan().blocks.find((b) => iso >= b.startDate && iso <= b.endDate) ?? null;
 }
 
 /** Fecha dentro de un tramo de descarga: esas sesiones se hacen a propósito con poco peso, así que
  *  no deben servir de punto de partida para las sugerencias de carga. */
 export function isDeloadDate(iso: string): boolean {
-  return trainingPlan.blocks.some((b) =>
+  return getTrainingPlan().blocks.some((b) =>
     b.overrides?.some((o) => o.progression === "deload" && iso >= o.startDate && iso <= o.endDate)
   );
 }
@@ -74,7 +74,7 @@ export function resolveTrainingForDate(date: Date): ResolvedTraining {
 }
 
 export function nextTrainingCheckpoint(fromISO: string): { date: string; label: string } | null {
-  const upcoming = trainingPlan.checkpoints
+  const upcoming = getTrainingPlan().checkpoints
     .filter((c) => c.date >= fromISO)
     .sort((a, b) => (a.date < b.date ? -1 : 1));
   return upcoming[0] ?? null;
@@ -155,10 +155,10 @@ export function getYearDays(logs: LogsState, year: number, today: Date = new Dat
   return days;
 }
 
-const EARLIEST_BLOCK_DATE = trainingPlan.blocks.reduce(
-  (min, b) => (b.startDate < min ? b.startDate : min),
-  trainingPlan.blocks[0]?.startDate ?? "9999-12-31"
-);
+function earliestBlockDate(): string {
+  const blocks = getTrainingPlan().blocks;
+  return blocks.reduce((min, b) => (b.startDate < min ? b.startDate : min), blocks[0]?.startDate ?? "9999-12-31");
+}
 
 const PROTECTION_EARN_THRESHOLD = 15; // 15 días de entrenamiento seguidos (lun-vie) = 3 semanas limpias
 
@@ -183,7 +183,7 @@ export function computeStreak(logs: LogsState, today: Date = new Date()): number
     cursor = addDays(cursor, -1);
   }
 
-  while (toISODate(cursor) >= EARLIEST_BLOCK_DATE) {
+  while (toISODate(cursor) >= earliestBlockDate()) {
     const resolved = resolveTrainingForDate(cursor);
     if (resolved.kind !== "day") {
       cursor = addDays(cursor, -1);
@@ -225,7 +225,7 @@ export function computeProtectionStatus(logs: LogsState, today: Date = new Date(
   let earned = 0;
   let used = 0;
 
-  for (let cursor = new Date(`${EARLIEST_BLOCK_DATE}T00:00:00`); toISODate(cursor) < todayISO; cursor = addDays(cursor, 1)) {
+  for (let cursor = new Date(`${earliestBlockDate()}T00:00:00`); toISODate(cursor) < todayISO; cursor = addDays(cursor, 1)) {
     const resolved = resolveTrainingForDate(cursor);
     if (resolved.kind !== "day") continue;
 
@@ -253,7 +253,7 @@ export function computeProtectionStatus(logs: LogsState, today: Date = new Date(
 export function getActivatableMiss(logs: LogsState, today: Date = new Date()): { iso: string; label: string } | null {
   let cursor = addDays(today, -1);
 
-  while (toISODate(cursor) >= EARLIEST_BLOCK_DATE) {
+  while (toISODate(cursor) >= earliestBlockDate()) {
     const resolved = resolveTrainingForDate(cursor);
     if (resolved.kind === "day") {
       const iso = toISODate(cursor);

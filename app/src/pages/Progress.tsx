@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { trainingPlan } from "../data/plans";
+import { getTrainingPlan } from "../athletes";
 import LineChart from "../components/LineChart";
 import type { LogsState } from "../types";
 
@@ -8,7 +8,7 @@ import type { LogsState } from "../types";
 export default function Progress({ logs }: { logs: LogsState }) {
   const exerciseNames = useMemo(() => {
     const names = new Set<string>();
-    trainingPlan.blocks.forEach((b) =>
+    getTrainingPlan().blocks.forEach((b) =>
       b.days?.forEach((d) =>
         d.lifting.forEach((l) => {
           if (l.type === "principal") names.add(l.exercise);

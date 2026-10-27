@@ -16,7 +16,7 @@ Live at **[abeja-tracker.victorhhquezada.workers.dev](https://abeja-tracker.vict
 
 ## How the program itself works
 
-The actual lifting program (exercises, sets, reps, block structure, checkpoints) lives in [`data/training-plan.json`](data/training-plan.json) — it's data, not code, so the plan can be revised without touching the app. It's built around a few explicit priorities: punch power/explosiveness first, then injury durability, then work capacity, then general strength — and it's designed for a lifter with no prior loading history, so technique gates load, RPE stays capped well below failure, and 1RM testing is avoided throughout. The plan's own `notes` field documents the research behind those choices in more depth.
+The actual lifting program (exercises, sets, reps, block structure, checkpoints) lives in [`data/<athlete>/training-plan.json`](data/abeja/training-plan.json) — it's data, not code, so the plan can be revised without touching the app. It's built around a few explicit priorities: punch power/explosiveness first, then injury durability, then work capacity, then general strength — and it's designed for a lifter with no prior loading history, so technique gates load, RPE stays capped well below failure, and 1RM testing is avoided throughout. The plan's own `notes` field documents the research behind those choices in more depth.
 
 ## Tech stack
 
@@ -28,10 +28,11 @@ The actual lifting program (exercises, sets, reps, block structure, checkpoints)
 ## Project structure
 
 ```
-data/training-plan.json   canonical copy of the lifting program (source of truth)
+data/<athlete>/training-plan.json   canonical copy of each athlete's lifting program (source of truth)
 app/
   src/                     the React app
-    data/training-plan.json   bundled copy consumed by the app — kept in sync with the one above
+    athletes.ts                    per-athlete config (plan, memes, branding) and the active-athlete switch
+    data/<athlete>/training-plan.json   bundled copy consumed by the app — kept in sync with the one above
     data/memes.ts              the meme pool for the completion popup
     pages/                     Hoy / Semana / Mes / Progreso
     components/
@@ -59,4 +60,8 @@ npm run build
 npx wrangler deploy
 ```
 
-No personal or physical data about the athlete is tracked in this repo — the training plan (`data/training-plan.json`) describes the program design, not the person.
+No personal or physical data about the athlete is tracked in this repo — the training plan (`data/<athlete>/training-plan.json`) describes the program design, not the person.
+
+## Multiple athletes
+
+One deployment serves more than one athlete (currently `abeja` and `oscar`). Each athlete has their own password, plan, meme pool and logged data. The login screen asks who's signing in; the signed session token carries the athlete id, and the API only ever reads or writes that athlete's data (KV key `logs:<athlete>`). Athlete-specific config lives in `app/src/athletes.ts` and the server-side password secrets (`APP_PASSWORD` for abeja, `APP_PASSWORD_OSCAR` for oscar).

@@ -35,27 +35,32 @@ function fromBase64Url(str: string): string {
   return atob(padded);
 }
 
-export async function signToken(secret: string): Promise<string> {
+/** El token lleva el atleta dentro de lo firmado: `${exp}~${athlete}`. Los tokens anteriores a que
+ *  existieran varios atletas solo llevan `${exp}` y siempre fueron de "abeja". */
+export async function signToken(secret: string, athlete: string): Promise<string> {
   const exp = Date.now() + 1000 * 60 * 60 * 24 * 30; // 30 días
-  const payload = `${exp}`;
+  const payload = `${exp}~${athlete}`;
   const key = await hmacKey(secret);
   const sig = bytesToHex(await crypto.subtle.sign("HMAC", key, enc.encode(payload)));
   return toBase64Url(`${payload}.${sig}`);
 }
 
-export async function verifyToken(req: Request, secret: string): Promise<boolean> {
+/** Devuelve el id del atleta dueño del token, o null si el token es inválido o venció. */
+export async function verifyToken(req: Request, secret: string): Promise<string | null> {
   const auth = req.headers.get("authorization") || "";
   const token = auth.replace(/^Bearer\s+/i, "");
-  if (!token) return false;
+  if (!token) return null;
   try {
     const decoded = fromBase64Url(token);
     const [payload, sig] = decoded.split(".");
-    if (!payload || !sig) return false;
+    if (!payload || !sig) return null;
     const key = await hmacKey(secret);
     const valid = await crypto.subtle.verify("HMAC", key, hexToBytes(sig), enc.encode(payload));
-    if (!valid) return false;
-    return Date.now() < Number(payload);
+    if (!valid) return null;
+    const [exp, athlete] = payload.split("~");
+    if (!(Date.now() < Number(exp))) return null;
+    return athlete || "abeja";
   } catch {
-    return false;
+    return null;
   }
 }

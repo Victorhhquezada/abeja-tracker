@@ -1525,3 +1525,13 @@ main {
     animation-duration: 0.01ms !important;
   }
 }
+
+.athlete-picker {
+  margin-bottom: var(--space-2);
+}
+
+.athlete-picker .weight-choice-btn {
+  padding: 0.65rem 0;
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -9,12 +9,13 @@ import YearActivityGraph from "../components/YearActivityGraph";
 import MemeModal from "../components/MemeModal";
 import SurveyPendingBanner from "../components/SurveyPendingBanner";
 import CycleSurveyModal from "../components/CycleSurveyModal";
-import { MEMES } from "../data/memes";
+import { getActiveAthlete } from "../athletes";
 import type { LogsState, SessionLog, SetLog } from "../types";
 
 function randomMeme(): string | null {
-  if (MEMES.length === 0) return null;
-  return MEMES[Math.floor(Math.random() * MEMES.length)];
+  const memes = getActiveAthlete().memes;
+  if (memes.length === 0) return null;
+  return memes[Math.floor(Math.random() * memes.length)];
 }
 
 function emptySets(

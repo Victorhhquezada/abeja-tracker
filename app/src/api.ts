@@ -1,4 +1,5 @@
 import type { LogsState, SessionLog, CycleSurveyResponse } from "./types";
+import { isAthleteId, setActiveAthlete, type AthleteId } from "./athletes";
 
 const TOKEN_KEY = "ht_token";
 
@@ -44,19 +45,20 @@ async function authFetch(path: string, options: RequestInit = {}): Promise<Respo
   return res;
 }
 
-export async function login(password: string): Promise<void> {
+export async function login(athlete: AthleteId, password: string): Promise<void> {
   const res = await fetch("/api/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password }),
+    body: JSON.stringify({ athlete, password }),
     keepalive: true,
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body.error || "Contraseña incorrecta");
   }
-  const { token } = await res.json();
+  const { token, athlete: confirmed } = await res.json();
   setToken(token);
+  setActiveAthlete(isAthleteId(confirmed) ? confirmed : athlete);
 }
 
 export async function fetchState(): Promise<LogsState> {

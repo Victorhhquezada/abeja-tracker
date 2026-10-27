@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated": "2026-09-25",
+  "notes": "Pendiente de diseñar — programa de fuerza/hipertrofia complementario para Oscar (17 años, 180cm, 85kg), boxeador amateur en el mismo gimnasio que el otro atleta de esta familia de apps, pero de complexión más grande. Prioridad: seguir mejorando potencia de golpe mientras se agrega énfasis en fuerza general e hipertrofia (objetivo estético personal de Oscar). Igual que en la app hermana, el boxeo en sí no se programa aquí — se asume que ya lo entrena por su cuenta con el gimnasio. Falta información clave antes de diseñar el bloque 1: ¿categoría de peso / está en corte o fuera de temporada?, ¿experiencia previa real con pesas?, ¿lesiones o limitaciones?, ¿mismo horario lunes-viernes después de box + viernes día fuerte, o distinto?",
+  "sequencingGuidance": "",
+  "varietyGuidance": "",
+  "progressiveOverload": {
+    "rule": "Pendiente — depende de si Oscar ya tiene historial de carga real (a diferencia del otro atleta, que empezó desde cero)."
+  },
+  "checkpoints": [],
+  "blocks": [
+    {
+      "id": "bloque-1",
+      "label": "Bloque 1",
+      "phase": "Pendiente de definir",
+      "startDate": "2026-09-25",
+      "endDate": "2026-12-31",
+      "restDays": ["saturday", "sunday"],
+      "days": null,
+      "note": "Plan pendiente — esperando perfil completo de Oscar antes de diseñar el bloque."
+    }
+  ]
+}

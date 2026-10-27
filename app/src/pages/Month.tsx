@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { trainingPlan } from "../data/plans";
+import { getTrainingPlan } from "../athletes";
 import { monthMatrix, MONTH_LABELS_ES, toISODate } from "../dateUtils";
 import { resolveTrainingForDate, currentBlock } from "../trainingSchedule";
 import DayDetailModal from "../components/DayDetailModal";
@@ -51,7 +51,7 @@ export default function Month({ logs }: { logs: LogsState }) {
       <h1>Entrenamiento — {block?.label ?? "Sin bloque activo"}</h1>
       {block?.phase && <p className="muted">{block.phase}</p>}
       <p className="muted small">
-        Fechas de chequeo (recálculo del plan): {trainingPlan.checkpoints.map((c) => c.date.slice(5)).join(" · ")}
+        Fechas de chequeo (recálculo del plan): {getTrainingPlan().checkpoints.map((c) => c.date.slice(5)).join(" · ")}
       </p>
 
       <div className="month-nav">
