@@ -2,6 +2,9 @@ export type LiftingItem = {
   exercise: string;
   sets: number;
   targetReps: number | null;
+  /** tope del rango de repeticiones (ej. targetReps 6 y maxReps 8 = "6-8"). Con rango, el peso solo
+   *  sube al llegar al tope (doble progresión) en vez de moverse con cada RPE. */
+  maxReps?: number;
   targetRpe: number | null;
   type: "principal" | "accesorio";
   note?: string;

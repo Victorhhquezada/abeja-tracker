@@ -10,12 +10,16 @@ import MemeModal from "../components/MemeModal";
 import SurveyPendingBanner from "../components/SurveyPendingBanner";
 import CycleSurveyModal from "../components/CycleSurveyModal";
 import { getActiveAthlete } from "../athletes";
-import type { LogsState, SessionLog, SetLog } from "../types";
+import type { LiftingItem, LogsState, SessionLog, SetLog } from "../types";
 
 function randomMeme(): string | null {
   const memes = getActiveAthlete().memes;
   if (memes.length === 0) return null;
   return memes[Math.floor(Math.random() * memes.length)];
+}
+
+function repRangeOf(item: LiftingItem): { min: number; max: number } | undefined {
+  return item.maxReps && item.targetReps ? { min: item.targetReps, max: item.maxReps } : undefined;
 }
 
 function emptySets(
@@ -69,7 +73,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
         } else if (mode === "check") {
           init[item.exercise] = { sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode) };
         } else {
-          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper);
+          const suggestion = suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper, repRangeOf(item));
           init[item.exercise] = {
             sets: emptySets(item.sets, item.targetReps, item.targetRpe, mode, suggestion.suggestedValue),
           };
@@ -148,7 +152,7 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
                 suggestion={
                   mode === "check"
                     ? ""
-                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper).message
+                    : suggestNextLoad(logs, item.exercise, todayISO, item.type, mode, item.weightOptions, item.loadModel, taper, repRangeOf(item)).message
                 }
                 onChange={(i, field, value) => updateSet(item.exercise, i, field, value)}
                 locked={isLocked}

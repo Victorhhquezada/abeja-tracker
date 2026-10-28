@@ -1,23 +1,192 @@
 {
-  "version": 1,
-  "updated": "2026-09-25",
-  "notes": "Pendiente de diseñar — programa de fuerza/hipertrofia complementario para Oscar (17 años, 180cm, 85kg), boxeador amateur en el mismo gimnasio que el otro atleta de esta familia de apps, pero de complexión más grande. Prioridad: seguir mejorando potencia de golpe mientras se agrega énfasis en fuerza general e hipertrofia (objetivo estético personal de Oscar). Igual que en la app hermana, el boxeo en sí no se programa aquí — se asume que ya lo entrena por su cuenta con el gimnasio. Falta información clave antes de diseñar el bloque 1: ¿categoría de peso / está en corte o fuera de temporada?, ¿experiencia previa real con pesas?, ¿lesiones o limitaciones?, ¿mismo horario lunes-viernes después de box + viernes día fuerte, o distinto?",
-  "sequencingGuidance": "",
-  "varietyGuidance": "",
+  "version": 2,
+  "updated": "2026-10-27",
+  "notes": "Programa de hipertrofia y potencia complementario para Oscar, boxeador amateur adolescente que entrena en el mismo gimnasio que el otro atleta de esta app. Menos de 6 meses de experiencia levantando, sin pelea próxima ni categoría de peso que cuidar, y con interés personal en ganar masa muscular, sobre todo en el tren superior. Prioridad: ganar músculo sin perder lo que sirve a un boxeador: potencia de golpe, rotación, cuello, agarre y footwork. El boxeo en sí no se programa aquí; se asume la misma rutina diaria de boxeo y costal que el otro atleta, así que el volumen de pesas se mantiene moderado. Sin datos físicos personales en este archivo: el repositorio es público.",
+  "sequencingGuidance": "Pesas justo después del boxeo (lunes a viernes). Cada sesión empieza con potencia fresca antes de la hipertrofia. El día más fuerte de pierna es el martes y el jueves se deja la barra libre de pesos pesados del otro atleta; el viernes es footwork y potencia, sin rack.",
+  "varietyGuidance": "Se varía el implemento dentro del mismo patrón de movimiento (barra, landmine, banda, sandbag) en vez de cambiar el patrón, para no frenar la progresión.",
   "progressiveOverload": {
-    "rule": "Pendiente — depende de si Oscar ya tiene historial de carga real (a diferencia del otro atleta, que empezó desde cero)."
+      "rule": "Doble progresión por rangos de repeticiones: se mantiene el peso hasta lograr el tope del rango en todas las series con un esfuerzo razonable (RPE 8.5 o menos); entonces sube (2.5 kg en la barra, 1.25 kg en el landmine) y se vuelve a empezar desde el mínimo del rango. Semanas 1-2 a RPE 6-7 por ser principiante; desde la semana 3 hasta RPE 8. Sin pruebas de 1RM.",
+      "youthNote": "Técnica y control primero: a esta edad y con menos de 6 meses de experiencia, la mayor parte de las ganancias vienen de ser constante y progresar poco a poco, no de empujar al límite."
   },
-  "checkpoints": [],
+  "checkpoints": [
+    {"date": "2026-11-20", "label": "Chequeo 1 — revisión de progreso, fin de bloque 1 (retest de dominadas, sentadilla y banca)"}
+  ],
   "blocks": [
     {
       "id": "bloque-1",
       "label": "Bloque 1",
-      "phase": "Pendiente de definir",
-      "startDate": "2026-09-25",
-      "endDate": "2026-12-31",
+      "phase": "Hipertrofia con base de boxeador — prioridad tren superior",
+      "startDate": "2026-10-28",
+      "endDate": "2026-11-20",
       "restDays": ["saturday", "sunday"],
-      "days": null,
-      "note": "Plan pendiente — esperando perfil completo de Oscar antes de diseñar el bloque."
+      "note": "Primer bloque de 4 semanas (la primera arranca el miércoles 28 de octubre; la semana 4 es retest y descarga, y termina el mismo día que el bloque del otro atleta, con el mismo chequeo). Hipertrofia con prioridad en el tren superior (3 días de tren superior y 1 día completo de pierna), con menos de 6 meses levantando, así que la técnica va primero: semanas 1-2 a RPE 6-7. Cada sesión empieza con potencia fresca (saltos, medball o landmine) antes de la hipertrofia, y se mantienen el cuello, el core y el footwork del viernes para no perder lo que sirve en el ring. Progresión por rangos de repeticiones: el peso solo sube al llegar al tope del rango. Solo con el equipo del gimnasio: rack, barra, discos, banco plano e inclinado, landmine, bandas, sandbags, medball, llanta y barra de dominadas.",
+      "overrides": [
+        {
+          "id": "retest",
+          "label": "Semana 4: retest y descarga",
+          "startDate": "2026-11-16",
+          "endDate": "2026-11-20",
+          "progression": "conservative",
+          "days": [
+            {
+              "id": "o1r-dia1",
+              "order": 1,
+              "label": "Día 1",
+              "defaultWeekday": "monday",
+              "focus": "Semana 4, retest y descarga ligera — Empuje — pecho, hombro y tríceps",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Lanzamientos de medball de pecho a la pared", "sets": 2, "targetReps": 5, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "empieza el día con la potencia fresca: de pie frente a la pared, lanza el medball desde el pecho con la máxima velocidad, atrapa el rebote y repite. 3 series de 5, descanso largo; solo hay un medball, así que progresa en repeticiones o series"},
+                {"exercise": "Press de banca con barra", "sets": 3, "targetReps": 3, "targetRpe": 8, "type": "principal", "loadModel": "barbell", "note": "RETEST: 3 series de 3 repeticiones a RPE 8 (queda 1-2 en reserva), no un máximo de 1 repetición. Mide la fuerza de este bloque sin riesgo"},
+                {"exercise": "Press inclinado con barra", "sets": 2, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "banco inclinado, misma técnica que la banca pero la barra baja a la parte alta del pecho. Trabaja pecho superior y hombro. Doble progresión: sube cuando logres 10 repeticiones en todas las series"},
+                {"exercise": "Flexiones lastradas con sandbag", "sets": 2, "targetReps": 8, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "flexión completa con el sandbag apoyado en la espalda (que alguien lo coloque o ponlo en la parte alta de la espalda). El sandbag es de peso fijo, así que se progresa en repeticiones: de 8 a 12 y luego pasa al sandbag más pesado"},
+                {"exercise": "Extensión de tríceps con banda", "sets": 2, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "banda anclada arriba, codos pegados al cuerpo, extiende por completo y regresa lento. Progresa en repeticiones de 12 a 15, y después usa una banda más fuerte"},
+                {"exercise": "Sostenido isométrico de cuello (6 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de las 6 direcciones, 8-10s cada una, con tu propia mano como resistencia — no te mueves, solo tensión controlada: (1) flexión, mano en la frente empujando hacia abajo mientras resistes; (2) extensión, mano detrás de la cabeza empujando hacia adelante mientras resistes hacia atrás; (3-4) lateral izq/der, mano en cada lado de la cabeza empujando hacia el hombro contrario mientras resistes; (5-6) rotación izq/der, mano en la mejilla tratando de girar la cabeza hacia ese lado mientras la mano no te deja"}
+              ]
+            },
+            {
+              "id": "o1r-dia2",
+              "order": 2,
+              "label": "Día 2",
+              "defaultWeekday": "tuesday",
+              "focus": "Semana 4, retest y descarga ligera — Pierna completa — base de potencia y fuerza",
+              "warmupMin": 12,
+              "lifting": [
+                {"exercise": "Saltos verticales", "sets": 2, "targetReps": 3, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "al empezar, con las piernas frescas: 3 saltos verticales o saltos largos a máxima intensidad, aterrizaje suave y estable, descanso completo. Es velocidad de piernas, no cansancio"},
+                {"exercise": "Sentadilla trasera", "sets": 3, "targetReps": 3, "targetRpe": 8, "type": "principal", "loadModel": "barbell", "note": "RETEST: 3 series de 3 repeticiones a RPE 8 (queda 1-2 en reserva), no un máximo de 1 repetición. Mide la fuerza de este bloque sin riesgo"},
+                {"exercise": "Peso muerto rumano con barra", "sets": 2, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "de pie con la barra, bisagra de cadera con espalda neutra: empuja la cadera atrás, la barra baja pegada a las piernas hasta sentir los isquios y regresa apretando glúteos. Sin redondear la espalda. Doble progresión: sube 2.5 kg al lograr 10 repeticiones"},
+                {"exercise": "Zancada búlgara (sandbag al pecho)", "sets": 2, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "por pierna — pie trasero en el banco, sandbag al pecho. El sandbag es fijo, así que se progresa en repeticiones de 8 a 10 y luego en series"},
+                {"exercise": "Hip thrust con barra", "sets": 2, "targetReps": 8, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "espalda alta en el banco, la barra sobre la cadera, sube apretando glúteos hasta la línea de rodillas a hombros y pausa 1 segundo. Doble progresión: sube cuando logres 12 repeticiones"},
+                {"exercise": "Elevación de talones con barra", "sets": 2, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "de pie con la barra sobre la espalda alta o en las manos al frente, sube a la punta de los pies con pausa arriba y baja lento. Doble progresión: sube cuando logres 15 repeticiones"}
+              ]
+            },
+            {
+              "id": "o1r-dia3",
+              "order": 3,
+              "label": "Día 3",
+              "defaultWeekday": "wednesday",
+              "focus": "Semana 4, retest y descarga ligera — Tirón — espalda, bíceps y salud de hombro",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Dominadas (asistidas si hace falta)", "sets": 3, "targetReps": null, "targetRpe": null, "type": "principal", "progressionMode": "reps", "note": "RETEST: 3 series al fallo (el máximo de repeticiones limpias, técnica completa). Compara con tu primera semana. Anota cuántas hiciste en cada serie"},
+                {"exercise": "Remo con barra", "sets": 3, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "torso inclinado casi paralelo al piso, espalda neutra, tira de la barra hacia el abdomen bajo y baja controlado, sin balancear. Doble progresión: sube 2.5 kg al lograr 8 repeticiones en todas las series"},
+                {"exercise": "Remo landmine a una mano", "sets": 2, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado — de pie con un pie adelante, tira de la punta de la barra en landmine hacia la cadera, codo pegado. Doble progresión con discos pequeños: sube 1.25 kg al lograr 12 repeticiones"},
+                {"exercise": "Face pull con banda elástica", "sets": 2, "targetReps": 15, "targetRpe": 6.5, "type": "accesorio", "progressionMode": "reps", "note": "salud de hombro — banda a la altura de la cara, tira hacia la frente abriendo los codos y rotando hacia afuera. Prevención de lesiones, no esfuerzo máximo"},
+                {"exercise": "Curl de bíceps (mancuernas o banda)", "sets": 2, "targetReps": 10, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "sin balancear el cuerpo, codos pegados y bajada lenta de 3 segundos. Con la mancuerna o la banda disponible; progresa en repeticiones de 10 a 15 y luego sube la carga"},
+                {"exercise": "Cuello con resistencia de compañero (4 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de 4 direcciones (flexión, extensión, lateral izquierda y derecha), 8 repeticiones lentas de 3 segundos cada una, mientras un compañero pone resistencia suave con la mano. La resistencia sube poco a poco y nunca con jalones ni movimientos bruscos. Con supervisión de un adulto; se detiene ante mareo, dolor o cualquier molestia en el cuello. Reemplaza el arnés y la banda lateral. Solo marca si hiciste la ronda"}
+              ]
+            },
+            {
+              "id": "o1r-dia4",
+              "order": 4,
+              "label": "Día 4",
+              "defaultWeekday": "thursday",
+              "focus": "Semana 4, retest y descarga ligera — Hombros, brazos y pecho extra — con la barra libre",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Press militar de pie con barra", "sets": 3, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "de pie, barra en los hombros, glúteos y abdomen apretados, empuja sobre la cabeza sin arquear la espalda baja y termina con la barra sobre las orejas. Con la barra libre de este día. Doble progresión: sube 2.5 kg al lograr 8 repeticiones Semanas 1-2 a RPE 6-7 aprendiendo la técnica; desde la semana 3 puede llegar a RPE 8."},
+                {"exercise": "Elevaciones laterales con banda", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "de pie sobre la banda, sube los brazos a los lados hasta la altura de los hombros con el codo apenas flexionado, y baja lento. Progresa en repeticiones de 12 a 15"},
+                {"exercise": "Press de banca agarre cerrado", "sets": 2, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "la barra en el banco plano con las manos al ancho de los hombros y los codos pegados: más tríceps y pecho interno. Doble progresión: sube 2.5 kg al lograr 10 repeticiones"},
+                {"exercise": "Curl martillo (mancuernas o banda)", "sets": 2, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "agarre neutro (palmas hacia dentro), sin balancear. Trabaja bíceps y antebrazo, que ayuda al agarre. Progresa de 12 a 15 repeticiones"},
+                {"exercise": "Carry con discos (farmer)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "choice", "weightOptions": [20, 30, 40], "note": "3 series de ~20 m — carga discos en cada mano hasta el peso total elegido y camina erguido. Agarre y core. Sube distancia antes que peso"}
+              ]
+            },
+            {
+              "id": "o1r-dia5",
+              "order": 5,
+              "label": "Día 5",
+              "defaultWeekday": "friday",
+              "focus": "Semana 4, retest y descarga ligera — Footwork y potencia de golpe — velocidad de pies, agilidad y reacción",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Escalera (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Ver video de referencia", "url": "https://vt.tiktok.com/ZSbfAcweq/"}], "note": "marca al terminar los 7:\n1. Paso lateral con jab — 5 vueltas\n2. Shuffle lateral — 5 vueltas\n3. Un solo pie — 4 vueltas por pie\n4. Pivots — 5 vueltas\n5. Shift con upper — 5 vueltas\n6. Jumping jacks — 4 vueltas\n7. Jumping jacks con cruce — 4 vueltas"},
+                {"exercise": "Ángulos y patrones (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Video ángulos", "url": "https://vt.tiktok.com/ZSbfAwnwb/"}, {"label": "Video patrones", "url": "https://vt.tiktok.com/ZSbfD4BNq/"}], "note": "marca al terminar los 7:\nÁngulos (30 reps cada uno):\n1. Slip shift\n2. Step shift\n3. Saltos de 90 grados\n4. Step pivots\nPatrones:\n5. Diamond step — 3 series de 30 segundos\n6. L step — 3 series de 40 segundos\n7. Z step — 3 series de 40 segundos"},
+                {"exercise": "Golpe explosivo con landmine (lanzar y atrapar)", "sets": 2, "targetReps": 8, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado — lanza la punta libre de la barra en landmine imitando el golpe (cross o gancho) y recíbela de vuelta con las manos; un compañero cerca ayuda a guiar la recepción. Es la potencia específica de golpe del día: máxima velocidad, descanso completo, y sube un disco pequeño en la punta cuando las 8 repeticiones salgan limpias"},
+                {"exercise": "Sostenido isométrico de cuello (6 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de las 6 direcciones, 8-10s cada una, con tu propia mano como resistencia — no te mueves, solo tensión controlada: (1) flexión, mano en la frente empujando hacia abajo mientras resistes; (2) extensión, mano detrás de la cabeza empujando hacia adelante mientras resistes hacia atrás; (3-4) lateral izq/der, mano en cada lado de la cabeza empujando hacia el hombro contrario mientras resistes; (5-6) rotación izq/der, mano en la mejilla tratando de girar la cabeza hacia ese lado mientras la mano no te deja"}
+              ]
+            }
+          ]
+        }
+      ],
+      "days": [
+        {
+          "id": "o1-dia1",
+          "order": 1,
+          "label": "Día 1",
+          "defaultWeekday": "monday",
+          "focus": "Empuje — pecho, hombro y tríceps",
+          "warmupMin": 10,
+          "lifting": [
+            {"exercise": "Lanzamientos de medball de pecho a la pared", "sets": 3, "targetReps": 5, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "empieza el día con la potencia fresca: de pie frente a la pared, lanza el medball desde el pecho con la máxima velocidad, atrapa el rebote y repite. 3 series de 5, descanso largo; solo hay un medball, así que progresa en repeticiones o series"},
+            {"exercise": "Press de banca con barra", "sets": 4, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra libre en el banco plano: agarre un poco más ancho que los hombros, baja controlado al pecho, escápulas juntas y pies firmes, y empuja sin despegar la cadera. Doble progresión: mantén el peso hasta lograr 8 reps en todas las series, entonces sube 2.5 kg y vuelve a 6. Semanas 1-2 a RPE 6-7 aprendiendo la técnica; desde la semana 3 puede llegar a RPE 8."},
+            {"exercise": "Press inclinado con barra", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "banco inclinado, misma técnica que la banca pero la barra baja a la parte alta del pecho. Trabaja pecho superior y hombro. Doble progresión: sube cuando logres 10 repeticiones en todas las series"},
+            {"exercise": "Flexiones lastradas con sandbag", "sets": 3, "targetReps": 8, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "flexión completa con el sandbag apoyado en la espalda (que alguien lo coloque o ponlo en la parte alta de la espalda). El sandbag es de peso fijo, así que se progresa en repeticiones: de 8 a 12 y luego pasa al sandbag más pesado"},
+            {"exercise": "Extensión de tríceps con banda", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "banda anclada arriba, codos pegados al cuerpo, extiende por completo y regresa lento. Progresa en repeticiones de 12 a 15, y después usa una banda más fuerte"},
+            {"exercise": "Sostenido isométrico de cuello (6 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de las 6 direcciones, 8-10s cada una, con tu propia mano como resistencia — no te mueves, solo tensión controlada: (1) flexión, mano en la frente empujando hacia abajo mientras resistes; (2) extensión, mano detrás de la cabeza empujando hacia adelante mientras resistes hacia atrás; (3-4) lateral izq/der, mano en cada lado de la cabeza empujando hacia el hombro contrario mientras resistes; (5-6) rotación izq/der, mano en la mejilla tratando de girar la cabeza hacia ese lado mientras la mano no te deja"}
+          ]
+        },
+        {
+          "id": "o1-dia2",
+          "order": 2,
+          "label": "Día 2",
+          "defaultWeekday": "tuesday",
+          "focus": "Pierna completa — base de potencia y fuerza",
+          "warmupMin": 12,
+          "lifting": [
+            {"exercise": "Saltos verticales", "sets": 3, "targetReps": 3, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "al empezar, con las piernas frescas: 3 saltos verticales o saltos largos a máxima intensidad, aterrizaje suave y estable, descanso completo. Es velocidad de piernas, no cansancio"},
+            {"exercise": "Sentadilla trasera", "sets": 4, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra en el rack sobre la espalda alta, baja hasta que los muslos queden paralelos o un poco más y sube empujando el piso con el torso firme. Es el único día fuerte de pierna del bloque, así que se hace con cuidado. Doble progresión: sube 2.5 kg al lograr 8 repeticiones en todas las series. Semanas 1-2 a RPE 6-7 aprendiendo la técnica; desde la semana 3 puede llegar a RPE 8."},
+            {"exercise": "Peso muerto rumano con barra", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "de pie con la barra, bisagra de cadera con espalda neutra: empuja la cadera atrás, la barra baja pegada a las piernas hasta sentir los isquios y regresa apretando glúteos. Sin redondear la espalda. Doble progresión: sube 2.5 kg al lograr 10 repeticiones"},
+            {"exercise": "Zancada búlgara (sandbag al pecho)", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "por pierna — pie trasero en el banco, sandbag al pecho. El sandbag es fijo, así que se progresa en repeticiones de 8 a 10 y luego en series"},
+            {"exercise": "Hip thrust con barra", "sets": 3, "targetReps": 8, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "espalda alta en el banco, la barra sobre la cadera, sube apretando glúteos hasta la línea de rodillas a hombros y pausa 1 segundo. Doble progresión: sube cuando logres 12 repeticiones"},
+            {"exercise": "Elevación de talones con barra", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "de pie con la barra sobre la espalda alta o en las manos al frente, sube a la punta de los pies con pausa arriba y baja lento. Doble progresión: sube cuando logres 15 repeticiones"}
+          ]
+        },
+        {
+          "id": "o1-dia3",
+          "order": 3,
+          "label": "Día 3",
+          "defaultWeekday": "wednesday",
+          "focus": "Tirón — espalda, bíceps y salud de hombro",
+          "warmupMin": 10,
+          "lifting": [
+            {"exercise": "Dominadas (asistidas si hace falta)", "sets": 4, "targetReps": 6, "maxReps": 10, "targetRpe": 7, "type": "principal", "progressionMode": "reps", "note": "del cuelgue total a la barbilla sobre la barra, sin balanceo. Progresa en repeticiones de 6 a 10, y cuando haga 10 limpias en todas las series, el siguiente paso es agregar peso"},
+            {"exercise": "Remo con barra", "sets": 4, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "torso inclinado casi paralelo al piso, espalda neutra, tira de la barra hacia el abdomen bajo y baja controlado, sin balancear. Doble progresión: sube 2.5 kg al lograr 8 repeticiones en todas las series"},
+            {"exercise": "Remo landmine a una mano", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado — de pie con un pie adelante, tira de la punta de la barra en landmine hacia la cadera, codo pegado. Doble progresión con discos pequeños: sube 1.25 kg al lograr 12 repeticiones"},
+            {"exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 6.5, "type": "accesorio", "progressionMode": "reps", "note": "salud de hombro — banda a la altura de la cara, tira hacia la frente abriendo los codos y rotando hacia afuera. Prevención de lesiones, no esfuerzo máximo"},
+            {"exercise": "Curl de bíceps (mancuernas o banda)", "sets": 3, "targetReps": 10, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "sin balancear el cuerpo, codos pegados y bajada lenta de 3 segundos. Con la mancuerna o la banda disponible; progresa en repeticiones de 10 a 15 y luego sube la carga"},
+            {"exercise": "Cuello con resistencia de compañero (4 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de 4 direcciones (flexión, extensión, lateral izquierda y derecha), 8 repeticiones lentas de 3 segundos cada una, mientras un compañero pone resistencia suave con la mano. La resistencia sube poco a poco y nunca con jalones ni movimientos bruscos. Con supervisión de un adulto; se detiene ante mareo, dolor o cualquier molestia en el cuello. Reemplaza el arnés y la banda lateral. Solo marca si hiciste la ronda"}
+          ]
+        },
+        {
+          "id": "o1-dia4",
+          "order": 4,
+          "label": "Día 4",
+          "defaultWeekday": "thursday",
+          "focus": "Hombros, brazos y pecho extra — con la barra libre",
+          "warmupMin": 10,
+          "lifting": [
+            {"exercise": "Press militar de pie con barra", "sets": 4, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "de pie, barra en los hombros, glúteos y abdomen apretados, empuja sobre la cabeza sin arquear la espalda baja y termina con la barra sobre las orejas. Con la barra libre de este día. Doble progresión: sube 2.5 kg al lograr 8 repeticiones Semanas 1-2 a RPE 6-7 aprendiendo la técnica; desde la semana 3 puede llegar a RPE 8."},
+            {"exercise": "Elevaciones laterales con banda", "sets": 4, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "de pie sobre la banda, sube los brazos a los lados hasta la altura de los hombros con el codo apenas flexionado, y baja lento. Progresa en repeticiones de 12 a 15"},
+            {"exercise": "Press de banca agarre cerrado", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "la barra en el banco plano con las manos al ancho de los hombros y los codos pegados: más tríceps y pecho interno. Doble progresión: sube 2.5 kg al lograr 10 repeticiones"},
+            {"exercise": "Curl martillo (mancuernas o banda)", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "agarre neutro (palmas hacia dentro), sin balancear. Trabaja bíceps y antebrazo, que ayuda al agarre. Progresa de 12 a 15 repeticiones"},
+            {"exercise": "Carry con discos (farmer)", "sets": 3, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "choice", "weightOptions": [20, 30, 40], "note": "3 series de ~20 m — carga discos en cada mano hasta el peso total elegido y camina erguido. Agarre y core. Sube distancia antes que peso"}
+          ]
+        },
+        {
+          "id": "o1-dia5",
+          "order": 5,
+          "label": "Día 5",
+          "defaultWeekday": "friday",
+          "focus": "Footwork y potencia de golpe — velocidad de pies, agilidad y reacción",
+          "warmupMin": 10,
+          "lifting": [
+            {"exercise": "Escalera (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Ver video de referencia", "url": "https://vt.tiktok.com/ZSbfAcweq/"}], "note": "marca al terminar los 7:\n1. Paso lateral con jab — 5 vueltas\n2. Shuffle lateral — 5 vueltas\n3. Un solo pie — 4 vueltas por pie\n4. Pivots — 5 vueltas\n5. Shift con upper — 5 vueltas\n6. Jumping jacks — 4 vueltas\n7. Jumping jacks con cruce — 4 vueltas"},
+            {"exercise": "Ángulos y patrones (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Video ángulos", "url": "https://vt.tiktok.com/ZSbfAwnwb/"}, {"label": "Video patrones", "url": "https://vt.tiktok.com/ZSbfD4BNq/"}], "note": "marca al terminar los 7:\nÁngulos (30 reps cada uno):\n1. Slip shift\n2. Step shift\n3. Saltos de 90 grados\n4. Step pivots\nPatrones:\n5. Diamond step — 3 series de 30 segundos\n6. L step — 3 series de 40 segundos\n7. Z step — 3 series de 40 segundos"},
+            {"exercise": "Golpe explosivo con landmine (lanzar y atrapar)", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado — lanza la punta libre de la barra en landmine imitando el golpe (cross o gancho) y recíbela de vuelta con las manos; un compañero cerca ayuda a guiar la recepción. Es la potencia específica de golpe del día: máxima velocidad, descanso completo, y sube un disco pequeño en la punta cuando las 8 repeticiones salgan limpias"},
+            {"exercise": "Sostenido isométrico de cuello (6 direcciones)", "sets": 2, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "note": "2 rondas de las 6 direcciones, 8-10s cada una, con tu propia mano como resistencia — no te mueves, solo tensión controlada: (1) flexión, mano en la frente empujando hacia abajo mientras resistes; (2) extensión, mano detrás de la cabeza empujando hacia adelante mientras resistes hacia atrás; (3-4) lateral izq/der, mano en cada lado de la cabeza empujando hacia el hombro contrario mientras resistes; (5-6) rotación izq/der, mano en la mejilla tratando de girar la cabeza hacia ese lado mientras la mano no te deja"}
+          ]
+        }
+      ]
     }
   ]
 }

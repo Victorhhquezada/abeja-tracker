@@ -58,7 +58,8 @@ export function suggestNextLoad(
   mode: "peso" | "reps" | "choice" = "peso",
   weightOptions?: number[],
   loadModel?: "barbell" | "landmine",
-  taper?: TaperSettings
+  taper?: TaperSettings,
+  repRange?: { min: number; max: number }
 ): Suggestion {
   const dates = Object.keys(logs.sessions)
     .filter((d) => d < todayISO && !isDeloadDate(d))
@@ -89,6 +90,31 @@ export function suggestNextLoad(
       const pct = taper.loadPct ?? 0.6;
       suggestedValue = deloadValue(value, pct, mode, weightOptions, loadModel);
       message = `Última vez ${value} kg @ RPE ${rpe} — semana de afinación: baja a ~${Math.round(pct * 100)}% (${suggestedValue} kg), rápido y sin llegar al límite.`;
+    } else if (repRange && mode === "peso") {
+      // Doble progresión (hipertrofia): se mantiene el peso hasta llegar al tope del rango de
+      // repeticiones con un esfuerzo razonable; entonces sube y vuelve a empezar desde el mínimo.
+      const reps = topSet.reps as number | null;
+      const up = loadModel === "barbell" ? BAR_STEP : loadModel === "landmine" ? LANDMINE_STEP : step;
+      const snap = (kg: number) =>
+        loadModel === "barbell" ? snapToBar(kg) : loadModel === "landmine" ? snapToLandmine(kg) : kg;
+      const base = snap(value);
+      const seen = `Última vez ${value} kg × ${reps ?? "?"} reps @ RPE ${rpe}`;
+      if (rpe > 9) {
+        suggestedValue = snap(base - up);
+        message =
+          suggestedValue === base
+            ? `${seen} — estuvo al límite, mantén ${base} kg y busca más control.`
+            : `${seen} — estuvo al límite, baja a ${suggestedValue} kg para recuperar técnica.`;
+      } else if (reps != null && reps >= repRange.max && canRaise) {
+        suggestedValue = snap(base + up);
+        message =
+          suggestedValue === base
+            ? `${seen} — llegaste al tope del rango (${repRange.max}); ya es el máximo de carga disponible, mantén ${base} kg.`
+            : `${seen} — llegaste al tope del rango (${repRange.max}): sube a ${suggestedValue} kg y vuelve a empezar desde ${repRange.min} reps.`;
+      } else {
+        suggestedValue = base;
+        message = `${seen} — mantén ${base} kg y busca llegar a ${repRange.max} reps en todas las series antes de subir.`;
+      }
     } else if (mode === "reps") {
       if (rpe < 7) {
         suggestedValue = value + 1;

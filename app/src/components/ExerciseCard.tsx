@@ -17,6 +17,7 @@ export default function ExerciseCard({
   const repsMode = mode === "reps";
   const checkMode = mode === "check";
   const choiceMode = mode === "choice";
+  const targetRepsLabel = item.maxReps ? `${item.targetReps ?? "-"}–${item.maxReps}` : (item.targetReps ?? "-");
 
   return (
     <div className="exercise-card">
@@ -27,7 +28,7 @@ export default function ExerciseCard({
       <div className="exercise-target">
         {checkMode
           ? `Objetivo: ${item.sets} ronda${item.sets === 1 ? "" : "s"}`
-          : `Objetivo: ${item.sets} × ${item.targetReps ?? "-"} reps`}
+          : `Objetivo: ${item.sets} × ${targetRepsLabel} reps`}
         {!checkMode && item.targetRpe ? ` @ RPE ${item.targetRpe}` : ""}
         {item.note ? ` · ${item.note}` : ""}
       </div>
@@ -56,7 +57,7 @@ export default function ExerciseCard({
             ) : (
               <span className="set-num">
                 <span>{i + 1}</span>
-                {!checkMode && <span className="muted">{item.targetReps ?? "-"} reps</span>}
+                {!checkMode && <span className="muted">{targetRepsLabel} reps</span>}
               </span>
             )}
             {checkMode ? (
