@@ -118,3 +118,25 @@ export type LogsState = {
   /** encuestas de fin de ciclo ya respondidas, por id de bloque */
   cycleSurveys?: Record<string, CycleSurveyResponse>;
 };
+
+/** Canje de un premio. `split` es cuántos puntos pagó cada atleta (el hot pot se paga entre los dos). */
+export type Redemption = {
+  id: string;
+  rewardId: string;
+  cost: number;
+  date: string;
+  by: string;
+  split: Record<string, number>;
+};
+
+/** Lo único que cada atleta ve del otro: qué días entrenó y sus protecciones. Nada de pesos, notas
+ *  ni encuestas. */
+export type CrewAthleteData = {
+  sessions: Record<string, { completed: boolean }>;
+  streakProtections: string[];
+};
+
+export type CrewState = {
+  athletes: Record<string, CrewAthleteData>;
+  redemptions: Redemption[];
+};

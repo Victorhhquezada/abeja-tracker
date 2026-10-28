@@ -1595,3 +1595,209 @@ main {
   background: rgba(11, 10, 10, 0.85);
   border-top: 1px solid var(--border);
 }
+
+/* ===== Progreso: ranking, puntos y premios ===== */
+.leaderboard h2,
+.rewards h2 {
+  margin-bottom: var(--space-2);
+}
+
+.rivalry-line {
+  margin: 0 0 var(--space-3);
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+}
+
+.lb-row.me {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+.lb-rank {
+  font-size: 22px;
+  width: 28px;
+  text-align: center;
+  font-family: var(--font-display);
+}
+
+.lb-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lb-points {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.lb-points strong {
+  font-size: 26px;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.points-card {
+  text-align: center;
+}
+
+.points-label {
+  margin: 0;
+}
+
+.points-hero {
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1.05;
+  color: var(--accent-text);
+}
+
+.points-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.chip {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+}
+
+.chip.muted-chip {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.points-breakdown {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  text-align: left;
+}
+
+.points-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.reward-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 560px) {
+  .reward-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.reward-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.reward-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.reward-body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.reward-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.reward-cost {
+  color: var(--accent-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.reward-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.reward-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+/* Canjear: borroso y sin poder tocarse hasta que alcanzan los puntos */
+.reward-redeem {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  margin-top: var(--space-1);
+}
+
+.reward-redeem.locked {
+  filter: blur(2.5px) grayscale(0.4);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.reward-notice {
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  margin: 0 0 var(--space-3);
+}
+
+.redeemed-list {
+  margin-top: var(--space-4);
+}
+
+.redeemed-list h3 {
+  margin: 0 0 var(--space-2);
+}
+
+.redeemed-list p {
+  margin: 2px 0;
+}

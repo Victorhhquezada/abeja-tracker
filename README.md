@@ -65,3 +65,11 @@ No personal or physical data about the athlete is tracked in this repo — the t
 ## Multiple athletes
 
 One deployment serves more than one athlete (currently `abeja` and `oscar`). Each athlete has their own password, plan, meme pool and logged data. The login screen asks who's signing in; the signed session token carries the athlete id, and the API only ever reads or writes that athlete's data (KV key `logs:<athlete>`). Athlete-specific config lives in `app/src/athletes.ts` and the server-side password secrets (`APP_PASSWORD` for abeja, `APP_PASSWORD_OSCAR` for oscar).
+
+## Progress, points and rewards
+
+The Progreso tab replaces the old per-exercise charts with a rivalry view: a **leaderboard** of both athletes, a **points counter**, the **rewards table** (restaurant dinners, with a Redeem button that stays blurred until there are enough points), and each athlete's own **streak** and **year activity map**.
+
+Points rules (`app/src/points.ts`): 10 points per completed session × a streak multiplier (+10% per 5 days of streak, capped at ×2), +25 for a full week, +10 each on days both athletes train. Both start at zero on the same launch date. The hot pot is paid by pooling both athletes' points. Rewards and prices are in `app/src/data/rewards.ts`.
+
+Each athlete only sees the other's training days and streak protections (`/api/crew`), never weights, notes or surveys. Redemptions are a shared record (KV key `crew`); a redeemed dinner is a record in the app, and the real-world "yes" still comes from a parent.

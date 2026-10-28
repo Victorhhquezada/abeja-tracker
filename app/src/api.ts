@@ -1,4 +1,4 @@
-import type { LogsState, SessionLog, CycleSurveyResponse } from "./types";
+import type { LogsState, SessionLog, CycleSurveyResponse, CrewState, Redemption } from "./types";
 import { isAthleteId, setActiveAthlete, type AthleteId } from "./athletes";
 
 const TOKEN_KEY = "ht_token";
@@ -94,3 +94,18 @@ export async function submitCycleSurvey(blockId: string, response: CycleSurveyRe
   return res.json();
 }
 
+
+export async function fetchCrew(): Promise<CrewState> {
+  const res = await authFetch("/api/crew");
+  if (!res.ok) throw new Error("Error cargando el ranking");
+  return res.json();
+}
+
+export async function redeemReward(rewardId: string, cost: number, split: Record<string, number>): Promise<Redemption> {
+  const res = await authFetch("/api/redeem", {
+    method: "POST",
+    body: JSON.stringify({ rewardId, cost, split }),
+  });
+  if (!res.ok) throw new Error("No se pudo canjear el premio");
+  return (await res.json()).redemption;
+}

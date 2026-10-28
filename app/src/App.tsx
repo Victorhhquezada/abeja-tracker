@@ -106,7 +106,7 @@ export default function App() {
         {tab === "hoy" && <Today logs={logs} onRefresh={refresh} />}
         {tab === "semana" && <Week logs={logs} />}
         {tab === "mes" && <Month logs={logs} />}
-        {tab === "progreso" && <Progress logs={logs} />}
+        {tab === "progreso" && <Progress logs={logs} onRefresh={refresh} />}
       </main>
       <BottomTabBar active={tab} onChange={setTab} />
     </div>

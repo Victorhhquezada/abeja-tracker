@@ -45,6 +45,32 @@ type LogsData = {
 
 const EMPTY: LogsData = { sessions: {} };
 
+type Redemption = {
+  id: string;
+  rewardId: string;
+  cost: number;
+  date: string;
+  by: string;
+  split: Record<string, number>;
+};
+
+type CrewData = { redemptions: Redemption[] };
+
+// Mismos ids que app/src/data/rewards.ts
+const REWARD_IDS = [
+  "orinoco",
+  "la-bourgeoisie",
+  "traficante-de-pizza",
+  "mataleon",
+  "bobo-burgers",
+  "deigo-ramen",
+  "hot-pot",
+];
+
+async function readCrew(env: Env): Promise<CrewData> {
+  return (await env.LOGS.get<CrewData>("crew", "json")) ?? { redemptions: [] };
+}
+
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json" } });
 }
@@ -117,6 +143,57 @@ async function handleSave(request: Request, env: Env): Promise<Response> {
   return json({ ok: true, data });
 }
 
+/** Lo que cada atleta puede ver del otro: solo qué días entrenó y sus protecciones de racha. */
+async function handleCrew(request: Request, env: Env): Promise<Response> {
+  const athlete = await verifyToken(request, env.APP_TOKEN_SECRET || "dev-secret-change-me");
+  if (!isAthleteId(athlete)) return new Response("Unauthorized", { status: 401 });
+
+  const athletes: Record<string, { sessions: Record<string, { completed: boolean }>; streakProtections: string[] }> = {};
+  for (const id of ATHLETE_IDS) {
+    const data = await readLogs(env, id);
+    const sessions: Record<string, { completed: boolean }> = {};
+    for (const [date, s] of Object.entries(data?.sessions ?? {})) {
+      sessions[date] = { completed: !!(s as { completed?: boolean })?.completed };
+    }
+    athletes[id] = { sessions, streakProtections: data?.streakProtections ?? [] };
+  }
+  const crew = await readCrew(env);
+  return json({ athletes, redemptions: crew.redemptions });
+}
+
+async function handleRedeem(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
+  const athlete = await verifyToken(request, env.APP_TOKEN_SECRET || "dev-secret-change-me");
+  if (!isAthleteId(athlete)) return new Response("Unauthorized", { status: 401 });
+
+  let body: { rewardId?: string; cost?: number; split?: Record<string, number> };
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Body inválido" }, 400);
+  }
+  const { rewardId, cost, split } = body;
+  if (!rewardId || !REWARD_IDS.includes(rewardId)) return json({ error: "Premio desconocido" }, 400);
+  if (typeof cost !== "number" || !(cost > 0) || !split) return json({ error: "Falta cost o split" }, 400);
+  const parts = ATHLETE_IDS.map((id) => split[id] ?? 0);
+  if (parts.some((n) => typeof n !== "number" || n < 0) || parts.reduce((a, b) => a + b, 0) !== cost) {
+    return json({ error: "El reparto de puntos no suma el costo" }, 400);
+  }
+
+  const crew = await readCrew(env);
+  const redemption: Redemption = {
+    id: crypto.randomUUID(),
+    rewardId,
+    cost,
+    date: new Date().toISOString(),
+    by: athlete,
+    split: Object.fromEntries(ATHLETE_IDS.map((id) => [id, split[id] ?? 0])),
+  };
+  crew.redemptions.push(redemption);
+  await env.LOGS.put("crew", JSON.stringify(crew));
+  return json({ ok: true, redemption });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -124,6 +201,8 @@ export default {
     if (url.pathname === "/api/auth") return handleAuth(request, env);
     if (url.pathname === "/api/state") return handleState(request, env);
     if (url.pathname === "/api/save") return handleSave(request, env);
+    if (url.pathname === "/api/crew") return handleCrew(request, env);
+    if (url.pathname === "/api/redeem") return handleRedeem(request, env);
 
     return env.ASSETS.fetch(request);
   },

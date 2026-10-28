@@ -88,6 +88,18 @@ export function setActiveAthlete(id: AthleteId) {
   document.title = ATHLETES[id].name;
 }
 
+/** Corre `fn` como si otro atleta estuviera activo (su plan y calendario), sin tocar el tema ni lo
+ *  guardado en el dispositivo. Es síncrono a propósito: así no puede mezclarse con otra llamada. */
+export function withAthlete<T>(id: AthleteId, fn: () => T): T {
+  const previous = active;
+  active = id;
+  try {
+    return fn();
+  } finally {
+    active = previous;
+  }
+}
+
 export function getActiveAthlete(): AthleteConfig {
   return ATHLETES[active];
 }

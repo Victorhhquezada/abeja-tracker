@@ -4,8 +4,6 @@ import { saveSession } from "../api";
 import { suggestNextLoad } from "../overload";
 import { resolveTrainingForDate, nextTrainingCheckpoint, getPendingCycleSurvey } from "../trainingSchedule";
 import ExerciseCard from "../components/ExerciseCard";
-import StreakCard from "../components/StreakCard";
-import YearActivityGraph from "../components/YearActivityGraph";
 import MemeModal from "../components/MemeModal";
 import SurveyPendingBanner from "../components/SurveyPendingBanner";
 import CycleSurveyModal from "../components/CycleSurveyModal";
@@ -126,8 +124,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
       <h1>{WEEKDAY_LABELS_ES[wKey]}</h1>
       <p className="muted">{formatHuman(today)}</p>
 
-      <StreakCard logs={logs} onRefresh={onRefresh} />
-
       {checkpoint && (
         <p className="muted small checkpoint-banner">
           Próxima fecha de chequeo/recálculo: {checkpoint.label} —{" "}
@@ -210,8 +206,6 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
           <p className="muted">Todavía no hay un bloque de entrenamiento activo para esta fecha.</p>
         </section>
       )}
-
-      <YearActivityGraph logs={logs} />
 
       {memeToShow && <MemeModal src={memeToShow} onClose={() => setMemeToShow(null)} />}
 
