@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../api";
-import { ATHLETES, ATHLETE_IDS, storedAthleteId, type AthleteId } from "../athletes";
+import { ATHLETES, ATHLETE_IDS, applyTheme, storedAthleteId, type AthleteId } from "../athletes";
 
 export default function Login({ onSuccess }: { onSuccess: () => void }) {
   const [athleteId, setAthleteId] = useState<AthleteId>(storedAthleteId);
@@ -27,7 +27,16 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
     <div className="login-screen">
       {athlete.beeBrand && <div className="login-bee-mark" aria-hidden="true" />}
       <form className="login-card" onSubmit={handleSubmit}>
-        <h1 className={athlete.beeBrand ? "wordmark" : undefined}>{athlete.name}</h1>
+        {athlete.logo ? (
+          <div
+            className="login-logo"
+            role="img"
+            aria-label={athlete.name}
+            style={{ "--logo": `url(${athlete.logo})` } as React.CSSProperties}
+          />
+        ) : (
+          <h1 className={athlete.beeBrand ? "wordmark" : undefined}>{athlete.name}</h1>
+        )}
         <p className="muted">Fuerza y potencia · acceso privado</p>
         <div className="weight-choice-group athlete-picker" role="group" aria-label="¿Quién eres?">
           {ATHLETE_IDS.map((id) => (
@@ -37,6 +46,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
               className={`weight-choice-btn ${id === athleteId ? "selected" : ""}`.trim()}
               onClick={() => {
                 setAthleteId(id);
+                applyTheme(id);
                 setError(null);
               }}
             >

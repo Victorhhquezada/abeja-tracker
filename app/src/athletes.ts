@@ -13,6 +13,10 @@ export type AthleteConfig = {
   memes: string[];
   /** logo de abeja + tipografía de marca en el login — solo para ABEJA */
   beeBrand: boolean;
+  /** wordmark (PNG con transparencia) que se muestra en el login, teñido con el color de acento */
+  logo: string | null;
+  /** color de la barra del navegador / de estado en el celular */
+  themeColor: string;
 };
 
 export const ATHLETES: Record<AthleteId, AthleteConfig> = {
@@ -22,6 +26,8 @@ export const ATHLETES: Record<AthleteId, AthleteConfig> = {
     plan: abejaPlanJson as unknown as TrainingPlan,
     memes: ABEJA_MEMES,
     beeBrand: true,
+    logo: null,
+    themeColor: "#000f08",
   },
   oscar: {
     id: "oscar",
@@ -29,6 +35,8 @@ export const ATHLETES: Record<AthleteId, AthleteConfig> = {
     plan: oscarPlanJson as unknown as TrainingPlan,
     memes: OSCAR_MEMES,
     beeBrand: false,
+    logo: "/oscar-wordmark.png",
+    themeColor: "#0b0a0a",
   },
 };
 
@@ -54,8 +62,24 @@ export function storedAthleteId(): AthleteId {
 
 let active: AthleteId = storedAthleteId();
 
+const ORIGINAL_THEME_COLORS = new Map<Element, string>();
+
+/** Los colores de cada atleta viven en index.css bajo :root[data-athlete="..."]. Esto activa el
+ *  que corresponde y alinea el color de la barra del navegador. También sirve para previsualizar
+ *  el tema en el login antes de entrar. */
+export function applyTheme(id: AthleteId) {
+  document.documentElement.dataset.athlete = id;
+  document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+    if (!ORIGINAL_THEME_COLORS.has(meta)) ORIGINAL_THEME_COLORS.set(meta, meta.getAttribute("content") ?? "");
+    meta.setAttribute("content", id === "abeja" ? ORIGINAL_THEME_COLORS.get(meta)! : ATHLETES[id].themeColor);
+  });
+}
+
+applyTheme(active);
+
 export function setActiveAthlete(id: AthleteId) {
   active = id;
+  applyTheme(id);
   try {
     localStorage.setItem(ATHLETE_KEY, id);
   } catch {

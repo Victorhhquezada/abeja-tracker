@@ -1535,3 +1535,63 @@ main {
   font-size: 14px;
   font-weight: 600;
 }
+
+/* ===== Tema de Oscar: rojo, negro y dorado =====
+   Siempre oscuro (su marca es negra): el selector [data-athlete] le gana al bloque
+   prefers-color-scheme: light de :root, así que no cambia con el modo del celular.
+   Dorado #d4af37 sobre negro cumple contraste AA con texto negro encima; el rojo #c8102e
+   solo va como relleno (insignias) con texto blanco encima, nunca como texto sobre el fondo. */
+:root[data-athlete="oscar"] {
+  --accent: #d4af37;
+  --accent-rgb: 212, 175, 55;
+  --on-accent: #0b0a0a;
+  --accent-text: #e0b93f;
+
+  --accent-2: #c8102e;
+  --accent-2-rgb: 200, 16, 46;
+  --on-accent-2: #ffffff;
+
+  --accent-3: #8f0d22;
+  --accent-3-rgb: 143, 13, 34;
+  --on-accent-3: #ffffff;
+
+  --bg: #0b0a0a;
+  --card: #171313;
+  --card-rgb: 23, 19, 19;
+  --border: rgba(212, 175, 55, 0.2);
+  --text: #f5f1e8;
+  --text-rgb: 245, 241, 232;
+  --muted: #b3a994;
+  --danger: #ff4d5e;
+  --icon-btn-bg: #221a1a;
+  --track: #2c2121;
+
+  color-scheme: dark;
+}
+
+/* Wordmark de Oscar: el PNG es una silueta; se usa como máscara y se tiñe con el acento. */
+.login-logo {
+  width: 100%;
+  max-width: 270px;
+  aspect-ratio: 1000 / 222;
+  margin: 0 auto var(--space-2);
+  background: var(--accent);
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+}
+
+/* Rojo de la marca de Oscar en el login: resplandor suave detrás de la tarjeta y filete superior. */
+:root[data-athlete="oscar"] .login-screen {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 38%, rgba(var(--accent-2-rgb), 0.28), transparent 70%),
+    var(--bg);
+}
+
+:root[data-athlete="oscar"] .login-card {
+  border-top: 2px solid var(--accent-2);
+}
+
+:root[data-athlete="oscar"] .tabbar {
+  background: rgba(11, 10, 10, 0.85);
+  border-top: 1px solid var(--border);
+}
