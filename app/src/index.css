@@ -1801,3 +1801,16 @@ main {
 .redeemed-list p {
   margin: 2px 0;
 }
+
+.rivalry-pending {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--accent-2);
+  border-radius: var(--radius-sm);
+  background: rgba(var(--accent-2-rgb), 0.12);
+  font-size: 14px;
+}
+
+.rivalry-last {
+  margin: var(--space-3) 0 0;
+}

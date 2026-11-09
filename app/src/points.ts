@@ -7,12 +7,17 @@ import type { LogsState, Redemption } from "./types";
 //   sesión completada = 10 pts × multiplicador de racha (+10% por cada 5 días de racha, máx ×2)
 //   semana completa (todos sus días de entrenamiento) = +25 pts
 //   los dos entrenan el mismo día = +10 pts para cada uno
+//   un día en que los dos tienen rutina y solo uno entrena: el que faltó pierde 3 pts y pasan al que
+//   sí entrenó (suma cero). Nadie baja de 0, la protección de racha perdona la falta y un adulto
+//   puede justificar un día. Se cierra al terminar el día y solo cuenta desde PENALTY_START_DATE.
 // Los puntos arrancan en cero para los dos en la misma fecha, y la racha que sube el multiplicador
 // también se cuenta desde esa fecha, para que nadie arranque con ventaja por su historial.
 export const POINTS_LAUNCH_DATE = "2026-10-27";
 export const BASE_POINTS = 10;
 export const WEEK_BONUS = 25;
 export const CREW_BONUS = 10;
+export const PENALTY_POINTS = 3;
+export const PENALTY_START_DATE = "2026-11-09";
 const MULTIPLIER_STEP = 0.1;
 const MULTIPLIER_CAP = 2;
 const STREAK_DAYS_PER_STEP = 5;
@@ -33,6 +38,26 @@ export type PointsSummary = {
   /** días de racha que faltan para el siguiente multiplicador, o null si ya está en el tope */
   daysToNextBoost: number | null;
   byDate: Record<string, number>;
+};
+
+export type Transfer = { date: string; from: AthleteId; to: AthleteId; amount: number };
+
+/** Puntos ya con castigos y canjes aplicados, por atleta. */
+export type AthletePoints = PointsSummary & {
+  /** puntos perdidos por faltar cuando el otro sí entrenó */
+  penaltyLost: number;
+  /** puntos ganados por entrenar cuando el otro faltó */
+  penaltyGained: number;
+  /** disponible para canjear: ganado menos canjeado */
+  balance: number;
+};
+
+export type AllPoints = {
+  points: Record<AthleteId, AthletePoints>;
+  /** castigos ya cerrados, del más reciente al más antiguo */
+  transfers: Transfer[];
+  /** si hoy uno ya entrenó y el otro no, lo que pasaría al cierre del día */
+  pendingToday: { trained: AthleteId; missing: AthleteId } | null;
 };
 
 function mondayOf(d: Date): Date {
@@ -188,4 +213,88 @@ export function splitPayment(
     remaining -= extra;
   }
   return remaining === 0 ? split : null;
+}
+
+function isScheduled(athlete: AthleteId, date: Date): boolean {
+  return withAthlete(athlete, () => resolveTrainingForDate(date).kind === "day");
+}
+
+/**
+ * Puntos de los dos con castigos y canjes, día por día. El orden importa por el piso en cero: lo que
+ * pierde quien falta es como máximo lo que tiene disponible ese día.
+ */
+export function computeAllPoints(
+  logs: Record<AthleteId, LogsState>,
+  redemptions: Redemption[],
+  justifiedDays: string[],
+  today: Date = new Date()
+): AllPoints {
+  const todayISO = toISODate(today);
+  const [a, b] = ATHLETE_IDS;
+  const crewDays = crewTrainingDays(logs[a], logs[b]);
+  const base = Object.fromEntries(ATHLETE_IDS.map((id) => [id, computePoints(id, logs[id], crewDays, today)])) as Record<
+    AthleteId,
+    PointsSummary
+  >;
+
+  const balance = Object.fromEntries(ATHLETE_IDS.map((id) => [id, 0])) as Record<AthleteId, number>;
+  const lost = { ...balance };
+  const gained = { ...balance };
+  const byDate = Object.fromEntries(ATHLETE_IDS.map((id) => [id, { ...base[id].byDate }])) as Record<
+    AthleteId,
+    Record<string, number>
+  >;
+  const transfers: Transfer[] = [];
+  let pendingToday: AllPoints["pendingToday"] = null;
+
+  for (
+    let cursor = new Date(`${POINTS_LAUNCH_DATE}T00:00:00`);
+    toISODate(cursor) <= todayISO;
+    cursor = addDays(cursor, 1)
+  ) {
+    const iso = toISODate(cursor);
+    for (const id of ATHLETE_IDS) {
+      balance[id] += base[id].byDate[iso] ?? 0;
+      for (const r of redemptions) if (r.date.slice(0, 10) === iso) balance[id] -= r.split[id] ?? 0;
+    }
+
+    if (iso < PENALTY_START_DATE || !ATHLETE_IDS.every((id) => isScheduled(id, cursor))) continue;
+    const done = Object.fromEntries(ATHLETE_IDS.map((id) => [id, !!logs[id].sessions[iso]?.completed])) as Record<
+      AthleteId,
+      boolean
+    >;
+    if (done[a] === done[b]) continue;
+    const trained = done[a] ? a : b;
+    const missing = done[a] ? b : a;
+
+    if (iso === todayISO) {
+      pendingToday = { trained, missing };
+      continue;
+    }
+    if (logs[missing].streakProtections?.includes(iso) || justifiedDays.includes(iso)) continue;
+
+    const amount = Math.min(PENALTY_POINTS, Math.max(0, balance[missing]));
+    balance[missing] -= amount;
+    balance[trained] += amount;
+    lost[missing] += amount;
+    gained[trained] += amount;
+    byDate[missing][iso] = (byDate[missing][iso] ?? 0) - amount;
+    byDate[trained][iso] = (byDate[trained][iso] ?? 0) + amount;
+    if (amount > 0) transfers.unshift({ date: iso, from: missing, to: trained, amount });
+  }
+
+  const points = Object.fromEntries(
+    ATHLETE_IDS.map((id) => [
+      id,
+      {
+        ...base[id],
+        earned: base[id].earned - lost[id] + gained[id],
+        byDate: byDate[id],
+        penaltyLost: lost[id],
+        penaltyGained: gained[id],
+        balance: balance[id],
+      },
+    ])
+  ) as Record<AthleteId, AthletePoints>;
+  return { points, transfers, pendingToday };
 }

@@ -3,14 +3,15 @@ import { fetchCrew, redeemReward } from "../api";
 import { ATHLETES, ATHLETE_IDS, getActiveAthlete, type AthleteId } from "../athletes";
 import { REWARDS, type Reward } from "../data/rewards";
 import {
+  PENALTY_POINTS,
   athleteStreak,
-  computePoints,
-  crewTrainingDays,
+  computeAllPoints,
   spentPoints,
   splitPayment,
   weekPoints,
   weekProgress,
-  type PointsSummary,
+  type AllPoints,
+  type AthletePoints,
 } from "../points";
 import { toISODate } from "../dateUtils";
 import StreakCard from "../components/StreakCard";
@@ -28,7 +29,7 @@ function toLogs(crew: CrewState, id: AthleteId): LogsState {
 
 type Standing = {
   id: AthleteId;
-  points: PointsSummary;
+  points: AthletePoints;
   streak: number;
   week: { done: number; scheduled: number };
   weekPoints: number;
@@ -56,7 +57,7 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
     load();
   }, [load]);
 
-  const standings = useMemo<Record<AthleteId, Standing> | null>(() => {
+  const standings = useMemo<{ byAthlete: Record<AthleteId, Standing>; all: AllPoints } | null>(() => {
     if (!crew) return null;
     const today = new Date();
     const todayISO = toISODate(today);
@@ -64,10 +65,10 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
     const allLogs = Object.fromEntries(
       ATHLETE_IDS.map((id) => [id, id === me ? logs : toLogs(crew, id)])
     ) as Record<AthleteId, LogsState>;
-    const crewDays = crewTrainingDays(allLogs.abeja, allLogs.oscar);
-    return Object.fromEntries(
+    const all = computeAllPoints(allLogs, crew.redemptions, crew.justifiedDays ?? [], today);
+    const byAthlete = Object.fromEntries(
       ATHLETE_IDS.map((id) => {
-        const points = computePoints(id, allLogs[id], crewDays, today);
+        const points = all.points[id];
         return [
           id,
           {
@@ -77,16 +78,17 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
             week: weekProgress(id, allLogs[id], today),
             weekPoints: weekPoints(points, today),
             trainedToday: !!allLogs[id].sessions[todayISO]?.completed,
-            balance: points.earned - spentPoints(id, crew.redemptions),
+            balance: points.balance,
           },
         ];
       })
     ) as Record<AthleteId, Standing>;
+    return { byAthlete, all };
   }, [crew, logs, me]);
 
   async function handleRedeem(reward: Reward) {
     if (!standings || !crew) return;
-    const balances = Object.fromEntries(ATHLETE_IDS.map((id) => [id, standings[id].balance])) as Record<AthleteId, number>;
+    const balances = Object.fromEntries(ATHLETE_IDS.map((id) => [id, standings.byAthlete[id].balance])) as Record<AthleteId, number>;
     const split = splitPayment(reward.cost, !!reward.pooled, me, balances);
     if (!split) return;
     setRedeeming(reward.id);
@@ -104,12 +106,19 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
   if (error) return <div className="page"><p className="error">{error}</p></div>;
   if (!standings || !crew) return <div className="page"><p className="muted">Cargando ranking…</p></div>;
 
-  const ranked = [...ATHLETE_IDS].sort((a, b) => standings[b].points.earned - standings[a].points.earned);
+  const byAthlete = standings.byAthlete;
+  const { transfers, pendingToday } = standings.all;
+  const ranked = [...ATHLETE_IDS].sort((a, b) => byAthlete[b].points.earned - byAthlete[a].points.earned);
   const [first, second] = ranked;
-  const gap = standings[first].points.earned - standings[second].points.earned;
-  const mine = standings[me];
-  const combinedBalance = ATHLETE_IDS.reduce((sum, id) => sum + standings[id].balance, 0);
-  const balances = Object.fromEntries(ATHLETE_IDS.map((id) => [id, standings[id].balance])) as Record<AthleteId, number>;
+  const gap = byAthlete[first].points.earned - byAthlete[second].points.earned;
+  const mine = byAthlete[me];
+  const combinedBalance = ATHLETE_IDS.reduce((sum, id) => sum + byAthlete[id].balance, 0);
+  const balances = Object.fromEntries(ATHLETE_IDS.map((id) => [id, byAthlete[id].balance])) as Record<AthleteId, number>;
+  const lastTransfer = transfers[0];
+  const yesterdayISO = toISODate(new Date(Date.now() - 24 * 60 * 60 * 1000));
+  const lastTransferLabel = lastTransfer
+    ? `${lastTransfer.date === yesterdayISO ? "Ayer" : new Date(`${lastTransfer.date}T12:00:00`).toLocaleDateString("es-MX", { day: "numeric", month: "short" })}: ${ATHLETES[lastTransfer.from].name} −${lastTransfer.amount} → ${ATHLETES[lastTransfer.to].name} +${lastTransfer.amount}`
+    : null;
 
   return (
     <div className="page">
@@ -122,8 +131,14 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
             ? "Empate: nadie va adelante todavía."
             : `${ATHLETES[first].name} lleva ${gap} ${gap === 1 ? "punto" : "puntos"} de ventaja.`}
         </p>
+        {pendingToday && (
+          <p className="rivalry-pending">
+            ⚔️ Hoy {ATHLETES[pendingToday.trained].name} ya entrenó: si {ATHLETES[pendingToday.missing].name} no entrena,
+            pierde {PENALTY_POINTS} puntos y pasan a {ATHLETES[pendingToday.trained].name}.
+          </p>
+        )}
         {ranked.map((id, i) => {
-          const s = standings[id];
+          const s = byAthlete[id];
           return (
             <div key={id} className={`lb-row ${id === me ? "me" : ""}`.trim()}>
               <span className="lb-rank">{i === 0 && gap > 0 ? "🥇" : i + 1}</span>
@@ -140,6 +155,7 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
             </div>
           );
         })}
+        {lastTransferLabel && <p className="muted small rivalry-last">{lastTransferLabel}</p>}
       </section>
 
       <section className="card points-card">
@@ -158,11 +174,14 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
           <li><span>Sesiones</span><span>{mine.points.sessions}</span></li>
           <li><span>Semanas completas</span><span>{mine.points.weekBonus}</span></li>
           <li><span>Bono por entrenar juntos</span><span>{mine.points.crewBonus}</span></li>
+          <li><span>Ganados cuando el otro faltó</span><span>+{mine.points.penaltyGained}</span></li>
+          <li><span>Perdidos por faltar</span><span>−{mine.points.penaltyLost}</span></li>
           <li><span>Canjeados</span><span>−{spentPoints(me, crew.redemptions)}</span></li>
         </ul>
         <p className="muted small">
           Cada sesión suma 10 puntos × tu multiplicador de racha. Semana completa +25. Cada día que los dos
-          entrenan, +10 para cada uno.
+          entrenan, +10 para cada uno. Si un día los dos tienen rutina y tú no entrenas, pierdes {PENALTY_POINTS} puntos y
+          pasan a quien sí entrenó (una protección de racha o un día justificado lo perdonan).
         </p>
       </section>
 

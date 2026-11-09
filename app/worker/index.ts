@@ -54,7 +54,7 @@ type Redemption = {
   split: Record<string, number>;
 };
 
-type CrewData = { redemptions: Redemption[] };
+type CrewData = { redemptions: Redemption[]; justifiedDays?: string[] };
 
 // Mismos ids que app/src/data/rewards.ts
 const REWARD_IDS = [
@@ -158,7 +158,7 @@ async function handleCrew(request: Request, env: Env): Promise<Response> {
     athletes[id] = { sessions, streakProtections: data?.streakProtections ?? [] };
   }
   const crew = await readCrew(env);
-  return json({ athletes, redemptions: crew.redemptions });
+  return json({ athletes, redemptions: crew.redemptions, justifiedDays: crew.justifiedDays ?? [] });
 }
 
 async function handleRedeem(request: Request, env: Env): Promise<Response> {

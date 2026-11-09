@@ -139,4 +139,6 @@ export type CrewAthleteData = {
 export type CrewState = {
   athletes: Record<string, CrewAthleteData>;
   redemptions: Redemption[];
+  /** días que un adulto justificó (enfermedad, viaje...): ese día no hay castigo por faltar */
+  justifiedDays: string[];
 };
