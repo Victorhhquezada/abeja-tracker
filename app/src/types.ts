@@ -104,9 +104,12 @@ export type SurveyFeeling = "much_more" | "a_bit_more" | "same" | "a_bit_less" |
 export type CycleSurveyResponse = {
   blockId: string;
   submittedAt: string;
-  exerciseRatings: Record<string, number>;
-  favorites: string[];
-  leastFavorites: string[];
+  /** encuesta "tipo Tinder": por ejercicio, deslizó a la derecha (like) o a la izquierda (dislike) */
+  swipes?: Record<string, "like" | "dislike">;
+  /** formato anterior (calificación 1-5 y top 3) — solo en respuestas viejas */
+  exerciseRatings?: Record<string, number>;
+  favorites?: string[];
+  leastFavorites?: string[];
   feelings: Record<string, SurveyFeeling>;
   comments?: string;
 };

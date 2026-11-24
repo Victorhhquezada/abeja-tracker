@@ -15,6 +15,52 @@ export function getAllExercisesForBlock(block: TrainingBlock): SurveyExercise[] 
   );
 }
 
+export type SurveyCard = {
+  exercise: string;
+  /** días de la semana en que aparece (un ejercicio puede repetirse en varios días) */
+  days: string[];
+  focus: string;
+  detail: string;
+  summary: string;
+};
+
+function firstSentence(note: string | undefined, max = 130): string {
+  if (!note) return "";
+  const clean = note.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+/** Un ejercicio por tarjeta para la encuesta de swipe: sin repetidos aunque salga en varios días. */
+export function getSurveyCards(block: TrainingBlock): SurveyCard[] {
+  const cards = new Map<string, SurveyCard>();
+  for (const day of block.days ?? []) {
+    for (const item of day.lifting) {
+      const weekday = WEEKDAY_LABELS_ES[day.defaultWeekday];
+      const existing = cards.get(item.exercise);
+      if (existing) {
+        existing.days.push(weekday);
+        continue;
+      }
+      const reps = item.maxReps ? `${item.targetReps}–${item.maxReps}` : item.targetReps;
+      cards.set(item.exercise, {
+        exercise: item.exercise,
+        days: [weekday],
+        focus: day.focus,
+        detail:
+          item.progressionMode === "check"
+            ? `${item.sets} ${item.sets === 1 ? "ronda" : "rondas"}`
+            : reps != null
+              ? `${item.sets} × ${reps} reps`
+              : `${item.sets} series`,
+        summary: firstSentence(item.note),
+      });
+    }
+  }
+  return [...cards.values()];
+}
+
 // Se muestra desde este número de días antes de que el bloque termine, no solo el día
 // que termina — así hay tiempo real de responderla antes de que arranque el siguiente
 // bloque, en vez de depender de que se conteste exactamente el último día.

@@ -17,7 +17,7 @@ export default function SurveyPendingBanner({
   });
   const subtitle =
     todayISO < block.endDate
-      ? `Responde antes del ${deadlineLabel}, cuando empieza el próximo bloque`
+      ? `Responde antes del ${deadlineLabel}`
       : `${block.label} terminó — cuéntanos qué te pareció`;
 
   return (

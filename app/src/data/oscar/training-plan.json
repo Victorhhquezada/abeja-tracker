@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "updated": "2026-10-27",
+  "version": 4,
+  "updated": "2026-11-24",
   "notes": "Programa de hipertrofia y potencia complementario para Oscar, boxeador amateur adolescente que entrena en el mismo gimnasio que el otro atleta de esta app. Menos de 6 meses de experiencia levantando, sin pelea próxima ni categoría de peso que cuidar, y con interés personal en ganar masa muscular, sobre todo en el tren superior. Prioridad: ganar músculo sin perder lo que sirve a un boxeador: potencia de golpe, rotación, cuello, agarre y footwork. El boxeo en sí no se programa aquí; se asume la misma rutina diaria de boxeo y costal que el otro atleta, así que el volumen de pesas se mantiene moderado. Sin datos físicos personales en este archivo: el repositorio es público.",
   "sequencingGuidance": "Pesas justo después del boxeo (lunes a viernes). Cada sesión empieza con potencia fresca antes de la hipertrofia. El día más fuerte de pierna es el martes y el jueves se deja la barra libre de pesos pesados del otro atleta; el viernes es footwork y potencia, sin rack.",
   "varietyGuidance": "Se varía el implemento dentro del mismo patrón de movimiento (barra, landmine, banda, sandbag) en vez de cambiar el patrón, para no frenar la progresión.",
@@ -9,7 +9,8 @@
       "youthNote": "Técnica y control primero: a esta edad y con menos de 6 meses de experiencia, la mayor parte de las ganancias vienen de ser constante y progresar poco a poco, no de empujar al límite."
   },
   "checkpoints": [
-    {"date": "2026-11-20", "label": "Chequeo 1 — revisión de progreso, fin de bloque 1 (retest de dominadas, sentadilla y banca)"}
+    {"date": "2026-11-20", "label": "Chequeo 1 — revisión de progreso, fin de bloque 1 (retest de dominadas, sentadilla y banca)"},
+    { "date": "2026-11-27", "label": "Chequeo de cierre — semana extra del bloque, fin real del bloque y encuesta" }
   ],
   "blocks": [
     {
@@ -17,7 +18,7 @@
       "label": "Bloque 1",
       "phase": "Hipertrofia con base de boxeador — prioridad tren superior",
       "startDate": "2026-10-27",
-      "endDate": "2026-11-20",
+      "endDate": "2026-11-27",
       "restDays": ["saturday", "sunday"],
       "note": "Primer bloque de 4 semanas (la primera arranca el martes 27 de octubre; la semana 4 es retest y descarga, y termina el mismo día que el bloque del otro atleta, con el mismo chequeo). Hipertrofia con prioridad en el tren superior (3 días de tren superior y 1 día completo de pierna), con menos de 6 meses levantando, así que la técnica va primero: semanas 1-2 a RPE 6-7. Cada sesión empieza con potencia fresca (saltos, medball o landmine) antes de la hipertrofia, y se mantienen el cuello, el core y el footwork del viernes para no perder lo que sirve en el ring. Progresión por rangos de repeticiones: el peso solo sube al llegar al tope del rango. Solo con el equipo del gimnasio: rack, barra, discos, banco plano e inclinado, landmine, bandas, sandbags, medball, llanta y barra de dominadas.",
       "overrides": [
