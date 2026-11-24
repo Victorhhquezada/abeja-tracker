@@ -67,6 +67,8 @@ export type TrainingBlock = {
    *  descanso — festivos, viajes, etc. No cuentan como perdidos ni rompen la racha. */
   holidays?: string[];
   overrides?: TrainingOverride[];
+  /** desde cuándo se muestra la encuesta de cierre de este bloque (si no, 1 día antes de que termine) */
+  surveyFrom?: string;
   weeklyBoxingTally?: Record<string, unknown>;
   note?: string;
 };
@@ -137,6 +139,8 @@ export type Redemption = {
 export type CrewAthleteData = {
   sessions: Record<string, { completed: boolean }>;
   streakProtections: string[];
+  /** encuestas respondidas (id de bloque → fecha de envío). Solo se comparte CUÁNDO la contestó, no qué respondió. */
+  surveys?: Record<string, string>;
 };
 
 export type CrewState = {

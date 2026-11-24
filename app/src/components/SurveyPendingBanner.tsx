@@ -17,8 +17,8 @@ export default function SurveyPendingBanner({
   });
   const subtitle =
     todayISO < block.endDate
-      ? `Responde antes del ${deadlineLabel}`
-      : `${block.label} terminó — cuéntanos qué te pareció`;
+      ? `Responde antes del ${deadlineLabel} y gana +10 puntos`
+      : `${block.label} terminó — cuéntanos qué te pareció y gana +10 puntos`;
 
   return (
     <button className="survey-banner" onClick={onOpen}>

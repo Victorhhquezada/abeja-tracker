@@ -16,6 +16,9 @@ export const POINTS_LAUNCH_DATE = "2026-10-27";
 export const BASE_POINTS = 10;
 export const WEEK_BONUS = 25;
 export const CREW_BONUS = 10;
+export const SURVEY_BONUS = 10;
+// Solo cuentan las encuestas respondidas desde esta fecha (las anteriores no daban puntos)
+export const SURVEY_BONUS_START = "2026-11-24";
 export const PENALTY_POINTS = 3;
 export const PENALTY_START_DATE = "2026-11-09";
 const MULTIPLIER_STEP = 0.1;
@@ -30,6 +33,8 @@ export type PointsSummary = {
   sessions: number;
   weekBonus: number;
   crewBonus: number;
+  /** puntos por contestar la encuesta de cierre de bloque */
+  surveyBonus: number;
   /** todo lo ganado, sin descontar canjes — con esto se ordena el ranking */
   earned: number;
   /** racha contada desde la fecha de lanzamiento (la que sube el multiplicador) */
@@ -87,6 +92,7 @@ export function computePoints(
     let streak = 0;
     let sessions = 0;
     let crewBonus = 0;
+    let surveyBonus = 0;
     let weekBonus = 0;
     const byDate: Record<string, number> = {};
     const weeks = new Map<string, { scheduled: number; done: number; lastDate: string; allDone: boolean }>();
@@ -138,12 +144,22 @@ export function computePoints(
       }
     }
 
+    for (const survey of Object.values(logs.cycleSurveys ?? {})) {
+      if (!survey?.submittedAt) continue;
+      const date = toISODate(new Date(survey.submittedAt));
+      if (date >= SURVEY_BONUS_START && date >= POINTS_LAUNCH_DATE && date <= todayISO) {
+        surveyBonus += SURVEY_BONUS;
+        byDate[date] = (byDate[date] ?? 0) + SURVEY_BONUS;
+      }
+    }
+
     const multiplier = streakMultiplier(streak);
     return {
       sessions,
       weekBonus,
       crewBonus,
-      earned: sessions + weekBonus + crewBonus,
+      surveyBonus,
+      earned: sessions + weekBonus + crewBonus + surveyBonus,
       streak,
       multiplier,
       daysToNextBoost: multiplier >= MULTIPLIER_CAP ? null : STREAK_DAYS_PER_STEP - (streak % STREAK_DAYS_PER_STEP),

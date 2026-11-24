@@ -76,7 +76,7 @@ const SURVEY_LEAD_DAYS = 1;
 export function getPendingCycleSurvey(logs: LogsState, today: Date = new Date()): TrainingBlock | null {
   const todayISO = toISODate(today);
   const closingBlocks = getTrainingPlan().blocks.filter((b) => {
-    const thresholdISO = toISODate(addDays(new Date(`${b.endDate}T00:00:00`), -SURVEY_LEAD_DAYS));
+    const thresholdISO = b.surveyFrom ?? toISODate(addDays(new Date(`${b.endDate}T00:00:00`), -SURVEY_LEAD_DAYS));
     return thresholdISO <= todayISO;
   });
   if (closingBlocks.length === 0) return null;

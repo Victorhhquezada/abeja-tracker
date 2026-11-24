@@ -148,14 +148,23 @@ async function handleCrew(request: Request, env: Env): Promise<Response> {
   const athlete = await verifyToken(request, env.APP_TOKEN_SECRET || "dev-secret-change-me");
   if (!isAthleteId(athlete)) return new Response("Unauthorized", { status: 401 });
 
-  const athletes: Record<string, { sessions: Record<string, { completed: boolean }>; streakProtections: string[] }> = {};
+  const athletes: Record<
+    string,
+    { sessions: Record<string, { completed: boolean }>; streakProtections: string[]; surveys: Record<string, string> }
+  > = {};
   for (const id of ATHLETE_IDS) {
     const data = await readLogs(env, id);
     const sessions: Record<string, { completed: boolean }> = {};
     for (const [date, s] of Object.entries(data?.sessions ?? {})) {
       sessions[date] = { completed: !!(s as { completed?: boolean })?.completed };
     }
-    athletes[id] = { sessions, streakProtections: data?.streakProtections ?? [] };
+    // De la encuesta solo se comparte que se contestó y cuándo, nunca las respuestas.
+    const surveys: Record<string, string> = {};
+    for (const [blockId, s] of Object.entries(data?.cycleSurveys ?? {})) {
+      const submittedAt = (s as { submittedAt?: string })?.submittedAt;
+      if (submittedAt) surveys[blockId] = submittedAt;
+    }
+    athletes[id] = { sessions, streakProtections: data?.streakProtections ?? [], surveys };
   }
   const crew = await readCrew(env);
   return json({ athletes, redemptions: crew.redemptions, justifiedDays: crew.justifiedDays ?? [] });

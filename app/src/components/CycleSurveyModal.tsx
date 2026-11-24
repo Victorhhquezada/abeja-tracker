@@ -93,7 +93,7 @@ export default function CycleSurveyModal({
         <div className="survey-scroll">
           <section className="survey-section">
             <h2>Cómo te sientes</h2>
-            <p className="muted small">Contra como empezaste este bloque</p>
+            <p className="muted small">Contra como empezaste este bloque · al enviar ganas +10 puntos</p>
             {CAPABILITY_QUESTIONS.map((q) => (
               <div className="survey-rating-row survey-feeling-row" key={q.key}>
                 <span className="survey-exercise-name">{q.label}</span>
@@ -125,7 +125,7 @@ export default function CycleSurveyModal({
           </section>
 
           <button className="complete-btn survey-submit-btn" onClick={handleSubmit} disabled={!canSubmit}>
-            {saving ? "Guardando..." : "Enviar encuesta"}
+            {saving ? "Guardando..." : "Enviar encuesta (+10 puntos)"}
           </button>
           {!allFeelingsAnswered && !saving && (
             <p className="muted small survey-submit-hint">Faltan: responder cómo te sientes</p>

@@ -24,7 +24,11 @@ function toLogs(crew: CrewState, id: AthleteId): LogsState {
   for (const [date, s] of Object.entries(data?.sessions ?? {})) {
     sessions[date] = { dayId: "", completed: s.completed, exercises: {} };
   }
-  return { sessions, streakProtections: data?.streakProtections ?? [] };
+  const cycleSurveys: NonNullable<LogsState["cycleSurveys"]> = {};
+  for (const [blockId, submittedAt] of Object.entries(data?.surveys ?? {})) {
+    cycleSurveys[blockId] = { blockId, submittedAt, feelings: {} };
+  }
+  return { sessions, streakProtections: data?.streakProtections ?? [], cycleSurveys };
 }
 
 type Standing = {
@@ -174,13 +178,14 @@ export default function Progress({ logs, onRefresh }: { logs: LogsState; onRefre
           <li><span>Sesiones</span><span>{mine.points.sessions}</span></li>
           <li><span>Semanas completas</span><span>{mine.points.weekBonus}</span></li>
           <li><span>Bono por entrenar juntos</span><span>{mine.points.crewBonus}</span></li>
+          <li><span>Bono por contestar la encuesta</span><span>{mine.points.surveyBonus}</span></li>
           <li><span>Ganados cuando el otro faltó</span><span>+{mine.points.penaltyGained}</span></li>
           <li><span>Perdidos por faltar</span><span>−{mine.points.penaltyLost}</span></li>
           <li><span>Canjeados</span><span>−{spentPoints(me, crew.redemptions)}</span></li>
         </ul>
         <p className="muted small">
           Cada sesión suma 10 puntos × tu multiplicador de racha. Semana completa +25. Cada día que los dos
-          entrenan, +10 para cada uno. Si un día los dos tienen rutina y tú no entrenas, pierdes {PENALTY_POINTS} puntos y
+          entrenan, +10 para cada uno. Contestar la encuesta de cierre de bloque, +10. Si un día los dos tienen rutina y tú no entrenas, pierdes {PENALTY_POINTS} puntos y
           pasan a quien sí entrenó (una protección de racha o un día justificado lo perdonan).
         </p>
       </section>
