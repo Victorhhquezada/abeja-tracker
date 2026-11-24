@@ -17,6 +17,7 @@ export default function CycleSurveyModal({
   onSubmitted: () => void;
 }) {
   const cards = getSurveyCards(block);
+  const surveyKey = block.surveyId ?? block.id;
 
   const [step, setStep] = useState<Step>("swipe");
   const [answers, setAnswers] = useState<SwipeAnswer[]>([]);
@@ -39,13 +40,13 @@ export default function CycleSurveyModal({
         swipes[card.exercise] = answers[i];
       });
       const response: CycleSurveyResponse = {
-        blockId: block.id,
+        blockId: surveyKey,
         submittedAt: new Date().toISOString(),
         swipes,
         feelings,
         comments: comments.trim() || undefined,
       };
-      await submitCycleSurvey(block.id, response);
+      await submitCycleSurvey(surveyKey, response);
       onSubmitted();
     } catch {
       setError("Error guardando la encuesta. Intenta de nuevo.");

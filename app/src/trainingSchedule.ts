@@ -81,7 +81,7 @@ export function getPendingCycleSurvey(logs: LogsState, today: Date = new Date())
   });
   if (closingBlocks.length === 0) return null;
   const mostRecent = closingBlocks.reduce((a, b) => (b.endDate > a.endDate ? b : a));
-  if (logs.cycleSurveys?.[mostRecent.id]) return null;
+  if (logs.cycleSurveys?.[mostRecent.surveyId ?? mostRecent.id]) return null;
   return mostRecent;
 }
 

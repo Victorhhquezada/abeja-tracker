@@ -69,6 +69,9 @@ export type TrainingBlock = {
   overrides?: TrainingOverride[];
   /** desde cuándo se muestra la encuesta de cierre de este bloque (si no, 1 día antes de que termine) */
   surveyFrom?: string;
+  /** id con el que se guarda la encuesta de cierre de este bloque (por defecto, el id del bloque). Cambiarlo permite
+   *  volver a pedirla sin tocar la respuesta anterior. */
+  surveyId?: string;
   weeklyBoxingTally?: Record<string, unknown>;
   note?: string;
 };
