@@ -49,8 +49,9 @@ export type TrainingOverride = {
   startDate: string;
   endDate: string;
   /** "conservative" = solo sube de peso si se sintió fácil (RPE < 7);
-   *  "deload" = sugiere ~loadPct del último peso (default 60%) */
-  progression: "conservative" | "deload";
+   *  "deload" = sugiere ~loadPct del último peso (default 60%);
+   *  "normal" = la progresión de siempre (sirve para una semana con rutina distinta, no de descarga) */
+  progression: "conservative" | "deload" | "normal";
   loadPct?: number;
   days: TrainingDay[];
 };

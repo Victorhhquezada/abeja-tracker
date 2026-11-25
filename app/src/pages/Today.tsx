@@ -44,7 +44,10 @@ export default function Today({ logs, onRefresh }: { logs: LogsState; onRefresh:
   const resolvedTraining = resolveTrainingForDate(today);
   const trainingDay = resolvedTraining.kind === "day" ? resolvedTraining.day : null;
   const trainingOverride = resolvedTraining.kind === "day" ? resolvedTraining.override : undefined;
-  const taper = trainingOverride ? { progression: trainingOverride.progression, loadPct: trainingOverride.loadPct } : undefined;
+  const taper =
+    trainingOverride && trainingOverride.progression !== "normal"
+      ? { progression: trainingOverride.progression, loadPct: trainingOverride.loadPct }
+      : undefined;
   const checkpoint = nextTrainingCheckpoint(todayISO);
   const pendingSurveyBlock = getPendingCycleSurvey(logs, today);
 

@@ -1,5 +1,5 @@
 {
-  "version": 26,
+  "version": 27,
   "updated": "2026-11-24",
   "notes": "Programa de fuerza y potencia complementario para un boxeador amateur competitivo de 16 años, 4 años de boxeo, sin experiencia previa de pesas (técnica ya buena por supervisión directa, pero sin historial de carga). El boxeo en sí NO se prescribe aquí — se asume que ya se entrena por su cuenta de lunes a viernes (su entrenador/gimnasio lo maneja), y el fin de semana es descanso. Esta app es solo la capa de fuerza/potencia complementaria. Prioridad explícita del usuario: 1) potencia de golpe / explosividad, 2) durabilidad / prevención de lesiones, 3) capacidad de trabajo / acondicionamiento, 4) fuerza general — la fuerza es la base, no el objetivo final. Diseñado con investigación real (NSCA Position Stand on LTAD 2016; Dunn et al. sobre fuerza y fuerza de impacto de golpe; encuesta de prácticas reales de entrenadores de boxeo Beattie & Ruddock 2025 JSCR; estudio de complex training en boxeadores amateur élite, Frontiers 2024). Puntos clave que informan el diseño: (a) la fuerza máxima de tren inferior es el predictor individual más fuerte de fuerza de impacto de golpe (Dunn et al., r=0.68, ~46% de la varianza) — el énfasis va en piernas, no en banca; (b) la fuerza máxima de tren superior casi no correlaciona con potencia de golpe, pero la fuerza EXPLOSIVA de tren superior sí — por eso el press es rápido/explosivo, no pesado al fallo; (c) los ganchos dependen de fuerza rotacional de tronco más que los rectos — de ahí el énfasis en landmine y trabajo rotacional; (d) no hay evidencia real de que la fuerza máxima 'engorde' o haga más lento a un boxeador — ese miedo es común entre entrenadores pero no está sustentado, y como el usuario no está en categoría de peso ni campamento ahora mismo, es buen momento para construir una base real de fuerza; (e) la investigación en jóvenes (NSCA LTAD) confirma que el entrenamiento de fuerza bien supervisado es seguro para adolescentes, no retrasa el crecimiento ni la maduración, y mejora fuerza relativa y velocidad — pero recomienda evitar pruebas de 1RM, progresar la carga solo cuando la técnica es sólida, y priorizar la calidad de movimiento sobre la carga absoluta. (f) se agregó entrenamiento de cuello 3x/semana (lunes/miércoles/viernes, no consecutivos) por evidencia directa de reducción de riesgo de conmoción: un estudio en 6,662 atletas de secundaria encontró que cada libra adicional de fuerza de cuello se asoció con ~5% menos probabilidad de sufrir una conmoción (Collins et al. 2014) — relevante en boxeo porque la fuerza de cuello limita el latigazo (whiplash) que produce los knockouts, y la posición de mentón pegado en guardia depende de los flexores profundos del cuello. Progresión deliberada de menos a más carga a lo largo de la semana: isométrico (lunes, más seguro, cubre las 6 direcciones incluida rotación — la dirección más débil y más descuidada según la literatura), banda elástica (miércoles, dinámico pero de resistencia suave), arnés con peso (viernes, día fuerte, única herramienta que permite subir peso en pasos finos). (g) Bloque 2 sube el techo de esfuerzo (RPE ~7-8 en vez de ~6-7) porque Bloque 1 confirmó técnica sólida: 17 de 20 sesiones completadas, encuesta de fin de ciclo con 'mucho más fuerte' en casi todas las capacidades preguntadas, y 5 notas distintas del propio atleta a lo largo del ciclo diciendo que podía haber hecho más reps de las prescritas (dominadas x2, giro de tronco, press landmine). Cambios de ejercicio por feedback directo — encuesta (favoritos confirmados sin cambio: giro de tronco con banda, golpe explosivo con landmine, press de banca explosivo/push press; menos favoritos reemplazados: plancha lateral, volteo de llanta, peso muerto rumano) y conversación con el coach: plancha lateral → Pallof press (anti-rotación de pie en vez de estático), farmer carry → suitcase carry (fuerza unilateral/anti-flexión lateral en vez de bilateral), peso muerto rumano → peso muerto explosivo/clean alternado (ya con técnica de bisagra validada, toca la versión con más potencia), volteo de llanta descartado por completo, y el día de llanta se convierte en día dedicado de agilidad y footwork. Los slams de sandbag se reintroducen (se habían descartado en Bloque 1 por el impacto) ahora sobre colchoneta específicamente para proteger el sandbag. El día de footwork se diseñó con investigación específica de boxeo: drills de escalera con nombres reales (in-out, Icky Shuffle, carioca) y un drill de conos en triángulo para practicar pivote y creación de ángulo — no solo velocidad de pies genérica. Los box jumps se descartaron a favor de lateral bounds/skater jumps: la evidencia es clara en que el boxeo se mueve lateral, no verticalmente, así que el trabajo pliométrico debe ir en esa dirección.",
   "sequencingGuidance": "El boxeo se entrena todos los días de lunes a viernes por su cuenta, y las pesas de aquí se hacen justo después esos días, con el viernes como día de más foco. La evidencia sobre secuenciación en la misma sesión es clara: el trabajo explosivo/de potencia pierde calidad neuromuscular cuando se hace ya fatigado. Por eso el split separa dos tipos de día: (1) lunes a jueves — trabajo de menor demanda del sistema nervioso (core rotacional, tracción, acarreos, unilateral), que sí tolera bien hacerse después de boxear; (2) el viernes es el día fuerte de fuerza/potencia real (sentadilla, peso muerto, landmine rotacional, press explosivo) y conviene hacerlo ANTES del boxeo ese día si se puede — es donde vive la ganancia real de potencia de golpe.",
@@ -18,7 +18,7 @@
     { "date": "2026-09-25", "label": "Chequeo 1 — revisión técnica y de carga, fin de bloque 1" },
     { "date": "2026-10-23", "label": "Chequeo 2 — revisión de progreso, fin de bloque 2" },
     { "date": "2026-11-20", "label": "Chequeo 3 — revisión de progreso, fin de bloque 3 (retest de dominadas, sentadilla y banca)" },
-    { "date": "2026-11-27", "label": "Chequeo de cierre — semana extra del bloque, fin real del bloque y encuesta" }
+    { "date": "2026-11-27", "label": "Chequeo de cierre — semana puente, fin del bloque y encuesta" }
   ],
   "blocks": [
     {
@@ -473,6 +473,87 @@
                 {"exercise": "Landmine clean to press rotacional", "sets": 2, "targetReps": 5, "targetRpe": 7, "type": "principal", "loadModel": "landmine", "videos": [{"label": "Ver video de referencia", "url": "https://www.instagram.com/reel/DehPN-fxxFH/"}], "note": "por lado — de la cargada (clean) al press, con rotación, el movimiento más parecido a un golpe explosivo. Progresa por nivel: (1) PRINCIPIANTE, semana 1: ritmo controlado y peso ligero, aprendiendo la secuencia; (2) INTERMEDIO, semana 2: de pie, a una mano, explosivo; (3) AVANZADO, desde la semana 3: con rotación completa de cadera y pivote del pie, a máxima velocidad. Se pasa de nivel solo cuando la técnica se vea limpia con RPE 7 o menos; si no, repite el nivel. Reemplaza el press landmine rotacional a una mano"},
                 {"exercise": "Press de banca explosivo / push press (alterna semana a semana)", "sets": 3, "targetReps": 3, "targetRpe": 8, "type": "accesorio", "loadModel": "barbell", "note": "RETEST: 3 series de 3 repeticiones a RPE 8, movimiento rápido. Banca explosiva o push press, el que toque esta semana"},
                 {"exercise": "Rotation to press", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio", "videos": [{"label": "Ver video de referencia", "url": "https://www.instagram.com/reel/DdOml1Xuw0G/"}], "note": "por lado — el giro genera la fuerza y el press la lleva al brazo, igual que un cross: rota el tronco desde la cadera y termina el movimiento empujando, siguiendo el video de referencia. Control en el giro, sin tirar de la espalda baja. Sustituye a las rotaciones sencillas con disco y landmine. El material es el del video"}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "semana-puente",
+          "label": "Semana puente: ejercicios favoritos, hipertrofia tradicional",
+          "startDate": "2026-11-23",
+          "endDate": "2026-11-27",
+          "progression": "normal",
+          "days": [
+            {
+              "id": "puente-dia1",
+              "order": 1,
+              "label": "Día 1",
+              "defaultWeekday": "monday",
+              "focus": "Semana puente. Pierna: sentadilla y fuerza de base, hipertrofia tradicional",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Sentadilla trasera", "sets": 4, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra en el rack sobre la espalda alta, baja hasta que los muslos queden paralelos y sube empujando el piso con el torso firme. Doble progresión: mantén el peso hasta lograr 10 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Peso muerto rumano con barra", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "bisagra de cadera con espalda neutra: empuja la cadera atrás, la barra baja pegada a las piernas hasta sentir los isquios y regresa apretando glúteos. Doble progresión: mantén el peso hasta lograr 10 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Zancada búlgara (sandbag al pecho o mancuerna)", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "por pierna: pie trasero en el banco, sandbag al pecho (o mancuerna). Progresa en repeticiones de 10 a 12 y luego en series."}
+              ]
+            },
+            {
+              "id": "puente-dia2",
+              "order": 2,
+              "label": "Día 2",
+              "defaultWeekday": "tuesday",
+              "focus": "Semana puente. Tirón y bíceps: dominadas, remo y curl",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Dominadas (asistidas si hace falta)", "sets": 4, "targetReps": 6, "maxReps": 10, "targetRpe": 7, "type": "principal", "progressionMode": "reps", "note": "del cuelgue total a la barbilla sobre la barra, sin balanceo. Progresa en repeticiones y no llegues al fallo esta semana."},
+                {"exercise": "Remo landmine a una mano", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado: pie adelante, tira de la punta de la barra en landmine hacia la cadera con el codo pegado. Doble progresión: mantén el peso hasta lograr 12 repeticiones en todas las series y entonces sube 1.25 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Curl de bíceps con mancuernas", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "progressionMode": "peso", "note": "sin balancear el cuerpo, codos pegados y bajada lenta de 3 segundos. Con las mancuernas disponibles: sube de repeticiones (10 a 12) y luego a la siguiente mancuerna."},
+                {"exercise": "Curl martillo (mancuernas o banda)", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "agarre neutro (palmas hacia dentro), sin balancear. Trabaja bíceps y antebrazo. Progresa de 12 a 15 repeticiones."},
+                {"exercise": "Face pull con banda elástica", "sets": 3, "targetReps": 15, "targetRpe": 6.5, "type": "accesorio", "progressionMode": "reps", "note": "salud de hombro: banda a la altura de la cara, tira hacia la frente abriendo los codos. Prevención de lesiones, sin esfuerzo máximo."},
+                {"exercise": "Cuello con arnés: flexión y extensión", "sets": 2, "targetReps": 12, "maxReps": 15, "targetRpe": 6.5, "type": "accesorio", "progressionMode": "peso", "note": "de pie, arnés con cadena y una placa ligera (empieza sin peso si hace falta). Flexión: baja el mentón al pecho con control, 3 s de bajada y 2 de subida. Extensión: de espaldas a la cadena, deja caer la cabeza al frente y empuja hacia atrás con el mismo control. Sin jalones y con un adulto presente las primeras veces. Progresa de 12 a 15 repeticiones y después un disco chico (1.25 kg)."}
+              ]
+            },
+            {
+              "id": "puente-dia3",
+              "order": 3,
+              "label": "Día 3",
+              "defaultWeekday": "wednesday",
+              "focus": "Semana puente. Empuje: press de banca, hombro y tríceps",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Press de banca con barra", "sets": 4, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra libre en el banco plano: agarre un poco más ancho que los hombros, escápulas juntas, pies firmes; baja controlado al pecho y empuja sin despegar la cadera. Semana puente: se disfruta, sin llegar al fallo. Doble progresión: mantén el peso hasta lograr 10 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Press inclinado con barra", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "loadModel": "barbell", "note": "banco inclinado, misma técnica que la banca pero la barra baja a la parte alta del pecho. Doble progresión: mantén el peso hasta lograr 12 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Press militar de pie con barra", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "de pie, glúteos y abdomen apretados, empuja sobre la cabeza sin arquear la espalda baja. Doble progresión: mantén el peso hasta lograr 10 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Elevaciones laterales con banda", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "de pie sobre la banda, sube los brazos a los lados a la altura de los hombros y baja lento. Progresa en repeticiones de 12 a 15."},
+                {"exercise": "Extensión de tríceps con banda", "sets": 3, "targetReps": 12, "maxReps": 15, "targetRpe": 7, "type": "accesorio", "progressionMode": "reps", "note": "banda anclada arriba, codos pegados, extiende por completo y regresa lento. Progresa en repeticiones de 12 a 15."}
+              ]
+            },
+            {
+              "id": "puente-dia4",
+              "order": 4,
+              "label": "Día 4",
+              "defaultWeekday": "thursday",
+              "focus": "Semana puente. Footwork: velocidad de pies, agilidad y reacción",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Escalera (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Ver video de referencia", "url": "https://vt.tiktok.com/ZSbfAcweq/"}], "note": "marca al terminar los 7:\n1. Paso lateral con jab — 5 vueltas\n2. Shuffle lateral — 5 vueltas\n3. Un solo pie — 4 vueltas por pie\n4. Pivots — 5 vueltas\n5. Shift con upper — 5 vueltas\n6. Jumping jacks — 4 vueltas\n7. Jumping jacks con cruce — 4 vueltas"},
+                {"exercise": "Ángulos y patrones (7 drills)", "sets": 1, "targetReps": null, "targetRpe": null, "type": "accesorio", "progressionMode": "check", "videos": [{"label": "Video ángulos", "url": "https://vt.tiktok.com/ZSbfAwnwb/"}, {"label": "Video patrones", "url": "https://vt.tiktok.com/ZSbfD4BNq/"}], "note": "marca al terminar los 7:\nÁngulos (30 reps cada uno):\n1. Slip shift\n2. Step shift\n3. Saltos de 90 grados\n4. Step pivots\nPatrones:\n5. Diamond step — 3 series de 30 segundos\n6. L step — 3 series de 40 segundos\n7. Z step — 3 series de 40 segundos"}
+              ]
+            },
+            {
+              "id": "puente-dia5",
+              "order": 5,
+              "label": "Día 5",
+              "defaultWeekday": "friday",
+              "focus": "Semana puente. Todo el cuerpo con tus favoritos: sentadilla, banca, dominadas, curl y golpe con landmine",
+              "warmupMin": 10,
+              "lifting": [
+                {"exercise": "Sentadilla trasera", "sets": 3, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra en el rack sobre la espalda alta, baja hasta que los muslos queden paralelos y sube empujando el piso con el torso firme. Doble progresión: mantén el peso hasta lograr 8 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Press de banca con barra", "sets": 3, "targetReps": 6, "maxReps": 8, "targetRpe": 7, "type": "principal", "loadModel": "barbell", "note": "barra libre en el banco plano, misma técnica del miércoles pero más pesado y menos repeticiones. Doble progresión: mantén el peso hasta lograr 8 repeticiones en todas las series y entonces sube 2.5 kg y vuelve a empezar desde el mínimo del rango."},
+                {"exercise": "Dominadas (asistidas si hace falta)", "sets": 3, "targetReps": 8, "maxReps": 10, "targetRpe": 7, "type": "principal", "progressionMode": "reps", "note": "del cuelgue total a la barbilla sobre la barra, sin balanceo. Progresa en repeticiones y no llegues al fallo esta semana."},
+                {"exercise": "Curl de bíceps con mancuernas", "sets": 3, "targetReps": 10, "maxReps": 12, "targetRpe": 7, "type": "accesorio", "progressionMode": "peso", "note": "sin balancear el cuerpo, codos pegados y bajada lenta de 3 segundos. Con las mancuernas disponibles: sube de repeticiones (10 a 12) y luego a la siguiente mancuerna."},
+                {"exercise": "Golpe explosivo con landmine (lanzar y atrapar)", "sets": 3, "targetReps": 8, "targetRpe": 7, "type": "accesorio", "loadModel": "landmine", "note": "por lado: lanza la punta libre de la barra en landmine imitando el golpe y recíbela de vuelta. Es de sus favoritos: máxima velocidad, descanso completo y sube un disco pequeño cuando las 8 salgan limpias."},
+                {"exercise": "Cuello con arnés: flexión y extensión", "sets": 2, "targetReps": 12, "maxReps": 15, "targetRpe": 6.5, "type": "accesorio", "progressionMode": "peso", "note": "de pie, arnés con cadena y una placa ligera (empieza sin peso si hace falta). Flexión: baja el mentón al pecho con control, 3 s de bajada y 2 de subida. Extensión: de espaldas a la cadena, deja caer la cabeza al frente y empuja hacia atrás con el mismo control. Sin jalones y con un adulto presente las primeras veces. Progresa de 12 a 15 repeticiones y después un disco chico (1.25 kg)."}
               ]
             }
           ]
